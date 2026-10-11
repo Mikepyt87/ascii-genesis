@@ -2,7 +2,8 @@ import http from 'node:http';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {cleanSnapshot,narrate} from './openai_bridge.mjs';
+import {cleanSnapshot,narrate,safeError,checkKey} from './openai_bridge.mjs';
+import {createHash} from 'node:crypto';
 
 const here=path.dirname(fileURLToPath(import.meta.url));
 const key=process.env.OPENAI_API_KEY;
@@ -10,8 +11,13 @@ const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=u
 const server=http.createServer(async(req,res)=>{
   try{
     const url=new URL(req.url,'http://127.0.0.1');
+    if(req.method==='GET'&&url.pathname==='/api/status'){
+      let state='ready';try{checkKey(key);}catch(err){state=err.code;}
+      res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store'});
+      res.end(JSON.stringify({state,keyFingerprint:key?createHash('sha256').update(key).digest('hex'):null}));return;
+    }
     if(req.method==='POST'&&url.pathname==='/api/narrate'){
-      if(!key){res.writeHead(503,{'Content-Type':'application/json'});res.end(JSON.stringify({error:'OPENAI_API_KEY is not set for this optional preview bridge.'}));return;}
+      checkKey(key);
       let raw='';for await(const part of req){raw+=part;if(raw.length>2048){res.writeHead(413);res.end();return;}}
       let body;try{body=JSON.parse(raw);}catch{res.writeHead(400);res.end();return;}
       const result=await narrate(cleanSnapshot(body),key);
@@ -24,9 +30,9 @@ const server=http.createServer(async(req,res)=>{
     }
     res.writeHead(405);res.end();
   }catch(err){
-    const status=String(err.message).includes('HTTP ')?502:500;
-    res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store'});
-    res.end(JSON.stringify({error:status===502?'The API request failed. The local simulation will keep running.':'Preview bridge error.'}));
+    const info=safeError(err);
+    res.writeHead(info.status,{'Content-Type':'application/json','Cache-Control':'no-store'});
+    res.end(JSON.stringify({error:info.error,code:info.code}));
   }
 });
 server.listen(4173,'127.0.0.1',()=>console.log('ASCII Genesis preview: http://127.0.0.1:4173 (loopback only)'));

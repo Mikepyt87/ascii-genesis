@@ -105,12 +105,13 @@
     status.textContent='Trying the optional local API bridge…';
     try{
       const r=await fetch('/api/narrate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tick:sim.tick,...counts})});
-      if(!r.ok)throw new Error('bridge unavailable');
-      const data=await r.json();document.getElementById('event').textContent=data.text;
+      const data=await r.json();
+      if(!r.ok){status.textContent=data.error||'API request failed. Please report the error code.';document.getElementById('event').textContent=`AI connection: ${data.code||r.status}. The ocean keeps running.`;return;}
+      document.getElementById('event').textContent=data.text;
       status.textContent=`OpenAI • ${data.model} • ${data.usage?.total_tokens ?? 'usage n/a'} tokens`;
     }catch{
       document.getElementById('event').textContent=offlineEvent(counts,sim.tick);
-      status.textContent='Offline preview only. Start simulator/server.mjs with OPENAI_API_KEY for a real API call.';
+      status.textContent='Could not contact the local API server. Close the ocean and reopen it using the Pi desktop icon.';
     }finally{aiBusy=false;e.currentTarget.disabled=false;}
   };
   function offlineEvent(c,tick){

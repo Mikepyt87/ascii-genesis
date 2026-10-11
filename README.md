@@ -103,3 +103,15 @@ python3 raspberry-pi/desktop-check.py
 ## Artwork and license
 
 Eleven designs derive from Asciiquarium; six are original ASCII Genesis drawings. See [THIRD-PARTY.txt](THIRD-PARTY.txt) and [LICENSE.txt](LICENSE.txt), GPL-2.0-or-later. Source drawings and their generator are in `third-party/`. Regenerate the fish collection from the project root with `node third-party/restore-sprites.mjs`.
+
+### Diagnose an API connection
+
+Close the ocean, use the Update ASCII Genesis icon, and reopen it. Tap AI event: the app now reports missing-key, authentication, billing, permission, model-access or connection errors separately. Luna narration uses no reasoning and a 128-token response allowance. A successful narration is still needed to confirm your account works.
+
+To check the saved file against the running server without showing the key or calling OpenAI, run on the Pi:
+
+```bash
+node ~/ASCII-Genesis/simulator/api-doctor.mjs
+```
+
+This prints only a configuration result. Share that result or the on-screen error code; never share openai.env or the secret key.
