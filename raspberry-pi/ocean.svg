@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+<rect x="4" y="4" width="120" height="120" rx="25" fill="#082129" stroke="#6cb9b0" stroke-width="3"/>
+<path d="M18 96 Q38 87 58 96 T108 96" fill="none" stroke="#438c72" stroke-width="4"/>
+<text x="64" y="72" text-anchor="middle" font-family="monospace" font-size="31" font-weight="bold" fill="#eac37c">&gt;&lt;((o&gt;</text>
+<circle cx="98" cy="38" r="4" fill="none" stroke="#81c7ce" stroke-width="2"/>
+<circle cx="105" cy="25" r="2" fill="#81c7ce"/>
+</svg>

@@ -103,4 +103,3 @@ python3 raspberry-pi/desktop-check.py
 ## Artwork and license
 
 Eleven designs derive from Asciiquarium; six are original ASCII Genesis drawings. See [THIRD-PARTY.txt](THIRD-PARTY.txt) and [LICENSE.txt](LICENSE.txt), GPL-2.0-or-later. Source drawings and their generator are in `third-party/`. Regenerate the fish collection from the project root with `node third-party/restore-sprites.mjs`.
-

@@ -1,0 +1,18 @@
+name: Check ocean
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node simulator/core-check.mjs
+      - run: node simulator/render-check.mjs
+      - run: node simulator/openai_bridge_check.mjs
+      - run: python3 raspberry-pi/desktop-check.py
+      - run: for script in raspberry-pi/*.sh; do bash -n "$script"; done
+      - run: bash raspberry-pi/update-check.sh

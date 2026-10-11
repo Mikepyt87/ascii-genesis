@@ -1,0 +1,26 @@
+THIRD-PARTY ARTWORK
+
+Fish artwork and color masks derive from Asciiquarium 1.1.
+Copyright (C) 2003 Kirk Baucom.
+Most ASCII artwork is credited upstream to Joan Stark.
+Expanded marine biodiversity was backported by Claudio Matsuoka from the
+Asciiquarium Android live wallpaper.
+Source: https://github.com/cmatsuoka/asciiquarium
+License: GNU GPL version 2 or, at your option, any later version.
+See LICENSE.txt and the original notices in third-party/asciiquarium-upstream.pl.
+
+Browser adaptations dated October 11, 2026 preserve directional drawings,
+spacing, and component masks, and translate transparency markers to spaces.
+The duplicate diamond design is omitted, leaving 11 unique designs.
+Source for the modified browser renderer and simulation is in simulator/.
+To regenerate fish-art.js, run from the package root:
+  node third-party/restore-sprites.mjs
+
+No artwork from the other researched community aquarium projects is included.
+
+Six additional designs were created for ASCII Genesis: sunburst puffer,
+ribbon bannerfish, silver spearfish, copper moray, violet kite ray, and
+blue lanternfish. These are original project drawings, not Asciiquarium
+upstream art. Their editable source is third-party/original-fish.mjs and
+they are provided under GPL-2.0-or-later with this project. The combined
+collection now contains 17 designs, each with both swimming directions.
