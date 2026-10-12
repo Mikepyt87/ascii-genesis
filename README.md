@@ -30,6 +30,10 @@ Install **Raspberry Pi OS Desktop, 64-bit** using [Raspberry Pi Imager](https://
 
 References: [Pi 4 specifications](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/specifications/), [recommended power supply](https://www.raspberrypi.com/products/power-supply/), [Waveshare display instructions](https://www.waveshare.com/wiki/7.9inch_HDMI_LCD).
 
+## Printed enclosure and legs
+
+The screen and Pi enclosure models are available in [3d-printing](3d-printing/README.md), with the original 3MF files and STL versions for GitHub preview and slicer import. Print one case and two copies of the leg model. Import the STL files in millimeters at 100% scale; the model guide includes dimensions and conversion details.
+
 ## Install from GitHub — one-time setup
 
 Open a terminal on the **Raspberry Pi** and run:
