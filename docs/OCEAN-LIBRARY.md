@@ -1,6 +1,6 @@
 # ASCII Genesis Ocean Library
 
-A field guide to everything currently drawn or simulated in the Raspberry Pi 4 ocean on the Waveshare 7.9-inch screen. The collection contains **17 fish designs plus a squid and an octopus, 38 directional drawings, two microscopic life types, a two-pose diver, bubbles, kelp, seabed contours, sediment texture, and water across three habitats**. An occasional diver visits, and brief predator encounters sometimes end in a catch. Quiet mode turns hunting off.
+A field guide to everything currently drawn or simulated in the Raspberry Pi 4 ocean on the Waveshare 7.9-inch screen. The collection contains **17 fish designs, a squid, an octopus, and a sea turtle, 40 directional drawings, two microscopic life types, a two-pose diver, bubbles, kelp, seabed contours, sediment texture, and water across three habitats**. An occasional diver visits, and brief predator encounters sometimes end in a catch. Quiet mode turns hunting off.
 
 ## Thanks to the original creators
 
@@ -16,7 +16,7 @@ The artwork below is copied from the actual sprite collection, with its spaces p
 
 ## Other objects index
 
-Fish and cephalopod drawings appear in the next index. Every other visible ocean object has an entry here; habitat settings and the control panel are included too. Tank, mask, arms, and fins are parts of one diver sprite, rather than independent objects.
+All swimmer drawings appear in the next index. Every other visible ocean object has an entry here; habitat settings and the control panel are included too. Tank, mask, arms, and fins are parts of one diver sprite, rather than independent objects.
 
 | Object or feature | Category | Visual example and details |
 | --- | --- | --- |
@@ -32,7 +32,7 @@ Fish and cephalopod drawings appear in the next index. Every other visible ocean
 | Touch panel and readouts | Interface | [Controls and readouts](#controls-and-readouts) |
 | Prey shrinking at mouth contact | Fish animation | [Catch and feeding](#catch-and-feeding) |
 
-## Fish and cephalopod index
+## Creature index
 
 | Design | Name | Color family | Source |
 | --- | --- | --- | --- |
@@ -55,6 +55,7 @@ Fish and cephalopod drawings appear in the next index. Every other visible ocean
 | 17 | [blue lanternfish](#blue-lanternfish) | muted blue green | ASCII Genesis |
 | 18 | [rose squid](#rose-squid) | rose and dusty pink | ASCII Genesis |
 | 19 | [violet octopus](#violet-octopus) | violet and muted purple | ASCII Genesis |
+| 20 | [sea turtle](#sea-turtle) | soft green and teal green | ASCII Genesis |
 
 ## Shared swimming behavior
 
@@ -63,7 +64,7 @@ Fish and cephalopod drawings appear in the next index. Every other visible ocean
 - Normal individual speeds range from 0.18 to just under 0.45 world cells per tick. At 350 milliseconds per tick and 1280 pixels across 48 world cells, that is roughly 14 to 34 pixels per second. A center crosses the visible width in about 37 to 93 seconds.
 - Fish keep their drawing and direction for their whole crossing. Ordinary departures are removed after their center reaches 20 world cells beyond an edge. Normal arrivals start 10 cells beyond an edge. An encounter pair starts 10 and 18 cells beyond the same edge. A successful catch is the only removal inside the visible screen.
 - Fry can consume nearby plankton. Hunters normally cruise; selected encounter pairs briefly chase, and some catch prey. There is no breeding, aging, health, or hunger system for individual swimmers.
-- The renderer keeps each drawing above the local seabed and caches all 38 fish and cephalopod images. Travel changes which designs enter next; it does not transform fish already on screen.
+- The renderer keeps each drawing above the local seabed and caches all 40 creature images. Travel changes which designs enter next; it does not transform fish already on screen.
 
 ## Fish drawings
 
@@ -564,7 +565,7 @@ Facing left:
 
 ## Squid and octopus drawings
 
-These two original project designs are cephalopods, bringing the collection to 19 creature designs. They join the same eight-swimmer population as fish and travel in either direction. They keep their artwork for the whole crossing and arrive and depart beyond the screen edges. Their arms are static ASCII artwork; they do not jet, release ink, change color, or participate in predator encounters.
+These two original project designs are cephalopods, bringing the collection, including the turtle, to 20 creature designs. They join the same eight-swimmer population as fish and travel in either direction. They keep their artwork for the whole crossing and arrive and depart beyond the screen edges. Their arms are static ASCII artwork; they do not jet, release ink, change color, or participate in predator encounters.
 
 The simplified ecosystem currently assigns them the fry role, including the generic plankton-feeding rule. That is a simulation simplification rather than a claim about real cephalopod diets.
 
@@ -622,6 +623,34 @@ Facing left (16 columns × 7 rows):
   __/|||||\__   
  / / ||||| \ \  
 (_( (_|||_) )_) 
+```
+
+## Sea turtle drawing
+
+### sea turtle
+
+A soft green sea turtle with a patterned rounded shell, flippers, a small tail, and a head with a cream eye. It joins the same varying-speed, off-screen arrival and departure rotation as the fish and cephalopods. Its artwork is static. It is neither a predator nor selected prey in hunting encounters.
+
+**Source:** original ASCII Genesis artwork in [original-fish.mjs](../third-party/original-fish.mjs), GPL-2.0-or-later. **Shell color:** `#8bb58a`; **edges and flippers:** `#66957b`. The simplified food web assigns the turtle the generic fry role, including its plankton-feeding rule; this is a visual simulation rather than a realistic turtle diet.
+
+Facing right (21 columns × 5 rows):
+
+```text
+       .-"""-.       
+     .' /_|_\ '.     
+  _ /__/__|__\__\ __ 
+ <_(   \__|__/  )(o)>
+    \_/\_____/\_/    
+```
+
+Facing left (21 columns × 5 rows):
+
+```text
+       .-"""-.       
+     .' /_|_\ '.     
+ __ /__/__|__\__\ _  
+<(o)(  \__|__/   )_> 
+    \_/\_____/\_/    
 ```
 
 ## Other object drawings
@@ -746,7 +775,7 @@ _
 
 ### Controls and readouts
 
-The touch panel is an interface overlay rather than an ocean object. It contains Pause or Resume, Step, New world, AI event, Quiet mode, the habitat name, tide counter, narration text, and connection status. It appears when you tap the water and fades after eight seconds. The algae, plankton, fry, and hunter counters exist in the page but are hidden in the full-screen layout.
+The touch panel is an interface overlay rather than an ocean object. It contains Pause or Resume, Step, New world, AI event, Quiet mode, Creature parade, the habitat name, tide counter, narration text, and connection status. It appears when you tap the water and fades after eight seconds. The algae, plankton, fry, and hunter counters exist in the page but are hidden in the full-screen layout.
 
 See the [controls screenshot](screenshots/controls.jpg) and [screenshot tour](SCREENSHOTS.md#touch-controls). Source: [pi.html](../simulator/pi.html) and [simulator.js](../simulator/simulator.js).
 
@@ -814,7 +843,7 @@ Small bubbles rise near the diver, changing from an o to a dot before vanishing.
 | --- | --- |
 | Predator | Large ocean fish, silver spearfish, copper moray |
 | Prey | Tiny fish, little triangular fish, reef fish, box fish |
-| Cruising only | Angelfish, striped fish, rounded fish, diamond fish, curly-fin fish, sunburst puffer, ribbon bannerfish, violet kite ray, blue lanternfish, rose squid, violet octopus |
+| Cruising only | Angelfish, striped fish, rounded fish, diamond fish, curly-fin fish, sunburst puffer, ribbon bannerfish, violet kite ray, blue lanternfish, rose squid, violet octopus, sea turtle |
 
 After a 2 to 4 minute cooldown, the simulation waits for two swimmer slots and no diver before bringing in a predator and prey from the same edge. Both begin outside the display and cruise into view together. Only one encounter can be active. The cooldown restarts when it ends, so visible encounters are farther apart than the cooldown alone.
 
@@ -836,9 +865,19 @@ The setting is remembered in the launcher's browser profile and survives New wor
 
 The implementation caps swimmers at eight, divers at one, and bubbles at five. Checks exercise both swimming directions, wholly off-screen arrivals, visible mouth contact, shrinking prey, escape survival, quiet-mode cancellation, cached drawing, pause, reset, and 30,000 ticks of bounded populations. The browser layout is checked at 1280 × 400; perceived pace still needs your assessment on the physical Pi screen.
 
+## Creature parade
+
+Tap the water and press **Creature parade · 2 min**. All 20 creature designs, including the turtle, squid, and octopus, make a complete left-to-right crossing during a two-minute showcase. They are staggered across four swimming lanes, with no more than eight parade swimmers at once. Every design starts fully beyond the left edge and leaves fully beyond the right edge. The diver is a visiting person and is not part of the sea-creature lineup.
+
+The showcase uses separate swimmers and preserves the normal world's positions, ecosystem, terrain, and encounter timers. Ordinary swimmers blend out at the start; once the lineup has finished crossing, they blend back in during the final two seconds. The normal ocean resumes automatically at the end. There are no hunts during the parade, and quiet mode does not prevent it.
+
+The countdown uses elapsed running time. Pause freezes it; Step advances it by one 350-millisecond tick. If started while paused, press Resume to run it. The parade button is disabled until it finishes, so repeated presses cannot extend the timer. New world cancels the parade. Parade state is not saved between launches.
+
+Parade swimmers move at about 61 screen pixels per second so the whole lineup can finish within two minutes. Their images use the existing cache. Checks verify that all designs become fully visible and fully exit, the population cap holds, the timer reaches 120 seconds, and the normal ecosystem is preserved and resumes correctly.
+
 ## Artwork and maintenance
 
-Eleven designs come from Asciiquarium 1.1. The upstream code credits Kirk Baucom and credits most ASCII artwork to Joan Stark; expanded marine biodiversity was backported by Claudio Matsuoka. Eight creature drawings are original to ASCII Genesis, including the squid and octopus. All are distributed with this project under GPL-2.0-or-later. See [credits](../THIRD-PARTY.txt), [license](../LICENSE.txt), and the preserved [upstream source](../third-party/asciiquarium-upstream.pl).
+Eleven designs come from Asciiquarium 1.1. The upstream code credits Kirk Baucom and credits most ASCII artwork to Joan Stark; expanded marine biodiversity was backported by Claudio Matsuoka. Nine creature drawings are original to ASCII Genesis, including the squid, octopus, and turtle. All are distributed with this project under GPL-2.0-or-later. See [credits](../THIRD-PARTY.txt), [license](../LICENSE.txt), and the preserved [upstream source](../third-party/asciiquarium-upstream.pl).
 
 The installed artwork is in [fish-art.js](../simulator/fish-art.js). Its source drawings and extraction rules are in [original-fish.mjs](../third-party/original-fish.mjs) and [restore-sprites.mjs](../third-party/restore-sprites.mjs). The running rules are in [aquarium.js](../simulator/aquarium.js); colors, terrain drawing, and sprite placement are in [simulator.js](../simulator/simulator.js).
 

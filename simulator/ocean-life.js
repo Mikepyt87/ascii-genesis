@@ -23,6 +23,28 @@
     for(const f of w.fish)w.cells[Math.floor(f.y)*W+Math.floor(f.x)]=f.kind;
   }
   function profile(w,f){return w.profiles[f.design*2+(f.right?0:1)];}
+  function startParade(w){
+    if(w.parade)return false;
+    const speed=.8,margin=10,travelMs=(W+2*margin)/speed*350;
+    w.parade={elapsed:0,duration:120000,speed,margin,travelMs,
+      spacing:w.designCount>1?(120000-travelMs-2000)/(w.designCount-1):0,fish:[]};
+    advanceParade(w,0);
+    return true;
+  }
+  function advanceParade(w,elapsedMs=350){
+    const p=w.parade;
+    if(!p)return;
+    if(!Number.isFinite(elapsedMs)||elapsedMs<0)throw Error('Invalid parade elapsed time');
+    p.elapsed=Math.min(p.duration,p.elapsed+elapsedMs);
+    if(p.elapsed>=p.duration){w.parade=null;return;}
+    p.fish=[];
+    for(let design=0;design<w.designCount;design++){
+      const age=p.elapsed-design*p.spacing;
+      if(age<0||age>p.travelMs)continue;
+      p.fish.push({id:'parade-'+design,design,kind:FRY,right:true,
+        x:-p.margin+p.speed*age/350,y:7+(design%4)*8,speed:p.speed});
+    }
+  }
   function box(w,f){
     const p=profile(w,f),cx=w.view.width/W,cy=w.view.height/H;
     const width=p?.width||80,height=p?.height||48,left=f.x*cx-width/2;
@@ -115,6 +137,6 @@
     }
     return box(w,f);
   }
-  root.OceanLife={setup,profile,box,mouth,displayBox,before,after,setQuiet,predators};
+  root.OceanLife={setup,profile,box,mouth,displayBox,before,after,setQuiet,predators,startParade,advanceParade};
   if(typeof module!=='undefined'&&module.exports)module.exports=root.OceanLife;
 })(typeof globalThis!=='undefined'?globalThis:this);

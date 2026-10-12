@@ -14,13 +14,23 @@ Much of the character of this ocean comes from [Asciiquarium](https://github.com
 
 Different fish shapes and muted colors share the water with algae and plankton. Seaweed varies in height and shade. The camera moves slowly through kelp meadow, rocky reef, and open sand settings; plants and terrain enter and leave at the edges. Fish crossing an edge are intentional arrivals and departures.
 
-The collection has **17 fish designs plus a squid and an octopus**, each facing both directions. There are at most eight swimmers at once, including those still outside the visible area. The [Ocean Library](OCEAN-LIBRARY.md) shows every drawing and explains its role.
+The collection has **17 fish designs plus a squid, octopus, and sea turtle**, each facing both directions. There are at most eight swimmers at once, including those still outside the visible area. The [Ocean Library](OCEAN-LIBRARY.md) shows every drawing and explains its role.
 
 ## Squid and octopus
 
 ![A rose-colored squid and violet octopus cruising above seaweed](screenshots/cephalopods.jpg)
 
 Two original ASCII Genesis cephalopods join the rotation: a rose squid with a pointed mantle and trailing tentacles, and a violet octopus with a rounded head and curling arms. They share the eight-swimmer limit with the fish and enter and leave beyond an edge. Their artwork is static; they cruise at varying speeds without participating in hunts. This capture places both in view to show their shapes together.
+
+## Sea turtle and creature parade
+
+![A green sea turtle with a patterned shell swimming above kelp](screenshots/turtle.jpg)
+
+The sea turtle brings the collection to 20 creature designs. Its original project artwork includes a green shell, flippers, and a small head. Both swimming directions are included in the [Ocean Library](OCEAN-LIBRARY.md#sea-turtle).
+
+![The creature parade with staggered swimmers, a disabled parade button, and 85 seconds remaining](screenshots/parade.jpg)
+
+Tap **Creature parade · 2 min** to show the entire lineup. Creatures cross from beyond the left edge to beyond the right edge in four staggered lanes. The normal ecosystem is preserved during the showcase and resumes after two minutes. Pause and Step apply to the parade, and New world cancels it. The timer and button remain in the touch panel, which still hides automatically.
 
 ## Open sand
 
@@ -54,6 +64,7 @@ Tap the water to reveal this panel. It fades after eight seconds so the ocean ca
 | Step | Advances the whole simulation by one tick, useful while paused. |
 | New world | Starts a fresh scene and resets its timers. |
 | AI event | Requests optional narration through your own configured OpenAI API connection. It does not control the ocean. |
+| Creature parade | Shows all 20 designs in a two-minute lineup, then returns to the normal ocean. |
 | Quiet mode | Turns hunting off or on. The preference is remembered in the browser profile. |
 
 The ocean, diver, and encounters all work **offline without an API key**. The AI button requires separate setup and working API access; the screenshot does not demonstrate a successful API call.

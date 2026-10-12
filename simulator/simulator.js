@@ -107,7 +107,10 @@
     drawSeabed();
     const cellX=screenW/core.W, cellY=screenH/core.H;
     ctx.font='10px Consolas, "Courier New", monospace';ctx.textBaseline='top';
-    const sprites=sim.fish;
+    const parade=sim.parade;
+    // Blend into and out of the showcase without deleting ordinary swimmers.
+    const normalAlpha=parade?Math.max(0,1-parade.elapsed/4000,1-(parade.duration-parade.elapsed)/2000):1;
+    const sprites=[...sim.fish.map(f=>({fish:f,alpha:normalAlpha})),...(parade?.fish||[]).map(f=>({fish:f,alpha:1}))];
     for(let y=0;y<core.H;y++)for(let x=0;x<core.W;x++){
       const s=sim.cells[y*core.W+x];
       if(s===core.EMPTY||s===core.FRY||s===core.HUNTER)continue;
@@ -115,23 +118,30 @@
     }
     // Draw classic Asciiquarium sprites over one-cell ecological agents.
     // The life model stays 48×48; only its presentation uses multi-character art.
-    for(const fish of sprites){
+    for(const {fish,alpha} of sprites){
+      if(alpha<=0)continue;
       const image=spriteCache[fish.design*2+(fish.right?0:1)];
       const b=core.life.displayBox(sim,fish);
       if(b.left+b.width<0||b.left>screenW)continue;
-      ctx.drawImage(image,b.left,b.top,b.width,b.height);
+      ctx.globalAlpha=alpha;ctx.drawImage(image,b.left,b.top,b.width,b.height);ctx.globalAlpha=1;
     }
     const diver=sim.life.diver;
-    if(diver){
+    if(diver&&normalAlpha>0){
       const image=diverCache[(Math.floor(diver.age/5)%2)*2+(diver.right?0:1)];
-      ctx.drawImage(image,diver.x*cellX-image.width/2,diver.y*cellY);
+      ctx.globalAlpha=normalAlpha;ctx.drawImage(image,diver.x*cellX-image.width/2,diver.y*cellY);ctx.globalAlpha=1;
     }
     ctx.font='10px "Courier New", monospace';ctx.fillStyle='#71969c';
+    ctx.globalAlpha=normalAlpha;
     for(const bubble of sim.life.bubbles)ctx.fillText(bubble.age<10?'o':'.',bubble.x*cellX,bubble.y*cellY);
-    const c=core.counts(sim);document.getElementById('tick').textContent=`${sim.habitat.name} · TIDE ${String(sim.tick).padStart(4,'0')}`;
+    ctx.globalAlpha=1;
+    const c=core.counts(sim);document.getElementById('tick').textContent=parade?`PARADE · ${Math.ceil((parade.duration-parade.elapsed)/1000)}s`:`${sim.habitat.name} · TIDE ${String(sim.tick).padStart(4,'0')}`;
+    const paradeButton=document.getElementById('parade');
+    paradeButton.disabled=!!parade;paradeButton.textContent=parade?'Parade running…':'Creature parade · 2 min';
     for(const [id,value] of [['plankton',c.plankton],['fry',c.fry],['hunters',c.hunters],['algae',c.algae]])document.getElementById(id).textContent=value;
   }
-  function step(){core.step(sim);draw();}
+  function step(elapsedMs=350){core.step(sim,typeof elapsedMs==='number'?elapsedMs:350);draw();}
+  function animationClock(){return typeof performance!=='undefined'?performance.now():Date.now();}
+  document.getElementById('parade').onclick=()=>{if(core.life.startParade(sim)){lastFrame=animationClock();draw();}};
   document.getElementById('pause').onclick=e=>{running=!running;e.currentTarget.textContent=running?'Pause':'Resume';};
   document.getElementById('step').onclick=step;
   const quietButton=document.getElementById('quiet');
@@ -160,5 +170,6 @@
     if(c.algae<90)return 'Soft green light spreads slowly across the open water.';
     return ['The hunters turn beneath a field of quiet, drifting plankton.','A fresh bloom gathers along the lower edge of the habitat.','Fry weave through the algae as the current changes.'][tick%3];
   }
-  draw();setInterval(()=>{if(running)step();},350);
+  let lastFrame=animationClock();
+  draw();setInterval(()=>{const now=animationClock(),elapsed=Math.max(0,now-lastFrame);lastFrame=now;if(running)step(elapsed||350);},350);
 })();

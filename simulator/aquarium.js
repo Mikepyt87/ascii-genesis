@@ -56,7 +56,9 @@
     }
     return out;
   }
-  function step(w) {
+  function step(w,elapsedMs=350) {
+    // Showcase swimmers have their own timeline; the normal ecosystem is preserved.
+    if(w.parade){life.advanceParade(w,elapsedMs);return w;}
     const oldColumn=Math.floor(w.travel);
     w.travel+=.08;
     w.habitat=habitatAt(w.travel+W/2);
