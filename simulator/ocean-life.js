@@ -90,11 +90,13 @@
     for(const f of w.fish){
       let speed=f.speed;
       if(e?.phase==='chasing'){
-        if(f.id===e.preyId)speed=e.catchAllowed?.35:.52;
-        if(f.id===e.hunterId)speed=e.catchAllowed?.64:.44;
+        if(f.id===e.preyId)speed=e.catchAllowed?.72:.84;
+        if(f.id===e.hunterId)speed=e.catchAllowed?.98:.72;
       }
       if(e?.phase==='feeding'&&(f.id===e.hunterId||f.id===e.preyId))speed=.06;
-      f.velocity=(f.velocity??f.speed)+Math.max(-.04,Math.min(.04,speed-(f.velocity??f.speed)));
+      const chasing=e?.phase==='chasing'&&(f.id===e.preyId||f.id===e.hunterId);
+      const acceleration=chasing?.06:.04;
+      f.velocity=(f.velocity??f.speed)+Math.max(-.04,Math.min(acceleration,speed-(f.velocity??f.speed)));
     }
   }
   function after(w){

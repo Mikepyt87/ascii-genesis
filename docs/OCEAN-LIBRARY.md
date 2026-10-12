@@ -847,7 +847,7 @@ Small bubbles rise near the diver, changing from an o to a dot before vanishing.
 
 After a 2 to 4 minute cooldown, the simulation waits for two swimmer slots and no diver before bringing in a predator and prey from the same edge. Both begin outside the display and cruise into view together. Only one encounter can be active. The cooldown restarts when it ends, so visible encounters are farther apart than the cooldown alone.
 
-The chase begins only when both fish are inside the screen. Prey and predator gradually accelerate instead of changing speed instantly. The pursuit lasts at most about ten seconds. An escape returns both fish smoothly to cruising speed; neither disappears or changes drawing.
+The chase begins only when both fish are inside the screen. Prey and predator gradually accelerate into a burst faster than even the quickest ordinary swimmer. On the 1280-pixel display, cruising is about 14–34 pixels per second; pursuit targets are about 55–75 pixels per second. In an escape, the prey pulls ahead; in a possible catch, the predator gains ground. Only the selected pair speeds up. Acceleration takes about three to four seconds, and the pursuit lasts at most about ten seconds. An escape returns both fish smoothly to cruising speed; neither disappears or changes drawing.
 
 ### Catch and feeding
 

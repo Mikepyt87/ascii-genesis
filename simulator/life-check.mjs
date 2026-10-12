@@ -36,6 +36,33 @@ for(let seed=1;seed<=16;seed++){
   assert.ok(w.life.nextEncounter-w.tick>=341,'Cooldown is at least two minutes');
 }
 assert.deepEqual(outcomes,new Set(['escape','catch']));assert.equal(directions.size,2);
+// Follow actual movement through a complete escape and recovery in either direction.
+for(const right of [true,false]){
+  const w=core.world(91,20);w.fish=[];w.life.nextEncounter=0;w.life.nextDiver=10000;
+  core.step(w);
+  const e=w.life.encounter;e.catchAllowed=false;
+  const h=w.fish.find(f=>f.id===e.hunterId),p=w.fish.find(f=>f.id===e.preyId);
+  h.right=p.right=right;h.x=right?10:38;p.x=right?18:30;e.phase='chasing';
+  const outsider={id:w.nextFishId++,kind:3,design:0,right,x:24,y:8,speed:.45};
+  w.fish.push(outsider);
+  let burst=false;
+  for(let t=0;t<80;t++){
+    const old=w.fish.slice(0,3).map(f=>({x:f.x,velocity:f.velocity??f.speed}));
+    core.step(w);
+    for(const [i,f] of [h,p,outsider].entries()){
+      assert.ok(Math.abs(Math.abs(f.x-old[i].x)-f.velocity)<1e-8,'Movement uses the eased speed');
+      assert.ok(f.velocity-old[i].velocity<=.060001&&old[i].velocity-f.velocity<=.040001,'Speed changes gradually');
+    }
+    assert.ok(Math.abs(outsider.velocity-.45)<1e-8,'Unrelated fish keeps its cruising speed');
+    if(w.life.encounter?.phase==='chasing'&&h.velocity>.45&&p.velocity>.45){
+      burst=true;assert.ok(p.velocity>=h.velocity,'Escaping prey pulls ahead');
+    }
+    if(!w.life.encounter&&Math.abs(h.velocity-h.speed)<1e-8&&Math.abs(p.velocity-p.speed)<1e-8)break;
+  }
+  assert.ok(burst,'Both pursuit participants outrun the fastest ordinary swimmer');
+  assert.equal(w.life.lastOutcome.type,'escape');
+  assert.ok(Math.abs(h.velocity-h.speed)<1e-8&&Math.abs(p.velocity-p.speed)<1e-8,'Pair returns to cruising after pursuit');
+}
 const quiet=core.world(321,17,{quiet:true});quiet.life.nextEncounter=0;quiet.life.nextDiver=0;
 core.step(quiet);assert.equal(quiet.life.encounter,null);assert.ok(quiet.life.diver,'Quiet mode keeps peaceful diver visits');
 const diver=quiet.life.diver,initialX=diver.x;

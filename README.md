@@ -77,7 +77,7 @@ Tap the water, then press **Creature parade · 2 min** to show all 20 creature d
 
 ## Occasional visitors and hunting
 
-A diver may arrive after 5–10 minutes, then wait another 5–10 minutes after departing before visiting again. Predator encounters have a 2–4 minute cooldown, followed by the wait for free swimmer slots and the pair to enter from off screen. Most chases end in escape; rare catches visibly shrink the prey into the predator's mouth. All of this works offline.
+A diver may arrive after 5–10 minutes, then wait another 5–10 minutes after departing before visiting again. Predator encounters have a 2–4 minute cooldown, followed by the wait for free swimmer slots and the pair to enter from off screen. Both fish burst ahead of ordinary swimmers during a pursuit, then ease back to cruising. Most chases end in escape; rare catches visibly shrink the prey into the predator's mouth. All of this works offline.
 
 Tap the water and turn **Quiet mode: on** to disable hunting. Divers and gentle swimming continue. The preference survives restarting the app. Pause and Step apply to every animation. See the [Ocean Library](docs/OCEAN-LIBRARY.md#visitors-and-encounters) for eligibility, timing, and limits.
 
