@@ -1,6 +1,6 @@
 # ASCII Genesis Ocean Library
 
-A field guide to everything currently drawn or simulated in the Raspberry Pi 4 ocean on the Waveshare 7.9-inch screen. The collection contains **17 fish designs, 34 directional drawings, two microscopic life types, kelp, and a scrolling seabed across three habitats**. An occasional diver visits, and brief predator encounters sometimes end in a catch. Quiet mode turns hunting off.
+A field guide to everything currently drawn or simulated in the Raspberry Pi 4 ocean on the Waveshare 7.9-inch screen. The collection contains **17 fish designs, 34 directional drawings, two microscopic life types, a two-pose diver, bubbles, kelp, seabed contours, sediment texture, and water across three habitats**. An occasional diver visits, and brief predator encounters sometimes end in a catch. Quiet mode turns hunting off.
 
 ## How to read the collection
 
@@ -9,6 +9,24 @@ Fish names describe the artwork. They are not verified biological species, and t
 **Appearance determines hunting eligibility.** Large ocean fish, silver spearfish, and copper morays have the hunter role. Tiny fish, little triangular fish, reef fish, and box fish can be selected as prey in encounters. Other designs cruise without being selected for hunts. These are artistic simulation roles, not claims about real diets. There are no fixed species territories.
 
 The artwork below is copied from the actual sprite collection, with its spaces preserved. Each entry shows both directions. Dimensions are character columns by text rows, including spacing, and can differ between directions. The screen uses a 16-pixel monospaced font: each row is 16 pixels tall and each character is roughly 9.6 pixels wide, depending on the browser font.
+
+## Other objects index
+
+Fish drawings appear in the next index. Every other visible ocean object has an entry here; habitat settings and the control panel are included too. Tank, mask, arms, and fins are parts of one diver sprite, rather than independent objects.
+
+| Object or feature | Category | Visual example and details |
+| --- | --- | --- |
+| Diver | Visiting character | [Both poses and directions](#diver-artwork) |
+| Diver bubbles | Temporary particles | [Rising bubbles](#diver-bubbles) |
+| Algae | Simulated life | [Algae dots](#algae-dots) |
+| Plankton | Simulated life | [Plankton glyphs](#plankton-glyphs) |
+| Kelp stalks and fronds | Procedural scenery | [Kelp artwork](#kelp-artwork) |
+| Seabed contour | Procedural scenery | [Floor contour](#floor-contour) |
+| Sediment texture | Procedural scenery | [Sediment marks](#sediment-marks) |
+| Water | Background | [Water background](#water-background) |
+| Kelp meadow, rocky reef, open sand | Habitat settings | [Habitats](#habitats) |
+| Touch panel and readouts | Interface | [Controls and readouts](#controls-and-readouts) |
+| Prey shrinking at mouth contact | Fish animation | [Catch and feeding](#catch-and-feeding) |
 
 ## Fish index
 
@@ -537,6 +555,132 @@ Facing left:
   \____.-'\/    
    \_/          
 ```
+
+## Other object drawings
+
+The diver drawings below are copied directly from the current renderer. The remaining objects use glyphs placed by procedural rules, so they have no single fixed multi-line sprite. Their entries show the actual glyphs and explain how they form the scene.
+
+### Diver artwork
+
+**Type:** visiting character, separate from the fish population. **Parts:** a tank on the back, a warm-colored face and mask, outstretched arms, bent legs, and two distinct fins. **Animation:** two alternating leg poses, each cached facing left and right. Poses change every five ticks, about 1.75 seconds.
+
+**Colors:** tank `#a2b8b5`, face and mask `#e6c995`, suit `#87abc6`, fin tips `#8bafd1`. Both directions preserve those component colors. At the normal 16-pixel font, the seven-row drawing is 112 pixels tall. Its cached width comes from the longest row in each pose rather than a fixed crop.
+
+**Pose 1, facing right (25 columns × 7 rows):**
+
+```text
+        .----.    .---.  
+        |____|    |[o]|  
+   _____/====\____( _ )  
+ _/    /    _____/ \ \__
+<_____/ \__/        \___)
+        \ \__           
+         \___>          
+```
+
+**Pose 1, facing left:**
+
+```text
+  .---.    .----.        
+  |[o]|    |____|        
+  ( _ )____/====\_____   
+ __/ / \_____    \    \_ 
+(___/        \__/ \_____>
+            __/ /        
+           <___/         
+```
+
+**Pose 2, facing right (25 columns × 7 rows):**
+
+```text
+        .----.    .---.  
+        |____|    |[o]|  
+   _____/====\____( _ )  
+  \   /    _____/ \ \__
+   >__/ \__/        \___)
+       / /               
+     <__/                
+```
+
+**Pose 2, facing left:**
+
+```text
+  .---.    .----.        
+  |[o]|    |____|        
+  ( _ )____/====\_____   
+  __/ / \_____    \   /  
+(___/        \__/ \__<   
+               \ \       
+                \__>     
+```
+
+**Behavior:** visits after 5–10 minute waits, enters and leaves fully off screen, swims gently through the upper water, and remains enabled in quiet mode. At most one diver exists at a time. See [visiting diver](#visiting-diver) for scheduling details. Source: [simulator.js](../simulator/simulator.js), original project artwork under GPL-2.0-or-later.
+
+### Diver bubbles
+
+Actual glyphs, in life order:
+
+```text
+o  .
+```
+
+**Color:** muted blue green `#71969c`; **font:** 10 pixels. A bubble uses o while younger than ten ticks, then a dot. The diver can emit one every 12 ticks while its center is in view and the bubble limit has room. Each bubble rises 0.23 world cells per tick and drifts left 0.025 cells per tick. It disappears before age 20 ticks or when it reaches the upper boundary.
+
+**Limit:** five bubbles. They have no reproduction, food-web role, or interaction with fish. They are distinct from pale mint plankton o glyphs. Source: [ocean-life.js](../simulator/ocean-life.js) and [simulator.js](../simulator/simulator.js).
+
+### Algae dots
+
+```text
+.
+```
+
+**Type:** living cells in the food web; **color:** `#4fb89d`; **font:** 10 pixels. Each cell draws one small dot. Starts at 76 cells and stays capped at 100. Plankton can consume algae; algae can slowly regrow and receive additions near the seabed. Its position follows the scrolling environmental grid. Algae is separate from the larger kelp scenery and from darker sediment dots. Source: [aquarium.js](../simulator/aquarium.js).
+
+### Plankton glyphs
+
+```text
+o
+```
+
+**Type:** living cells in the food web; **color:** `#8fffe0`; **font:** 10 pixels. Starts at 34 cells and stays capped at 45. Plankton can consume neighboring algae, move to nearby empty water, rarely divide, and naturally disappear. Fry can consume it. Incoming additions vary with the traveling habitat. These glyphs remain bright mint, while diver bubbles use a dimmer color and change to dots. Source: [aquarium.js](../simulator/aquarium.js).
+
+### Kelp artwork
+
+Actual stalk and frond glyphs:
+
+```text
+(  )  /
+```
+
+**Type:** procedural scenery. Alternating parentheses draw stalk segments; slash marks form side fronds at alternating heights. Stalks sway slightly side to side. Five greens vary between clumps and along each plant: `#438b55`, `#62b878`, `#82c76b`, `#4fa66b`, `#a0cd78`.
+
+**Placement:** clumps belong to fixed world coordinates and scroll past the camera. **Height:** 2–18 text rows, scaled by habitat. They can be tall in a kelp meadow and short over open sand. Stalks and fronds are parts of the same generated plant, and they do not grow as ecological algae cells. Source: [simulator.js](../simulator/simulator.js); see [kelp and seaweed](#kelp-and-seaweed) for the planting rules.
+
+### Floor contour
+
+```text
+_
+```
+
+**Type:** procedural scenery; **color:** `#36575a`; **font:** 16 pixels on the target screen. Underscores are placed at the height of the rolling floor to form a continuous-looking seabed. The contour combines the blended habitat depth with two smooth waves. It scrolls with the camera. Fish artwork is clamped above it, and living cells below it are cleared. There is no separate rock sprite. Source: [aquarium.js](../simulator/aquarium.js) and [simulator.js](../simulator/simulator.js).
+
+### Sediment marks
+
+```text
+.
+```
+
+**Type:** procedural scenery; **color:** darker blue green `#203b40`; **font:** 16 pixels. Sparse dots fill selected positions below the seabed, providing texture without filling the display. Their placement follows world travel, so they move with the floor. They are neither algae nor bubbles and have no ecological behavior. Source: [simulator.js](../simulator/simulator.js).
+
+### Water background
+
+**Type:** a solid canvas background, with no ASCII glyph; **color:** near black `#02090c`. It fills the complete 1280 × 400 drawing area before terrain and creatures are drawn. The empty space keeps the character art readable. It has no animated surface, waves, sky, or day/night cycle. Source: [simulator.js](../simulator/simulator.js).
+
+### Controls and readouts
+
+The touch panel is an interface overlay rather than an ocean object. It contains Pause or Resume, Step, New world, AI event, Quiet mode, the habitat name, tide counter, narration text, and connection status. It appears when you tap the water and fades after eight seconds. The algae, plankton, fry, and hunter counters exist in the page but are hidden in the full-screen layout.
+
+See the [controls screenshot](screenshots/controls.jpg) and [screenshot tour](SCREENSHOTS.md#touch-controls). Source: [pi.html](../simulator/pi.html) and [simulator.js](../simulator/simulator.js).
 
 ## Small life and food web
 

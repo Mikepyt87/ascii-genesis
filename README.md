@@ -14,7 +14,7 @@ The ocean works offline, launches from a Raspberry Pi desktop icon, and includes
 
 ## Ocean library
 
-Browse the [Ocean Library](docs/OCEAN-LIBRARY.md) for all 17 fish designs with both directional drawings, their colors and sizes, small life, kelp, terrain, habitat settings, and current behavior. It also describes the occasional diver, short predator encounters, rare catches, and quiet-mode control.
+Browse the [Ocean Library](docs/OCEAN-LIBRARY.md) for all 17 fish designs with both directional drawings, their colors and sizes, the diver in both poses and directions, bubbles, small life, kelp, terrain, sediment, water, controls, habitat settings, and current behavior. It also describes the occasional diver, short predator encounters, rare catches, and quiet-mode control.
 
 ## Hardware and screen setup
 

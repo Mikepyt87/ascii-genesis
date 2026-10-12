@@ -44,14 +44,32 @@
   });
   // Original diver art: two gentle flipper poses, cached in both directions.
   const diverRows=[
-    ['        ____       ','   ____[____]  _   ',' _/======_____(o)> ','/ /      /  /      ','<_      /__/       '],
-    ['        ____       ','   ____[____]  _   ',' _/======_____(o)> ','  \\     /  /      ','   >__  /__/       ']
+    ['        .----.    .---.  ',
+     '        |____|    |[o]|  ',
+     '   _____/====\\____( _ )  ',
+     ' _/    /    _____/ \\ \\__',
+     '<_____/ \\__/        \\___)',
+     '        \\ \\__           ',
+     '         \\___>          '],
+    ['        .----.    .---.  ',
+     '        |____|    |[o]|  ',
+     '   _____/====\\____( _ )  ',
+     '  \\   /    _____/ \\ \\__',
+     '   >__/ \\__/        \\___)',
+     '       / /               ',
+     '     <__/                ']
   ];
   const mirror={'/':'\\','\\':'/','<':'>','>':'<','(':')',')':'(','[':']',']':'['};
-  const diverCache=diverRows.flatMap(rows=>[rows,rows.map(r=>[...r.padEnd(19)].reverse().map(c=>mirror[c]||c).join(''))]).map(rows=>{
-    const image=document.createElement('canvas');image.width=Math.ceil(19*advance);image.height=5*fishFont;
+  const diverCache=diverRows.flatMap(rows=>{
+    const width=Math.max(...rows.map(r=>r.length));
+    const colors=rows.map((r,y)=>[...r.padEnd(width)].map((c,x)=>
+      x>=18&&y<3?'#e6c995':y<2?'#a2b8b5':c==='>'||c==='<'?'#8bafd1':'#87abc6'));
+    return [{rows,colors,width},{rows:rows.map(r=>[...r.padEnd(width)].reverse().map(c=>mirror[c]||c).join('')),
+      colors:colors.map(r=>[...r].reverse()),width}];
+  }).map(({rows,colors,width})=>{
+    const image=document.createElement('canvas');image.width=Math.ceil(width*advance);image.height=rows.length*fishFont;
     const paint=image.getContext('2d');paint.font=ctx.font;paint.textBaseline='top';
-    rows.forEach((row,y)=>[...row].forEach((c,x)=>{if(c===' ')return;paint.fillStyle=y<2?'#91aaa8':c==='o'?'#d7c78c':'#779cba';paint.fillText(c,x*advance,y*fishFont);}));
+    rows.forEach((row,y)=>[...row].forEach((c,x)=>{if(c===' ')return;paint.fillStyle=colors[y][x];paint.fillText(c,x*advance,y*fishFont);}));
     return image;
   });
   function GenesisSeed(){return (Date.now() ^ 0xA51A2026)>>>0;}
@@ -144,4 +162,3 @@
   }
   draw();setInterval(()=>{if(running)step();},350);
 })();
-
