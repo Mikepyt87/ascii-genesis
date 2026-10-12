@@ -4,6 +4,10 @@ A quiet traveling ASCII ocean for **Raspberry Pi 4 Model B and the Waveshare 7.9
 
 Seventeen fish designs swim through kelp meadows, rocky reefs, and open sand. Terrain travels slowly, food and plant cover change by habitat, and fish enter and leave beyond the edges. The ocean runs offline. Optional narration is separate from the simulation.
 
+## Ocean library
+
+Browse the [Ocean Library](docs/OCEAN-LIBRARY.md) for all 17 fish designs with both directional drawings, their colors and sizes, small life, kelp, terrain, habitat settings, and current behavior. It also records the proposed occasional diver and calm predator encounters separately from working features.
+
 ## Hardware and screen setup
 
 - Raspberry Pi 4 Model B, with cooling and a microSD card (32 GB or larger suggested).
