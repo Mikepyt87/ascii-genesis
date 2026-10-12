@@ -4,6 +4,14 @@ A quiet traveling ASCII ocean for **Raspberry Pi 4 Model B and the Waveshare 7.9
 
 Seventeen fish designs swim through kelp meadows, rocky reefs, and open sand. Terrain travels slowly, food and plant cover change by habitat, and fish enter and leave beyond the edges. The ocean runs offline. Optional narration is separate from the simulation.
 
+## See the ocean
+
+![ASCII Genesis fish and seaweed across the full ocean display](docs/screenshots/ocean.jpg)
+
+**[Explore the five screenshot tour](docs/SCREENSHOTS.md)** for the changing habitats, visiting diver, predator encounters, and touch controls. Captures use the browser renderer at the display's native 1280 × 400 resolution; they are not photographs of the Pi hardware.
+
+The ocean works offline, launches from a Raspberry Pi desktop icon, and includes a remembered quiet-mode setting. OpenAI narration is optional and requires its own API setup. Installation and updates are explained below.
+
 ## Ocean library
 
 Browse the [Ocean Library](docs/OCEAN-LIBRARY.md) for all 17 fish designs with both directional drawings, their colors and sizes, small life, kelp, terrain, habitat settings, and current behavior. It also describes the occasional diver, short predator encounters, rare catches, and quiet-mode control.
