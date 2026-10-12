@@ -14,7 +14,13 @@ Much of the character of this ocean comes from [Asciiquarium](https://github.com
 
 Different fish shapes and muted colors share the water with algae and plankton. Seaweed varies in height and shade. The camera moves slowly through kelp meadow, rocky reef, and open sand settings; plants and terrain enter and leave at the edges. Fish crossing an edge are intentional arrivals and departures.
 
-The collection has **17 fish designs**, each facing both directions. There are at most eight swimmers at once, including those still outside the visible area. The [Ocean Library](OCEAN-LIBRARY.md) shows every drawing and explains its role.
+The collection has **17 fish designs plus a squid and an octopus**, each facing both directions. There are at most eight swimmers at once, including those still outside the visible area. The [Ocean Library](OCEAN-LIBRARY.md) shows every drawing and explains its role.
+
+## Squid and octopus
+
+![A rose-colored squid and violet octopus cruising above seaweed](screenshots/cephalopods.jpg)
+
+Two original ASCII Genesis cephalopods join the rotation: a rose squid with a pointed mantle and trailing tentacles, and a violet octopus with a rounded head and curling arms. They share the eight-swimmer limit with the fish and enter and leave beyond an edge. Their artwork is static; they cruise at varying speeds without participating in hunts. This capture places both in view to show their shapes together.
 
 ## Open sand
 

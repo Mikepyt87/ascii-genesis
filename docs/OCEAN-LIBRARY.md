@@ -1,6 +1,6 @@
 # ASCII Genesis Ocean Library
 
-A field guide to everything currently drawn or simulated in the Raspberry Pi 4 ocean on the Waveshare 7.9-inch screen. The collection contains **17 fish designs, 34 directional drawings, two microscopic life types, a two-pose diver, bubbles, kelp, seabed contours, sediment texture, and water across three habitats**. An occasional diver visits, and brief predator encounters sometimes end in a catch. Quiet mode turns hunting off.
+A field guide to everything currently drawn or simulated in the Raspberry Pi 4 ocean on the Waveshare 7.9-inch screen. The collection contains **17 fish designs plus a squid and an octopus, 38 directional drawings, two microscopic life types, a two-pose diver, bubbles, kelp, seabed contours, sediment texture, and water across three habitats**. An occasional diver visits, and brief predator encounters sometimes end in a catch. Quiet mode turns hunting off.
 
 ## Thanks to the original creators
 
@@ -16,7 +16,7 @@ The artwork below is copied from the actual sprite collection, with its spaces p
 
 ## Other objects index
 
-Fish drawings appear in the next index. Every other visible ocean object has an entry here; habitat settings and the control panel are included too. Tank, mask, arms, and fins are parts of one diver sprite, rather than independent objects.
+Fish and cephalopod drawings appear in the next index. Every other visible ocean object has an entry here; habitat settings and the control panel are included too. Tank, mask, arms, and fins are parts of one diver sprite, rather than independent objects.
 
 | Object or feature | Category | Visual example and details |
 | --- | --- | --- |
@@ -32,7 +32,7 @@ Fish drawings appear in the next index. Every other visible ocean object has an 
 | Touch panel and readouts | Interface | [Controls and readouts](#controls-and-readouts) |
 | Prey shrinking at mouth contact | Fish animation | [Catch and feeding](#catch-and-feeding) |
 
-## Fish index
+## Fish and cephalopod index
 
 | Design | Name | Color family | Source |
 | --- | --- | --- | --- |
@@ -53,6 +53,8 @@ Fish drawings appear in the next index. Every other visible ocean object has an 
 | 15 | [copper moray](#copper-moray) | copper and rust | ASCII Genesis |
 | 16 | [violet kite ray](#violet-kite-ray) | violet and muted purple | ASCII Genesis |
 | 17 | [blue lanternfish](#blue-lanternfish) | muted blue green | ASCII Genesis |
+| 18 | [rose squid](#rose-squid) | rose and dusty pink | ASCII Genesis |
+| 19 | [violet octopus](#violet-octopus) | violet and muted purple | ASCII Genesis |
 
 ## Shared swimming behavior
 
@@ -61,7 +63,7 @@ Fish drawings appear in the next index. Every other visible ocean object has an 
 - Normal individual speeds range from 0.18 to just under 0.45 world cells per tick. At 350 milliseconds per tick and 1280 pixels across 48 world cells, that is roughly 14 to 34 pixels per second. A center crosses the visible width in about 37 to 93 seconds.
 - Fish keep their drawing and direction for their whole crossing. Ordinary departures are removed after their center reaches 20 world cells beyond an edge. Normal arrivals start 10 cells beyond an edge. An encounter pair starts 10 and 18 cells beyond the same edge. A successful catch is the only removal inside the visible screen.
 - Fry can consume nearby plankton. Hunters normally cruise; selected encounter pairs briefly chase, and some catch prey. There is no breeding, aging, health, or hunger system for individual swimmers.
-- The renderer keeps each drawing above the local seabed and caches all 34 fish images. Travel changes which designs enter next; it does not transform fish already on screen.
+- The renderer keeps each drawing above the local seabed and caches all 38 fish and cephalopod images. Travel changes which designs enter next; it does not transform fish already on screen.
 
 ## Fish drawings
 
@@ -560,6 +562,68 @@ Facing left:
    \_/          
 ```
 
+## Squid and octopus drawings
+
+These two original project designs are cephalopods, bringing the collection to 19 creature designs. They join the same eight-swimmer population as fish and travel in either direction. They keep their artwork for the whole crossing and arrive and depart beyond the screen edges. Their arms are static ASCII artwork; they do not jet, release ink, change color, or participate in predator encounters.
+
+The simplified ecosystem currently assigns them the fry role, including the generic plankton-feeding rule. That is a simulation simplification rather than a claim about real cephalopod diets.
+
+### rose squid
+
+A pointed mantle with small triangular fins, a visible eye near its base, and long trailing tentacle marks. Its rose body and dusty pink edges distinguish it from the fish.
+
+**Source:** original ASCII Genesis art in [original-fish.mjs](../third-party/original-fish.mjs), GPL-2.0-or-later. **Body color:** #d39b9e; **edges:** #b87b8c. **Behavior:** ordinary varying-speed cruising; no hunting.
+
+Facing right (15 columns × 5 rows):
+
+```text
+  ~\       /\  
+ ~~\______/  \ 
+ ~~~< o       >
+ ~~ /----\___/ 
+  ~/      \/   
+```
+
+Facing left (15 columns × 5 rows):
+
+```text
+  /\       /~  
+ /  \______/~~ 
+<       o >~~~ 
+ \___/----\ ~~ 
+   \/      \~  
+```
+
+### violet octopus
+
+A rounded dome and paired eyes above a cluster of curling arms. Violet and muted purple keep the outline distinct against the dark water.
+
+**Source:** original ASCII Genesis art in [original-fish.mjs](../third-party/original-fish.mjs), GPL-2.0-or-later. **Body color:** #ba9dce; **edges:** #997caf. **Behavior:** ordinary varying-speed cruising; no hunting.
+
+Facing right (16 columns × 7 rows):
+
+```text
+      .---.     
+     /     \    
+    ( o   o )   
+     \_____/    
+   __/|||||\__  
+  / / ||||| \ \ 
+ (_( (_|||_) )_)
+```
+
+Facing left (16 columns × 7 rows):
+
+```text
+     .---.      
+    /     \     
+   ( o   o )    
+    \_____/     
+  __/|||||\__   
+ / / ||||| \ \  
+(_( (_|||_) )_) 
+```
+
 ## Other object drawings
 
 The diver drawings below are copied directly from the current renderer. The remaining objects use glyphs placed by procedural rules, so they have no single fixed multi-line sprite. Their entries show the actual glyphs and explain how they form the scene.
@@ -750,7 +814,7 @@ Small bubbles rise near the diver, changing from an o to a dot before vanishing.
 | --- | --- |
 | Predator | Large ocean fish, silver spearfish, copper moray |
 | Prey | Tiny fish, little triangular fish, reef fish, box fish |
-| Cruising only | Angelfish, striped fish, rounded fish, diamond fish, curly-fin fish, sunburst puffer, ribbon bannerfish, violet kite ray, blue lanternfish |
+| Cruising only | Angelfish, striped fish, rounded fish, diamond fish, curly-fin fish, sunburst puffer, ribbon bannerfish, violet kite ray, blue lanternfish, rose squid, violet octopus |
 
 After a 2 to 4 minute cooldown, the simulation waits for two swimmer slots and no diver before bringing in a predator and prey from the same edge. Both begin outside the display and cruise into view together. Only one encounter can be active. The cooldown restarts when it ends, so visible encounters are farther apart than the cooldown alone.
 
@@ -774,7 +838,7 @@ The implementation caps swimmers at eight, divers at one, and bubbles at five. C
 
 ## Artwork and maintenance
 
-Eleven designs come from Asciiquarium 1.1. The upstream code credits Kirk Baucom and credits most ASCII artwork to Joan Stark; expanded marine biodiversity was backported by Claudio Matsuoka. Six drawings are original to ASCII Genesis. All are distributed with this project under GPL-2.0-or-later. See [credits](../THIRD-PARTY.txt), [license](../LICENSE.txt), and the preserved [upstream source](../third-party/asciiquarium-upstream.pl).
+Eleven designs come from Asciiquarium 1.1. The upstream code credits Kirk Baucom and credits most ASCII artwork to Joan Stark; expanded marine biodiversity was backported by Claudio Matsuoka. Eight creature drawings are original to ASCII Genesis, including the squid and octopus. All are distributed with this project under GPL-2.0-or-later. See [credits](../THIRD-PARTY.txt), [license](../LICENSE.txt), and the preserved [upstream source](../third-party/asciiquarium-upstream.pl).
 
 The installed artwork is in [fish-art.js](../simulator/fish-art.js). Its source drawings and extraction rules are in [original-fish.mjs](../third-party/original-fish.mjs) and [restore-sprites.mjs](../third-party/restore-sprites.mjs). The running rules are in [aquarium.js](../simulator/aquarium.js); colors, terrain drawing, and sprite placement are in [simulator.js](../simulator/simulator.js).
 

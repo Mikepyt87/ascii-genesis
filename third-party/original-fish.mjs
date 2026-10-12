@@ -44,5 +44,21 @@ export const originalFish = [
    <  <  :  o )>
     \/'-.____/
           \_/
+`},
+  {name:'rose squid',color:'#d39b9e',fin:'#b87b8c',art:String.raw`
+  ~\       /\
+ ~~\______/  \
+ ~~~< o       >
+ ~~ /----\___/
+  ~/      \/
+`},
+  {name:'violet octopus',color:'#ba9dce',fin:'#997caf',art:String.raw`
+      .---.
+     /     \
+    ( o   o )
+     \_____/
+   __/|||||\__
+  / / ||||| \ \
+ (_( (_|||_) )_)
 `}
 ];

@@ -29,5 +29,4 @@ for(const fish of originalFish){
 if(sprites.some(s=>!s.rows||!s.masks||s.rows.length!==s.masks.length))throw Error('Invalid upstream sprite extraction');
 const notice='/* Classic fish and color masks from Asciiquarium 1.1.\n * Copyright (C) 2003 Kirk Baucom. Most ASCII art credited upstream to Joan Stark.\n * GPL-2.0-or-later. Source: https://github.com/cmatsuoka/asciiquarium\n * Adapted for this browser renderer on 2026-10-11; original spaces preserved.\n */\n';
 fs.writeFileSync('simulator/fish-art.js',notice+'globalThis.AsciiquariumSprites='+JSON.stringify(sprites,null,2)+';\n');
-console.log('Built 11 upstream designs and 6 original designs, each with both orientations.');
-
+console.log(`Built 11 upstream designs and ${originalFish.length} original creature designs, each with both orientations.`);

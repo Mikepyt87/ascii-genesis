@@ -2,7 +2,7 @@
 
 A quiet traveling ASCII ocean for **Raspberry Pi 4 Model B and the Waveshare 7.9-inch HDMI touchscreen**, used horizontally at **1280 × 400**.
 
-Seventeen fish designs swim through kelp meadows, rocky reefs, and open sand. Terrain travels slowly, food and plant cover change by habitat, and fish enter and leave beyond the edges. The ocean runs offline. Optional narration is separate from the simulation.
+Seventeen fish designs, a squid, and an octopus swim through kelp meadows, rocky reefs, and open sand. Terrain travels slowly, food and plant cover change by habitat, and fish enter and leave beyond the edges. The ocean runs offline. Optional narration is separate from the simulation.
 
 ## Built on work worth celebrating
 
@@ -16,13 +16,13 @@ Please explore those original projects as well as this one. Read [Credits and pr
 
 ![ASCII Genesis fish and seaweed across the full ocean display](docs/screenshots/ocean.jpg)
 
-**[Explore the five screenshot tour](docs/SCREENSHOTS.md)** for the changing habitats, visiting diver, predator encounters, and touch controls. Captures use the browser renderer at the display's native 1280 × 400 resolution; they are not photographs of the Pi hardware.
+**[Explore the screenshot tour](docs/SCREENSHOTS.md)** for the changing habitats, squid and octopus, visiting diver, predator encounters, and touch controls. Captures use the browser renderer at the display's native 1280 × 400 resolution; they are not photographs of the Pi hardware.
 
 The ocean works offline, launches from a Raspberry Pi desktop icon, and includes a remembered quiet-mode setting. OpenAI narration is optional and requires its own API setup. Installation and updates are explained below.
 
 ## Ocean library
 
-Browse the [Ocean Library](docs/OCEAN-LIBRARY.md) for all 17 fish designs with both directional drawings, their colors and sizes, the diver in both poses and directions, bubbles, small life, kelp, terrain, sediment, water, controls, habitat settings, and current behavior. It also describes the occasional diver, short predator encounters, rare catches, and quiet-mode control.
+Browse the [Ocean Library](docs/OCEAN-LIBRARY.md) for all 19 fish and cephalopod designs with both directional drawings, their colors and sizes, the diver in both poses and directions, bubbles, small life, kelp, terrain, sediment, water, controls, habitat settings, and current behavior. It also describes the occasional diver, short predator encounters, rare catches, and quiet-mode control.
 
 ## Hardware and screen setup
 
@@ -117,9 +117,9 @@ Restrict that file with `chmod 600 ~/.config/ascii-genesis/openai.env`. Restart 
 
 ## Performance and validation
 
-The Pi 4 renderer rasterizes the 34 directional fish images and four diver images once and reuses them. It retains the 350 ms simulation interval, fixed 1280 × 400 canvas, and eight-swimmer limit, plus at most one diver and five short-lived bubbles. There are no npm dependencies, continuous API requests, or 60-fps rendering loop. This reduces repeated fish text drawing; actual CPU usage and frame timing must be measured on your Pi 4.
+The Pi 4 renderer rasterizes the 38 directional fish and cephalopod images and four diver images once and reuses them. It retains the 350 ms simulation interval, fixed 1280 × 400 canvas, and eight-swimmer limit, plus at most one diver and five short-lived bubbles. There are no npm dependencies, continuous API requests, or 60-fps rendering loop. This reduces repeated fish text drawing; actual CPU usage and frame timing must be measured on your Pi 4.
 
-Checks cover all 17 designs appearing in rotation, ecological limits, continuous terrain, off-screen departures, rare catches at visible mouth contact, escape survival, diver limits, quiet mode, cached sprite rendering, pause/reset behavior, and mock narration. Desktop installation is tested in a temporary folder. Linux CI checks script syntax as well. These checks do not replace physical display, touch, power, and OS startup testing.
+Checks cover all 19 designs appearing in rotation, ecological limits, continuous terrain, off-screen departures, rare catches at visible mouth contact, escape survival, diver limits, quiet mode, cached sprite rendering, pause/reset behavior, and mock narration. Desktop installation is tested in a temporary folder. Linux CI checks script syntax as well. These checks do not replace physical display, touch, power, and OS startup testing.
 
 ```bash
 node simulator/core-check.mjs
@@ -140,7 +140,7 @@ python3 raspberry-pi/desktop-check.py
 
 ## Artwork and license
 
-The [Asciiquarium creators and OpenGhost community](CREDITS.md) deserve prominent credit for the work that brought us here. Eleven designs derive from Asciiquarium; six are original ASCII Genesis drawings. See [THIRD-PARTY.txt](THIRD-PARTY.txt) and [LICENSE.txt](LICENSE.txt), GPL-2.0-or-later. Source drawings and their generator are in `third-party/`. Regenerate the fish collection from the project root with `node third-party/restore-sprites.mjs`.
+The [Asciiquarium creators and OpenGhost community](CREDITS.md) deserve prominent credit for the work that brought us here. Eleven designs derive from Asciiquarium; eight are original ASCII Genesis creature drawings. See [THIRD-PARTY.txt](THIRD-PARTY.txt) and [LICENSE.txt](LICENSE.txt), GPL-2.0-or-later. Source drawings and their generator are in `third-party/`. Regenerate the fish collection from the project root with `node third-party/restore-sprites.mjs`.
 
 ### Diagnose an API connection
 

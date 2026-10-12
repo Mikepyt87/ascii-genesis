@@ -3,8 +3,8 @@ import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url);const core=require('./aquarium.js');
 require('./fish-art.js');
 const art=globalThis.AsciiquariumSprites;
-assert.equal(art.length,34);
-assert.equal(new Set(art.map(s=>s.name)).size,17);
+assert.equal(art.length,38);
+assert.equal(new Set(art.map(s=>s.name)).size,19);
 for(const sprite of art.filter(s=>s.original)){
   assert.ok(Math.max(...sprite.rows.map(row=>row.length))*14*.61/2<100,'New fish must spawn fully off screen in the smallest profile');
   assert.ok(sprite.rows.every((row,i)=>row.length===sprite.masks[i].length));
@@ -12,7 +12,7 @@ for(const sprite of art.filter(s=>s.original)){
 for(const sprite of art){assert.equal(sprite.rows.length,sprite.masks.length);assert.ok(sprite.rows.every(row=>!row.includes('?')));}
 const variety=core.world(88,art.length/2),seen=new Set();
 for(let i=0;i<10000;i++){core.step(variety);for(const fish of variety.fish){assert.ok(art[fish.design*2+(fish.right?0:1)]);seen.add(fish.design);}}
-assert.equal(seen.size,17,'Every unique fish design must join the rotation');
+assert.equal(seen.size,19,'Every unique creature design must join the rotation');
 assert.ok(Math.abs(variety.travel-800)<1e-7,'Camera travels at a steady gentle speed');
 const habitats=new Set();
 for(let distance=0;distance<192;distance++){
