@@ -9,6 +9,12 @@ Models designed and supplied by Mikepyt87 for the ASCII Genesis screen and Raspb
 
 The legs file contains one connected model. The x2 in the filename indicates the required print quantity; the STL preserves the original geometry rather than duplicating it.
 
+## Print the enclosure
+
+For this enclosure build, you need a 3D printer or printing service and filament. **Print one Case and two copies of Legs(x2).** Download either format, import STL as millimeters at 100% scale, and duplicate the leg model in your slicer or print it twice. Choose bed orientation and settings for your printer, then check fit with the actual screen and Pi before final assembly. Keep cable access and Pi ventilation clear.
+
+The software can be tested while the prints are being made. See the [complete build instructions](../README.md#printed-enclosure-and-legs).
+
 ## Format and scale
 
 The original 3MF files are included unchanged. The binary STL versions preserve their mesh geometry, coordinates, and orientation. STL does not carry units or colors: import these files as **millimeters**, at **100% scale**. Choose a suitable bed orientation in your slicer; the export retains the CAD orientation and is not automatically placed on the print bed.
@@ -23,3 +29,7 @@ These are bounding-box dimensions along the original CAD axes, not a recommended
 Open an STL link above to use GitHub's interactive model viewer, or download either format into your slicer. GitHub documents previews for [STL files](https://docs.github.com/en/repositories/working-with-files/using-files/working-with-non-code-files#3d-file-viewer).
 
 Filament, layer height, infill, supports, and assembly hardware are not specified in these supplied models. Select those settings for your printer and assembly.
+
+## Project roots
+
+This enclosure carries an ocean built on the artwork and ideas of the [Asciiquarium creators](../CREDITS.md#asciiquarium-and-its-creators). [OpenGhost](https://github.com/xanderchinxyz/OpenGhost) inspired the original display exploration. The included enclosure models were designed by Mikepyt87; full acknowledgments are in [CREDITS.md](../CREDITS.md).

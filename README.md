@@ -4,6 +4,14 @@ A quiet traveling ASCII ocean for **Raspberry Pi 4 Model B and the Waveshare 7.9
 
 Seventeen fish designs swim through kelp meadows, rocky reefs, and open sand. Terrain travels slowly, food and plant cover change by habitat, and fish enter and leave beyond the edges. The ocean runs offline. Optional narration is separate from the simulation.
 
+## Built on work worth celebrating
+
+**This project exists because other people shared their ideas and artwork.** Huge thanks to **Kirk Baucom**, the creator of [Asciiquarium](https://github.com/cmatsuoka/asciiquarium); **Joan Stark**, credited upstream for most of its ASCII art; and **Claudio Matsuoka**, who expanded its marine biodiversity. Eleven of the fish designs here come from that work.
+
+Thanks also to **xanderchinxyz and the [OpenGhost](https://github.com/xanderchinxyz/OpenGhost) contributors**. Their Pepper's Ghost display inspired the initial physical-display exploration that led to this desk ocean. This build uses a Pi 4 and a direct-view screen; its included enclosure is Mikepyt87's design.
+
+Please explore those original projects as well as this one. Read [Credits and project origins](CREDITS.md) for the full story, preserved notices, and what each project contributed.
+
 ## See the ocean
 
 ![ASCII Genesis fish and seaweed across the full ocean display](docs/screenshots/ocean.jpg)
@@ -22,6 +30,7 @@ Browse the [Ocean Library](docs/OCEAN-LIBRARY.md) for all 17 fish designs with b
 - Waveshare 7.9-inch 400 × 1280 HDMI touchscreen.
 - A good 5 V / 3 A USB-C supply for the Pi 4. The official 15 W Raspberry Pi supply is the intended choice.
 - Micro-HDMI to HDMI cable for video, plus the USB data cable for the display's TOUCH connection.
+- **3D printer access or a printing service, plus filament, to make one case and two legs for the included enclosure build.** See [print instructions](3d-printing/README.md).
 - Keyboard/mouse for first setup. After installation, use the Raspberry Pi desktop icon to launch.
 
 The display's USB connection provides touch and can supply display power from the Pi. Check the total load of your USB devices; if the display resets or low-voltage warnings appear, check cables/power and use the manufacturer's separate-power arrangement as needed. Physical power and touch operation still need testing on your unit.
@@ -32,7 +41,14 @@ References: [Pi 4 specifications](https://www.raspberrypi.com/products/raspberry
 
 ## Printed enclosure and legs
 
-The screen and Pi enclosure models are available in [3d-printing](3d-printing/README.md), with the original 3MF files and STL versions for GitHub preview and slicer import. Print one case and two copies of the leg model. Import the STL files in millimeters at 100% scale; the model guide includes dimensions and conversion details.
+For the complete enclosure build, **print one case and two copies of the leg model** before final assembly. You need access to a 3D printer or a service that can print the files.
+
+1. Download [Case.stl](3d-printing/Case.stl) and [Legs(x2).stl](3d-printing/Legs%28x2%29.stl), or their original 3MF versions from the [model guide](3d-printing/README.md).
+2. Import the STL files in **millimeters at 100% scale**. The legs file is one model: duplicate it in your slicer or print it twice.
+3. Choose the bed orientation and print settings for your printer. The files preserve the CAD orientation, and verified layer height, infill, supports, and fastener specifications have not yet been supplied.
+4. Print the parts, check their fit with your screen and Pi, then assemble the enclosure and legs. Keep cable openings and Pi ventilation clear.
+
+You can install and test the software while the parts print. The model guide includes dimensions and conversion details.
 
 ## Install from GitHub — one-time setup
 
@@ -124,7 +140,7 @@ python3 raspberry-pi/desktop-check.py
 
 ## Artwork and license
 
-Eleven designs derive from Asciiquarium; six are original ASCII Genesis drawings. See [THIRD-PARTY.txt](THIRD-PARTY.txt) and [LICENSE.txt](LICENSE.txt), GPL-2.0-or-later. Source drawings and their generator are in `third-party/`. Regenerate the fish collection from the project root with `node third-party/restore-sprites.mjs`.
+The [Asciiquarium creators and OpenGhost community](CREDITS.md) deserve prominent credit for the work that brought us here. Eleven designs derive from Asciiquarium; six are original ASCII Genesis drawings. See [THIRD-PARTY.txt](THIRD-PARTY.txt) and [LICENSE.txt](LICENSE.txt), GPL-2.0-or-later. Source drawings and their generator are in `third-party/`. Regenerate the fish collection from the project root with `node third-party/restore-sprites.mjs`.
 
 ### Diagnose an API connection
 

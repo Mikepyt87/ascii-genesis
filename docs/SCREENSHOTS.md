@@ -4,6 +4,10 @@ ASCII Genesis is a quiet, traveling ASCII ocean for a Raspberry Pi 4 and a Waves
 
 These are captures of the current browser renderer at **1280 × 400**, taken on a desktop rather than photographed on the Pi. Scenes were advanced and held still for capture, including the rare visitor and encounter. Actual visits are spaced out during normal use, and every new world varies.
 
+## Thanks to the original creators
+
+Much of the character of this ocean comes from [Asciiquarium](https://github.com/cmatsuoka/asciiquarium): **Kirk Baucom** created the original project, **Joan Stark** is credited upstream for most of its ASCII art, and **Claudio Matsuoka** expanded its marine biodiversity. Eleven fish designs here adapt their shared work. **xanderchinxyz and the [OpenGhost](https://github.com/xanderchinxyz/OpenGhost) contributors** inspired the initial physical-display exploration. Please visit their projects and read [Credits and project origins](../CREDITS.md).
+
 ## Traveling ocean
 
 ![Fish cruising through tall green seaweed above a rolling seabed](screenshots/ocean.jpg)
@@ -50,6 +54,6 @@ The ocean, diver, and encounters all work **offline without an API key**. The AI
 
 ## Build and run it
 
-The supported setup is a **Raspberry Pi 4 Model B, Raspberry Pi OS Desktop 64-bit, and the Waveshare 7.9-inch screen rotated to 1280 × 400**. The installer adds native Raspberry Pi desktop launch and update icons. Open the ocean with its desktop icon; use Alt+F4 to return to the desktop.
+The supported setup is a **Raspberry Pi 4 Model B, Raspberry Pi OS Desktop 64-bit, and the Waveshare 7.9-inch screen rotated to 1280 × 400**. For the included enclosure build, print **one case and two legs** from the [print guide](../3d-printing/README.md). The installer adds native Raspberry Pi desktop launch and update icons. Open the ocean with its desktop icon; use Alt+F4 to return to the desktop.
 
 See the [README](../README.md) for the hardware list, installation from GitHub, updates, and troubleshooting. See [artwork credits](../THIRD-PARTY.txt) for the Asciiquarium sources and original project drawings, distributed under GPL-2.0-or-later.

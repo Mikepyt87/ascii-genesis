@@ -27,3 +27,16 @@ collection now contains 17 designs, each with both swimming directions.
 
 The two-pose diver and its mirrored views are original ASCII Genesis art,
 provided under GPL-2.0-or-later in simulator/simulator.js.
+
+PROJECT ORIGINS AND ACKNOWLEDGMENTS
+
+See CREDITS.md for prominent recognition of Kirk Baucom, Joan Stark,
+Claudio Matsuoka, and the Asciiquarium contributors and maintainers.
+
+OpenGhost by xanderchinxyz and its contributors inspired the early physical
+display exploration. Source: https://github.com/xanderchinxyz/OpenGhost
+It is credited as inspiration; no OpenGhost program or CAD files are
+included here. The supplied case and legs are Mikepyt87's designs.
+
+Thank you to the Raspberry Pi and Raspberry Pi OS communities, Waveshare,
+Node.js, and Chromium for the hardware and software foundation.
