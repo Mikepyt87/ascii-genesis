@@ -24,3 +24,6 @@ blue lanternfish. These are original project drawings, not Asciiquarium
 upstream art. Their editable source is third-party/original-fish.mjs and
 they are provided under GPL-2.0-or-later with this project. The combined
 collection now contains 17 designs, each with both swimming directions.
+
+The two-pose diver and its mirrored views are original ASCII Genesis art,
+provided under GPL-2.0-or-later in simulator/simulator.js.

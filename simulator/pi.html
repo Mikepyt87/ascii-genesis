@@ -20,6 +20,7 @@ button{background:#142930;border:1px solid #37545c;border-radius:8px;padding:12p
 <div class="controls">
 <button id="pause">Pause</button><button id="step">Step</button><button id="reset">New world</button>
 <button id="ai">AI event</button>
+<button id="quiet" aria-pressed="false">Quiet mode: off</button>
 <span id="tick">TIDE 0000</span>
 </div>
 <div id="event">The tide settles. Tiny lights begin to drift through the dark.</div>
@@ -34,6 +35,6 @@ function reveal(){panel.classList.remove('hidden');clearTimeout(fade);fade=setTi
 tank.onclick=()=>panel.classList.contains('hidden')?reveal():panel.classList.add('hidden');
 panel.addEventListener('pointerdown',reveal);
 </script>
-<script src="aquarium.js"></script><script src="fish-art.js"></script><script src="simulator.js"></script>
+<script src="ocean-life.js"></script><script src="aquarium.js"></script><script src="fish-art.js"></script><script src="simulator.js"></script>
 </body></html>
 

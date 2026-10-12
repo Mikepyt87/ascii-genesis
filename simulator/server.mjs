@@ -25,7 +25,7 @@ const server=http.createServer(async(req,res)=>{
     }
     if(req.method==='GET'){
       const name=url.pathname==='/'?'pi.html':url.pathname==='/pi'?'pi.html':url.pathname.slice(1);
-      if(!['pi.html','aquarium.js','fish-art.js','simulator.js'].includes(name)){res.writeHead(404);res.end();return;}
+      if(!['pi.html','aquarium.js','ocean-life.js','fish-art.js','simulator.js'].includes(name)){res.writeHead(404);res.end();return;}
       const data=await fs.readFile(path.join(here,name));res.writeHead(200,{'Content-Type':mime[path.extname(name)],'Cache-Control':'no-store'});res.end(data);return;
     }
     res.writeHead(405);res.end();

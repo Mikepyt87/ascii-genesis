@@ -3,6 +3,7 @@
   const W = 48, H = 48, EMPTY = 0, ALGAE = 1, PLANKTON = 2, FRY = 3, HUNTER = 4;
   const GLYPH = [' ', '.', 'o', '>', '@'];
   const COLORS = ['#02090c', '#4fb89d', '#8fffe0', '#83d9ff', '#ffd47b'];
+  const life=root.OceanLife||(typeof require==='function'?require('./ocean-life.js'):null);
   const HABITATS=[
     {name:'Kelp meadow',depth:41,kelp:1,nutrients:12,food:28},
     {name:'Rocky reef',depth:38,kelp:.5,nutrients:18,food:24},
@@ -24,7 +25,7 @@
       return (x >>> 0) / 4294967296;
     };
   }
-  function world(seed = 1, designCount = 8) {
+  function world(seed = 1, designCount = 8, options = {}) {
     if(!Number.isInteger(designCount)||designCount<1)throw new Error('Invalid fish design count');
     const rng = makeRng(seed), cells = new Uint8Array(W * H);
     const floor=Array.from({length:W},(_,x)=>Math.ceil(terrainAt(x)));
@@ -42,7 +43,9 @@
       const id=fish.length;
       fish.push({id,kind:cells[i],x:i%W,y:Math.floor(i/W),design:id%designCount,right:id%2===0,speed:.18+rng()*.27});
     }
-    return { width: W, height: H, cells, floor, fish, designCount, travel:0,habitat:habitatAt(W/2),nextFishId:fish.length, tick: 0, rng, seed };
+    const w={ width: W, height: H, cells, floor, fish, designCount, travel:0,habitat:habitatAt(W/2),nextFishId:fish.length, tick: 0, rng, seed };
+    life.setup(w,options.art||root.AsciiquariumSprites||[],options);
+    return w;
   }
   function neighbors(index) {
     const x = index % W, y = (index / W) | 0, out = [];
@@ -87,15 +90,17 @@
       if(next[i]===EMPTY)next[i]=PLANKTON;
     }
     // Stable individual swimmers cruise at different speeds through open boundaries.
+    life.before(w);
     for(const fish of w.fish){
-      fish.x+=(fish.right?1:-1)*fish.speed;
+      fish.x+=(fish.right?1:-1)*(fish.velocity??fish.speed);
       if(fish.x<0||fish.x>=W)continue;
       const i=Math.floor(fish.y)*W+Math.floor(fish.x);
       const prey=waterNeighbors(i).filter(j=>next[j]===PLANKTON);
       if(fish.kind===FRY&&prey.length&&rng()<.34)next[prey[Math.floor(rng()*prey.length)]]=EMPTY;
     }
     // Visible animals leave only after their full artwork clears the screen.
-    w.fish=w.fish.filter(fish=>fish.x>-12&&fish.x<W+12);
+    life.after(w);
+    w.fish=w.fish.filter(fish=>fish.x>-20&&fish.x<W+20);
     // Algae regrows slowly around existing patches, keeping the food web from draining away.
     let algaeCount=next.reduce((n,s)=>n+(s===ALGAE),0);
     for(let i=0;i<next.length;i++)if(next[i]===ALGAE&&rng()<.004){next[i]=EMPTY;algaeCount--;}
@@ -109,10 +114,12 @@
       if (next[i]===EMPTY) next[i]=ALGAE;
     }
     // An open ocean occasionally receives a visitor, without crowding the scene.
-    if(w.tick%24===23 && w.fish.length<8){
+    const reserve=!w.life.quiet&&!w.life.encounter&&w.tick>=w.life.nextEncounter?2:0;
+    if(w.tick%24===23 && w.fish.length<8-reserve){
       const id=w.nextFishId++, right=rng()<.5;
-      const kind=w.fish.some(f=>f.kind===HUNTER)?FRY:HUNTER;
-      w.fish.push({id,kind,x:right?-10:W+10,y:6+rng()*25,design:(id+w.habitat.region*3)%w.designCount,right,speed:.18+rng()*.27});
+      const design=(id+w.habitat.region*3)%w.designCount;
+      const kind=life.predators.has(w.profiles[design*2]?.name)?HUNTER:FRY;
+      w.fish.push({id,kind,x:right?-10:W+10,y:6+rng()*25,design,right,speed:.18+rng()*.27});
     }
     for(const fish of w.fish)if(fish.x>=0&&fish.x<W){
       const i=Math.floor(fish.y)*W+Math.floor(fish.x);
@@ -130,6 +137,6 @@
     for(let y=0;y<H;y++){let line='';for(let x=0;x<W;x++)line+=GLYPH[w.cells[y*W+x]];rows.push(line);}
     return rows.join('\n');
   }
-  root.AquariumCore={W,H,EMPTY,ALGAE,PLANKTON,FRY,HUNTER,GLYPH,COLORS,world,step,counts,ascii,habitatAt,terrainAt};
+  root.AquariumCore={W,H,EMPTY,ALGAE,PLANKTON,FRY,HUNTER,GLYPH,COLORS,world,step,counts,ascii,habitatAt,terrainAt,life};
   if(typeof module!=='undefined'&&module.exports)module.exports=root.AquariumCore;
 })(typeof globalThis!=='undefined'?globalThis:this);

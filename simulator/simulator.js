@@ -3,7 +3,9 @@
   const core=window.AquariumCore, canvas=document.getElementById('tank'), ctx=canvas.getContext('2d');
   const screenW=canvas.width, screenH=canvas.height;
   const fishArt=window.AsciiquariumSprites;
-  let sim=core.world(GenesisSeed(),fishArt.length/2), running=true, aiBusy=false;
+  let quiet=false;
+  try{quiet=localStorage.getItem('ascii-genesis-quiet')==='true';}catch{}
+  let sim, running=true, aiBusy=false;
   // Body, fins, eye, mouth, tail and gills retain the original artwork masks.
   const fishPalettes=[
     ['#e6bb72','#d9a65f','#f0cf91','#fff3d4','#d99568','#d9a65f','#e8ce9b'],
@@ -25,6 +27,8 @@
   const fishFont=Number(canvas.dataset.fishFont)||16;
   ctx.font=fishFont+'px "Courier New", monospace';
   const advance=ctx.measureText('M').width;
+  const worldOptions={art:fishArt,font:fishFont,advance,width:screenW,height:screenH,quiet};
+  sim=core.world(GenesisSeed(),fishArt.length/2,worldOptions);
   const spriteCache=fishArt.map((art,index)=>{
     const image=document.createElement('canvas');
     image.width=Math.ceil(Math.max(...art.rows.map(row=>row.length))*advance);
@@ -36,6 +40,18 @@
       paint.fillStyle=spriteColor(ch,art.masks[y]?.[x]||' ',palette);
       paint.fillText(ch,x*advance,y*fishFont);
     }));
+    return image;
+  });
+  // Original diver art: two gentle flipper poses, cached in both directions.
+  const diverRows=[
+    ['        ____       ','   ____[____]  _   ',' _/======_____(o)> ','/ /      /  /      ','<_      /__/       '],
+    ['        ____       ','   ____[____]  _   ',' _/======_____(o)> ','  \\     /  /      ','   >__  /__/       ']
+  ];
+  const mirror={'/':'\\','\\':'/','<':'>','>':'<','(':')',')':'(','[':']',']':'['};
+  const diverCache=diverRows.flatMap(rows=>[rows,rows.map(r=>[...r.padEnd(19)].reverse().map(c=>mirror[c]||c).join(''))]).map(rows=>{
+    const image=document.createElement('canvas');image.width=Math.ceil(19*advance);image.height=5*fishFont;
+    const paint=image.getContext('2d');paint.font=ctx.font;paint.textBaseline='top';
+    rows.forEach((row,y)=>[...row].forEach((c,x)=>{if(c===' ')return;paint.fillStyle=y<2?'#91aaa8':c==='o'?'#d7c78c':'#779cba';paint.fillText(c,x*advance,y*fishFont);}));
     return image;
   });
   function GenesisSeed(){return (Date.now() ^ 0xA51A2026)>>>0;}
@@ -83,22 +99,28 @@
     // The life model stays 48×48; only its presentation uses multi-character art.
     for(const fish of sprites){
       const image=spriteCache[fish.design*2+(fish.right?0:1)];
-      const pixelWidth=image.width,pixelHeight=image.height;
-      const left=fish.x*cellX-pixelWidth/2;
-      if(left+pixelWidth<0||left>screenW)continue;
-      const first=Math.min(core.W-1,Math.max(0,Math.floor(left/cellX)));
-      const last=Math.max(first+1,Math.min(core.W,Math.ceil((left+pixelWidth)/cellX)+1));
-      const localFloor=Math.min(...sim.floor.slice(first,last))*cellY;
-      const top=Math.max(8,Math.min(localFloor-pixelHeight-8,fish.y*cellY-pixelHeight/2));
-      ctx.drawImage(image,left,top);
+      const b=core.life.displayBox(sim,fish);
+      if(b.left+b.width<0||b.left>screenW)continue;
+      ctx.drawImage(image,b.left,b.top,b.width,b.height);
     }
+    const diver=sim.life.diver;
+    if(diver){
+      const image=diverCache[(Math.floor(diver.age/5)%2)*2+(diver.right?0:1)];
+      ctx.drawImage(image,diver.x*cellX-image.width/2,diver.y*cellY);
+    }
+    ctx.font='10px "Courier New", monospace';ctx.fillStyle='#71969c';
+    for(const bubble of sim.life.bubbles)ctx.fillText(bubble.age<10?'o':'.',bubble.x*cellX,bubble.y*cellY);
     const c=core.counts(sim);document.getElementById('tick').textContent=`${sim.habitat.name} · TIDE ${String(sim.tick).padStart(4,'0')}`;
     for(const [id,value] of [['plankton',c.plankton],['fry',c.fry],['hunters',c.hunters],['algae',c.algae]])document.getElementById(id).textContent=value;
   }
   function step(){core.step(sim);draw();}
   document.getElementById('pause').onclick=e=>{running=!running;e.currentTarget.textContent=running?'Pause':'Resume';};
   document.getElementById('step').onclick=step;
-  document.getElementById('reset').onclick=()=>{sim=core.world(GenesisSeed(),fishArt.length/2);document.getElementById('event').textContent='A new habitat takes shape. Watch the small life find its balance.';draw();};
+  const quietButton=document.getElementById('quiet');
+  function showQuiet(){quietButton.textContent=`Quiet mode: ${quiet?'on':'off'}`;quietButton.setAttribute('aria-pressed',String(quiet));}
+  quietButton.onclick=()=>{quiet=!quiet;worldOptions.quiet=quiet;core.life.setQuiet(sim,quiet);try{localStorage.setItem('ascii-genesis-quiet',String(quiet));}catch{}showQuiet();};
+  showQuiet();
+  document.getElementById('reset').onclick=()=>{sim=core.world(GenesisSeed(),fishArt.length/2,worldOptions);document.getElementById('event').textContent='A new habitat takes shape. Watch the small life find its balance.';draw();};
   document.getElementById('ai').onclick=async e=>{
     if(aiBusy)return;aiBusy=true;e.currentTarget.disabled=true;
     const status=document.getElementById('status'), counts=core.counts(sim);

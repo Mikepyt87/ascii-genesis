@@ -1,12 +1,12 @@
 # ASCII Genesis Ocean Library
 
-A field guide to everything currently drawn or simulated in the Raspberry Pi 4 ocean on the Waveshare 7.9-inch screen. The collection contains **17 fish designs, 34 directional drawings, two microscopic life types, kelp, and a scrolling seabed across three habitats**. The last section describes proposed visitors and encounters; those are not active features yet.
+A field guide to everything currently drawn or simulated in the Raspberry Pi 4 ocean on the Waveshare 7.9-inch screen. The collection contains **17 fish designs, 34 directional drawings, two microscopic life types, kelp, and a scrolling seabed across three habitats**. An occasional diver visits, and brief predator encounters sometimes end in a catch. Quiet mode turns hunting off.
 
 ## How to read the collection
 
 Fish names describe the artwork. They are not verified biological species, and the ocean is a stylized simulation rather than a scientifically accurate marine food web. A bannerfish, moray, or ray currently follows the same basic swimming rules as the other drawings.
 
-**Appearance and role are separate.** Every fish has a design, direction, speed, and either a fry or hunter role. Designs are selected by arrival order and traveling region; neither size nor name decides which fish is a hunter. There are no fixed species territories or species-specific diets yet.
+**Appearance determines hunting eligibility.** Large ocean fish, silver spearfish, and copper morays have the hunter role. Tiny fish, little triangular fish, reef fish, and box fish can be selected as prey in encounters. Other designs cruise without being selected for hunts. These are artistic simulation roles, not claims about real diets. There are no fixed species territories.
 
 The artwork below is copied from the actual sprite collection, with its spaces preserved. Each entry shows both directions. Dimensions are character columns by text rows, including spacing, and can differ between directions. The screen uses a 16-pixel monospaced font: each row is 16 pixels tall and each character is roughly 9.6 pixels wide, depending on the browser font.
 
@@ -34,11 +34,11 @@ The artwork below is copied from the actual sprite collection, with its spaces p
 
 ## Shared swimming behavior
 
-- A new world begins with five fry and one hunter already in the scene. Later arrivals start beyond an edge.
-- Up to eight swimmers may exist at once, including swimmers outside the visible screen. An arrival opportunity occurs every 24 ticks, about 8.4 seconds, when there is room.
-- Individual speeds range from 0.18 to just under 0.45 world cells per tick. At 350 milliseconds per tick and 1280 pixels across 48 world cells, that is roughly 14 to 34 pixels per second. A center crosses the visible width in about 37 to 93 seconds.
-- Fish keep their drawing and direction for their whole crossing. They are removed only after their center moves more than 12 world cells beyond an edge. New arrivals start 10 cells beyond an edge.
-- Fry can consume nearby plankton. Hunters currently cruise without chasing or eating fish. There is no breeding, aging, health, or hunger system for individual swimmers.
+- A new world begins with six swimmers already in the scene. Their roles follow their designs. Later arrivals, including encounter pairs, start beyond an edge.
+- Up to eight swimmers may exist at once, including swimmers outside the visible screen. A normal arrival opportunity occurs every 24 ticks, about 8.4 seconds, when there is room. A pending encounter reserves two slots so it can introduce a suitable pair without exceeding the cap.
+- Normal individual speeds range from 0.18 to just under 0.45 world cells per tick. At 350 milliseconds per tick and 1280 pixels across 48 world cells, that is roughly 14 to 34 pixels per second. A center crosses the visible width in about 37 to 93 seconds.
+- Fish keep their drawing and direction for their whole crossing. Ordinary departures are removed after their center reaches 20 world cells beyond an edge. Normal arrivals start 10 cells beyond an edge. An encounter pair starts 10 and 18 cells beyond the same edge. A successful catch is the only removal inside the visible screen.
+- Fry can consume nearby plankton. Hunters normally cruise; selected encounter pairs briefly chase, and some catch prey. There is no breeding, aging, health, or hunger system for individual swimmers.
 - The renderer keeps each drawing above the local seabed and caches all 34 fish images. Travel changes which designs enter next; it does not transform fish already on screen.
 
 ## Fish drawings
@@ -50,7 +50,7 @@ A broad rounded body, swept upper fin, forked tail, and a small eye near the nos
 - **Color:** warm gold.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 14 × 6; left 14 × 6 characters.
-- **Behavior:** shared swimming rules above; no special ability or fixed hunter/prey assignment.
+- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
 
 Facing right:
 
@@ -81,7 +81,7 @@ A compact oval body with a pointed upper and lower fin, forked tail, and round e
 - **Color:** soft blue.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 7 × 5; left 7 × 5 characters.
-- **Behavior:** shared swimming rules above; no special ability or fixed hunter/prey assignment.
+- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
 
 Facing right:
 
@@ -110,7 +110,7 @@ Dense colon markings fill the body, with layered slash fins and a wide forked ta
 - **Color:** dusty rose.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 16 × 5; left 16 × 5 characters.
-- **Behavior:** shared swimming rules above; no special ability or fixed hunter/prey assignment.
+- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
 
 Facing right:
 
@@ -139,7 +139,7 @@ A three-line silhouette with a small outlined body and a simple crossed tail.
 - **Color:** pale cream.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 5 × 3; left 5 × 3 characters.
-- **Behavior:** shared swimming rules above; no special ability or fixed hunter/prey assignment.
+- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
 
 Facing right:
 
@@ -164,7 +164,7 @@ A low rounded outline with short fins and a small forked tail.
 - **Color:** peach and coral.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 9 × 3; left 9 × 3 characters.
-- **Behavior:** shared swimming rules above; no special ability or fixed hunter/prey assignment.
+- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
 
 Facing right:
 
@@ -189,7 +189,7 @@ A tall angular outline with pointed top and bottom fins around a compact body.
 - **Color:** sage green.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 6 × 5; left 6 × 5 characters.
-- **Behavior:** shared swimming rules above; no special ability or fixed hunter/prey assignment.
+- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
 
 Facing right:
 
@@ -218,7 +218,7 @@ A three-line pointed fish with short upper and lower fins and a crossed tail.
 - **Color:** lavender.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 5 × 3; left 5 × 3 characters.
-- **Behavior:** shared swimming rules above; no special ability or fixed hunter/prey assignment.
+- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
 
 Facing right:
 
@@ -243,7 +243,7 @@ A small box-shaped outline with a round eye and a crossed tail.
 - **Color:** teal.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 5 × 3; left 5 × 3 characters.
-- **Behavior:** shared swimming rules above; no special ability or fixed hunter/prey assignment.
+- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
 
 Facing right:
 
@@ -268,7 +268,7 @@ Curved upper and lower fins frame a rounded body, with a curly tail and a promin
 - **Color:** warm gold.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 10 × 7; left 10 × 7 characters.
-- **Behavior:** shared swimming rules above; no special ability or fixed hunter/prey assignment.
+- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
 
 Facing right:
 
@@ -301,7 +301,7 @@ The largest classic drawing: a broad body, large eye, gill marks, forked tail, a
 - **Color:** soft blue.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 23 × 8; left 23 × 8 characters.
-- **Behavior:** shared swimming rules above; no special ability or fixed hunter/prey assignment.
+- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
 
 Facing right:
 
@@ -336,7 +336,7 @@ A long tapered silhouette with a swept top fin, paired gill marks, and a forked 
 - **Color:** dusty rose.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 16 × 5; left 16 × 5 characters.
-- **Behavior:** shared swimming rules above; no special ability or fixed hunter/prey assignment.
+- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
 
 Facing right:
 
@@ -365,7 +365,7 @@ A round dotted body surrounded by small spine marks, with a short tail and point
 - **Color:** gold and bronze.
 - **Artwork:** Original ASCII Genesis drawing in [original-fish.mjs](../third-party/original-fish.mjs).
 - **Size:** right 16 × 5; left 16 × 5 characters.
-- **Behavior:** shared swimming rules above; no special ability or fixed hunter/prey assignment.
+- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
 
 Facing right:
 
@@ -394,7 +394,7 @@ A tall striped body with extended upper and lower fins and a trailing lower ribb
 - **Color:** silver blue and gold.
 - **Artwork:** Original ASCII Genesis drawing in [original-fish.mjs](../third-party/original-fish.mjs).
 - **Size:** right 19 × 8; left 19 × 8 characters.
-- **Behavior:** shared swimming rules above; no special ability or fixed hunter/prey assignment.
+- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
 
 Facing right:
 
@@ -429,7 +429,7 @@ An elongated body with a long pointed bill, tall top fin, and forked tail.
 - **Color:** ice blue and slate blue.
 - **Artwork:** Original ASCII Genesis drawing in [original-fish.mjs](../third-party/original-fish.mjs).
 - **Size:** right 23 × 5; left 23 × 5 characters.
-- **Behavior:** shared swimming rules above; no special ability or fixed hunter/prey assignment.
+- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
 
 Facing right:
 
@@ -458,7 +458,7 @@ A long curved body with a low profile, broad head, and small eye.
 - **Color:** copper and rust.
 - **Artwork:** Original ASCII Genesis drawing in [original-fish.mjs](../third-party/original-fish.mjs).
 - **Size:** right 21 × 4; left 21 × 4 characters.
-- **Behavior:** shared swimming rules above; no special ability or fixed hunter/prey assignment.
+- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
 
 Facing right:
 
@@ -485,7 +485,7 @@ A wide kite-shaped body with angled wings and a long thin trailing tail.
 - **Color:** violet and muted purple.
 - **Artwork:** Original ASCII Genesis drawing in [original-fish.mjs](../third-party/original-fish.mjs).
 - **Size:** right 19 × 5; left 19 × 5 characters.
-- **Behavior:** shared swimming rules above; no special ability or fixed hunter/prey assignment.
+- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
 
 Facing right:
 
@@ -514,7 +514,7 @@ A compact rounded fish with body markings and a small stalk ending in a light-li
 - **Color:** muted blue green.
 - **Artwork:** Original ASCII Genesis drawing in [original-fish.mjs](../third-party/original-fish.mjs).
 - **Size:** right 16 × 6; left 16 × 6 characters.
-- **Behavior:** shared swimming rules above; no special ability or fixed hunter/prey assignment.
+- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
 
 Facing right:
 
@@ -544,13 +544,13 @@ Facing left:
 | --- | --- | --- |
 | Algae | Small green teal dot, ` . `, color `#4fb89d` | Starts with 76 cells. Regrows slowly near existing patches and receives occasional additions near the seabed. Declines through natural loss, plankton feeding, travel, and terrain changes. Limited to 100 cells. |
 | Plankton | Small pale mint `o`, color `#8fffe0` | Starts with 34 cells. Can drift to neighboring water cells, consume adjacent algae, rarely divide, and naturally disappear. Incoming additions help maintain a light food supply. Limited to 45 cells. |
-| Fry | One of the full fish drawings | Five at startup. Each step, a fry with neighboring plankton has a 34 percent chance of consuming one adjacent plankton cell. Fry do not visibly grow into adults. |
-| Hunter | One of the full fish drawings | One at startup. Later arrivals fill the hunter role only when no hunter remains in the swimmer list, including off-screen swimmers. Currently has no feeding or pursuit behavior. |
+| Fry | One of the full fish drawings | Non-predator designs receive this role. Each step, a fry with neighboring plankton has a 34 percent chance of consuming one adjacent plankton cell. Fry do not visibly grow into adults. |
+| Hunter | One of the full fish drawings | Large ocean fish, silver spearfish, and copper moray drawings receive this role. Only the selected encounter pair hunts at a time; other hunters keep cruising. |
 | Empty water | Near-black background, `#02090c` | Open space between the creatures and scenery. Not an organism or particle effect. |
 
 The model uses a 48 × 48 cell grid beneath the detailed drawings. Its text-only symbols are a dot for algae, o for plankton, > for fry, and @ for a hunter. Full-screen mode replaces the last two with fish artwork. If fish occupy the same grid cell, the hidden counters can undercount them; the swimmer list holds their individual identities.
 
-The current food chain is **algae → plankton → fry**. Hunters are present visually but do not yet complete that chain. AI narration describes counts when requested; it does not select prey, create animals, or change their behavior.
+The food chain is **algae → plankton → fry → hunters**, with the final link happening only during rare successful encounters. AI narration describes counts when requested; it does not select prey, create animals, or change their behavior.
 
 ## Plants and terrain
 
@@ -568,7 +568,7 @@ Underscore characters draw a rolling floor in muted blue green, `#36575a`. Spars
 
 The camera advances 0.08 world cells each tick, roughly 6.1 screen pixels per second. It takes about 3.5 minutes to travel one screen width at the normal update rate. The terrain and kelp stay attached to world positions; fish swim independently. The environmental grid shifts left as travel crosses whole columns.
 
-There are currently no separate rock, coral, shell, wreck, castle, treasure, bubble, diver, or surface-wave objects. Rocky reef is a habitat name for a different contour and plant density, not a collection of individual rock sprites. Objects elsewhere in the bundled upstream Asciiquarium source are not automatically part of this ocean.
+There are currently no separate rock, coral, shell, wreck, castle, treasure, or surface-wave objects. The diver and its short-lived bubbles are described below. Rocky reef is a habitat name for a different contour and plant density, not a collection of individual rock sprites. Objects elsewhere in the bundled upstream Asciiquarium source are not automatically part of this ocean.
 
 ## Habitats
 
@@ -584,33 +584,45 @@ Higher floor-depth numbers place the floor lower on the display. The rolling con
 
 Each transition spans 64 world cells, about 4 minutes 40 seconds. The habitat settings repeat every 192 cells, about 14 minutes. Plant patterns depend on position and seed, so repeating habitat settings do not mean an identical still image. These timings assume continuous running at the intended tick rate; pauses and device delays extend them.
 
-## Proposed visitors and encounters
+## Visitors and encounters
 
-These additions are a design proposal, not current behavior. The goal is an occasional moment of interest within a calm desktop ocean.
+These behaviors run locally without API calls. They use the same 350-millisecond tick as the rest of the ocean. Pausing stops the visitor, bubbles, chase, and feeding animation; Step advances all of them once. New world resets all timers and visitors.
 
 ### Visiting diver
 
-Add a small hand-drawn diver with a tank, mask, and slowly changing flipper pose. A starting target is one visit every 5 to 10 minutes, with the first visit delayed. Enter fully off screen, swim gently across, and leave fully off screen. Allow only one diver at a time, with a few short-lived bubbles close to the tank rather than a new permanent particle population. The diver would observe the ocean, not chase fish.
+An original ASCII diver has a tank, mask, body, and two alternating flipper poses. Four images cover both poses and directions, cached alongside the fish artwork. The diver swims in the upper water at about 15 pixels per second and stays separate from the eight-fish population.
 
-### Prey escape
+The first visit is scheduled 5 to 10 minutes after starting. After departure, another 5 to 10 minute wait begins. Active encounters can delay an arrival. Each visit starts and ends fully beyond the screen edges; there is only one diver at a time. Quiet mode keeps this peaceful visitor enabled.
 
-Allow one brief encounter at a time, with a tentative cooldown of 2 to 4 minutes between encounters. Select a visibly larger suitable hunter and a smaller suitable prey fish traveling in a compatible lane. Let prey accelerate briefly and the hunter follow for a few seconds. Most encounters should end in escape; both animals then settle back to cruising or finish leaving the screen. Avoid sudden direction flips and long diagonal dashes.
+Small bubbles rise near the diver, changing from an o to a dot before vanishing. A bubble lasts under seven seconds, with no more than five allowed at once. They do not feed the ecosystem or reproduce.
 
-This needs explicit predator/prey eligibility tied to artwork. The current arbitrary hunter role could make a tiny fish pursue a much larger one. Give each suitable design a size category and an allowed role before enabling chases.
+### Predators and prey
+
+| Encounter role | Eligible drawings |
+| --- | --- |
+| Predator | Large ocean fish, silver spearfish, copper moray |
+| Prey | Tiny fish, little triangular fish, reef fish, box fish |
+| Cruising only | Angelfish, striped fish, rounded fish, diamond fish, curly-fin fish, sunburst puffer, ribbon bannerfish, violet kite ray, blue lanternfish |
+
+After a 2 to 4 minute cooldown, the simulation waits for two swimmer slots and no diver before bringing in a predator and prey from the same edge. Both begin outside the display and cruise into view together. Only one encounter can be active. The cooldown restarts when it ends, so visible encounters are farther apart than the cooldown alone.
+
+The chase begins only when both fish are inside the screen. Prey and predator gradually accelerate instead of changing speed instantly. The pursuit lasts at most about ten seconds. An escape returns both fish smoothly to cruising speed; neither disappears or changes drawing.
 
 ### Catch and feeding
 
-A rare successful hunt could end when the prey reaches the predator's mouth, followed by a short feeding pause. Use no blood, flashing, or sound. The prey should disappear only at visible contact, with its replacement arriving later from beyond an edge. That makes a catch understandable rather than looking like the existing mid-screen disappearance bug returning.
+Twenty percent of encounter pairs are allowed to catch prey; actual catches can be less frequent because the pursuit must reach visible, aligned mouth contact before its time limit. Most encounters end in escape.
 
-Provide a quiet-mode switch that disables chases and catches. A useful first trial would make escapes common and successful catches a small minority. Exact frequency and catch rate should be tuned on the physical 7.9-inch screen.
+Contact uses the same artwork dimensions, mouth marks, and seabed placement as the renderer. At contact, the prey shrinks into the predator's mouth over about 2.5 seconds while the predator slows. Only then is the prey removed. A replacement later enters from beyond an edge. There is no blood, flashing, or sound.
 
-### Implementation order
+### Quiet mode
 
-1. Add the diver as an independent rare visitor, preserving the existing eight-fish limit.
-2. Add size-aware roles and short escape encounters with no catches.
-3. Add optional catches after checking that contact is readable and the mood stays peaceful.
+Tap the water and select **Quiet mode: on** to stop chases and catches. An active encounter is cancelled without deleting either fish. Gentle travel, ordinary swimming, and occasional divers continue. Switch it off to allow encounters again.
 
-All three can run locally on the Pi without API calls. Keep artwork cached, bound bubble counts, and test entry, exit, contact, pause, reset, and long-running population limits. The renderer currently clamps fish vertically above terrain, so encounter contact must use the same displayed positions rather than grid distance alone.
+The setting is remembered in the launcher's browser profile and survives New world and reopening the ocean. If browser storage is unavailable, the toggle still works for the current session. Clearing the browser profile clears the preference. The default is off, enabling these occasional encounters.
+
+### Limits and validation
+
+The implementation caps swimmers at eight, divers at one, and bubbles at five. Checks exercise both swimming directions, wholly off-screen arrivals, visible mouth contact, shrinking prey, escape survival, quiet-mode cancellation, cached drawing, pause, reset, and 30,000 ticks of bounded populations. The browser layout is checked at 1280 × 400; perceived pace still needs your assessment on the physical Pi screen.
 
 ## Artwork and maintenance
 
@@ -618,4 +630,4 @@ Eleven designs come from Asciiquarium 1.1. The upstream code credits Kirk Baucom
 
 The installed artwork is in [fish-art.js](../simulator/fish-art.js). Its source drawings and extraction rules are in [original-fish.mjs](../third-party/original-fish.mjs) and [restore-sprites.mjs](../third-party/restore-sprites.mjs). The running rules are in [aquarium.js](../simulator/aquarium.js); colors, terrain drawing, and sprite placement are in [simulator.js](../simulator/simulator.js).
 
-When adding a design, preserve both swimming directions, color masks, credits, and enough off-screen margin for its full width. Update the design-count checks and this library alongside the artwork. When adding a behavior, move its description out of the proposed section only once it is implemented and verified.
+When adding a design, preserve both swimming directions, color masks, credits, and enough off-screen margin for its full width. Update the design-count checks and this library alongside the artwork. The visitor and encounter implementation is in [ocean-life.js](../simulator/ocean-life.js), with checks in [life-check.mjs](../simulator/life-check.mjs). Keep this library in sync when changing behavior.

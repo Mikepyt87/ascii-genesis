@@ -6,7 +6,7 @@ Seventeen fish designs swim through kelp meadows, rocky reefs, and open sand. Te
 
 ## Ocean library
 
-Browse the [Ocean Library](docs/OCEAN-LIBRARY.md) for all 17 fish designs with both directional drawings, their colors and sizes, small life, kelp, terrain, habitat settings, and current behavior. It also records the proposed occasional diver and calm predator encounters separately from working features.
+Browse the [Ocean Library](docs/OCEAN-LIBRARY.md) for all 17 fish designs with both directional drawings, their colors and sizes, small life, kelp, terrain, habitat settings, and current behavior. It also describes the occasional diver, short predator encounters, rare catches, and quiet-mode control.
 
 ## Hardware and screen setup
 
@@ -39,9 +39,15 @@ Run the installer as your normal desktop user, without putting `sudo` before it.
 
 **Double-click ASCII Genesis on the Raspberry Pi desktop.** It opens the ocean full-screen. If Raspberry Pi OS asks whether to trust or execute the desktop launcher, choose Execute/Allow Launching. The installer attempts to mark the icon trusted, but desktop behavior varies by OS release.
 
-Tap the water to show controls. They fade after eight seconds. Pause stops travel and swimming; Step advances once; New world starts over. **Alt+F4** closes the ocean and returns to the desktop. Opening the icon twice will not start two oceans. There is no saved-world state; each launch starts a new scene.
+Tap the water to show controls. They fade after eight seconds. Pause stops travel and swimming; Step advances once; New world starts over. **Alt+F4** closes the ocean and returns to the desktop. Opening the icon twice will not start two oceans. There is no saved-world state; each launch starts a new scene. Quiet mode is saved separately in the browser profile.
 
 The layout is fixed to 1280 × 400. Browser zoom should stay at 100%. This project has no other hardware profiles or cube modes.
+
+## Occasional visitors and hunting
+
+A diver may arrive after 5–10 minutes, then wait another 5–10 minutes after departing before visiting again. Predator encounters have a 2–4 minute cooldown, followed by the wait for free swimmer slots and the pair to enter from off screen. Most chases end in escape; rare catches visibly shrink the prey into the predator's mouth. All of this works offline.
+
+Tap the water and turn **Quiet mode: on** to disable hunting. Divers and gentle swimming continue. The preference survives restarting the app. Pause and Step apply to every animation. See the [Ocean Library](docs/OCEAN-LIBRARY.md#visitors-and-encounters) for eligibility, timing, and limits.
 
 ## Updates and new fish
 
@@ -83,9 +89,9 @@ Restrict that file with `chmod 600 ~/.config/ascii-genesis/openai.env`. Restart 
 
 ## Performance and validation
 
-The Pi 4 renderer rasterizes the 34 directional fish images once and reuses them. It retains the 350 ms simulation interval, fixed 1280 × 400 canvas, and eight-swimmer limit. There are no npm dependencies, continuous API requests, or 60-fps rendering loop. This reduces repeated fish text drawing; actual CPU usage and frame timing must be measured on your Pi 4.
+The Pi 4 renderer rasterizes the 34 directional fish images and four diver images once and reuses them. It retains the 350 ms simulation interval, fixed 1280 × 400 canvas, and eight-swimmer limit, plus at most one diver and five short-lived bubbles. There are no npm dependencies, continuous API requests, or 60-fps rendering loop. This reduces repeated fish text drawing; actual CPU usage and frame timing must be measured on your Pi 4.
 
-Checks cover all 17 designs appearing in rotation, ecological limits, continuous terrain, off-screen departures, cached sprite rendering, pause/reset behavior, and mock narration. Desktop installation is tested in a temporary folder. Linux CI checks script syntax as well. These checks do not replace physical display, touch, power, and OS startup testing.
+Checks cover all 17 designs appearing in rotation, ecological limits, continuous terrain, off-screen departures, rare catches at visible mouth contact, escape survival, diver limits, quiet mode, cached sprite rendering, pause/reset behavior, and mock narration. Desktop installation is tested in a temporary folder. Linux CI checks script syntax as well. These checks do not replace physical display, touch, power, and OS startup testing.
 
 ```bash
 node simulator/core-check.mjs
