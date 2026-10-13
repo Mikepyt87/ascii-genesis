@@ -7,10 +7,26 @@ import {createHash} from 'node:crypto';
 
 const here=path.dirname(fileURLToPath(import.meta.url));
 const key=process.env.OPENAI_API_KEY;
+const port=Number(process.env.ASCII_GENESIS_PORT||4173);
+if(!Number.isInteger(port)||port<0||port>65535)throw Error('Invalid server port');
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8'};
 const server=http.createServer(async(req,res)=>{
   try{
     const url=new URL(req.url,'http://127.0.0.1');
+    if(req.method==='POST'&&url.pathname==='/api/close'){
+      const origin=`http://127.0.0.1:${server.address().port}`;
+      if(req.headers.origin!==origin||req.headers.host!==origin.slice(7)||req.headers['content-type']!=='application/json'){
+        res.writeHead(403,{'Content-Type':'application/json'});res.end(JSON.stringify({error:'Close must be requested from the ocean controls.'}));return;
+      }
+      if(process.env.ASCII_GENESIS_DESKTOP!=='1'){
+        res.writeHead(409,{'Content-Type':'application/json'});res.end(JSON.stringify({error:'Close is available when opened using the Raspberry Pi desktop icon.'}));return;
+      }
+      res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store'});
+      res.end(JSON.stringify({closed:true}),()=>{
+        server.close(()=>process.exit(0));server.closeIdleConnections();
+        setTimeout(()=>{server.closeAllConnections();process.exit(0);},1000).unref();
+      });return;
+    }
     if(req.method==='GET'&&url.pathname==='/api/status'){
       let state='ready';try{checkKey(key);}catch(err){state=err.code;}
       res.writeHead(200,{'Content-Type':'application/json','Cache-Control':'no-store'});
@@ -35,5 +51,4 @@ const server=http.createServer(async(req,res)=>{
     res.end(JSON.stringify({error:info.error,code:info.code}));
   }
 });
-server.listen(4173,'127.0.0.1',()=>console.log('ASCII Genesis preview: http://127.0.0.1:4173 (loopback only)'));
-
+server.listen(port,'127.0.0.1',()=>console.log(`ASCII Genesis preview: http://127.0.0.1:${server.address().port} (loopback only)`));

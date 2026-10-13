@@ -13,11 +13,13 @@ const tank={width:1280,height:400,dataset:{fishFont:'16'},getContext:()=>main};
 const document={getElementById(id){if(id==='tank')return tank;if(!elements.has(id))elements.set(id,{setAttribute(){}});return elements.get(id);},
  createElement(tag){assert.equal(tag,'canvas');const paint=context(true),image={paint,getContext:()=>paint};cachedCanvases.push(image);return image;}};
 let world;
+let closeAllowed=false,closeRequests=0;
 const settings=new Map();
 vm.runInNewContext(fs.readFileSync(new URL('./simulator.js',import.meta.url),'utf8'),{
  window:{AquariumCore:{...core,world(...args){world=core.world(...args);return world;}},AsciiquariumSprites:globalThis.AsciiquariumSprites},document,
  localStorage:{getItem:k=>settings.get(k),setItem:(k,v)=>settings.set(k,v)},
- setInterval(fn,ms){assert.equal(ms,350);interval=()=>{clock+=350;fn();};},Date:class extends Date{constructor(){super('2026-10-12T12:00:00');}static now(){return clock;}},console});
+ setInterval(fn,ms){assert.equal(ms,350);interval=()=>{clock+=350;fn();};},Date:class extends Date{constructor(){super('2026-10-12T12:00:00');}static now(){return clock;}},
+ fetch:async(url,options)=>{assert.equal(url,'/api/close');assert.equal(options.method,'POST');closeRequests++;return {ok:closeAllowed,json:async()=>closeAllowed?{closed:true}:{error:'Close unavailable in preview.'}};},console});
 const initial=cachedGlyphs;assert.ok(initial>0);assert.ok(images>0);
 const wreck=cachedCanvases.find(c=>c.paint.fillStyle==='#64888b'),eel=cachedCanvases.find(c=>c.paint.fillStyle==='#ad9b77');
 assert.ok(wreck.width>=eel.width*4&&wreck.height>=eel.height*2.5,'Wreck must visibly dwarf its peeking eel');
@@ -63,4 +65,9 @@ elements.get('reset').onclick();assert.equal(world.ocean.clockMode,'local','Rese
 world.ocean.discovery={type:'whale',right:true,x:24,y:8,age:20};interval();
 world.ocean.discovery={type:'glow',right:true,x:24,y:8,age:20};interval();
 assert.equal(cachedGlyphs,initial,'Discoveries reuse cached artwork');
+await elements.get('close').onclick();assert.equal(elements.get('close').disabled,false,'Rejected close allows retry');
+assert.equal(elements.get('status').textContent,'Close unavailable in preview.');
+closeAllowed=true;await elements.get('close').onclick();assert.equal(elements.get('close').disabled,true);
+const closedImages=images;interval();assert.equal(images,closedImages,'Accepted close stops animation while the launcher exits');
+await elements.get('close').onclick();assert.equal(closeRequests,2,'Repeated taps do not duplicate the close request');
 console.log('Pi renderer: matched seabed/sediment/root scrolling, cached sprites, finite geometry, 1000 frames, pause, step and reset passed.');

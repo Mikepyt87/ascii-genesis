@@ -8,6 +8,7 @@ node -e 'if(Number(process.versions.node.split(".")[0])<20)process.exit(1)' || {
 node "$APP_ROOT/simulator/core-check.mjs"
 node "$APP_ROOT/simulator/openai_bridge_check.mjs"
 node "$APP_ROOT/simulator/render-check.mjs"
+node "$APP_ROOT/simulator/close-check.mjs"
 python3 "$APP_ROOT/raspberry-pi/install-desktop.py"
 mkdir -p "$HOME/.config/ascii-genesis"
 if [[ ! -e "$HOME/.config/ascii-genesis/no-auto-update" ]]; then touch "$HOME/.config/ascii-genesis/auto-update"; fi

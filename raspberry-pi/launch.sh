@@ -16,9 +16,9 @@ main(){
   if command -v chromium >/dev/null; then BROWSER=chromium
   elif command -v chromium-browser >/dev/null; then BROWSER=chromium-browser
   else echo 'Install Chromium using the setup instructions.'; exit 1; fi
-  node "$APP_ROOT/simulator/server.mjs" &
+  ASCII_GENESIS_DESKTOP=1 node "$APP_ROOT/simulator/server.mjs" &
   SERVER_PID=$!
-  trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+  trap 'if [[ -n "${BROWSER_PID:-}" ]]; then kill "$BROWSER_PID" 2>/dev/null || true; fi; kill "$SERVER_PID" 2>/dev/null || true' EXIT
   trap 'exit 0' INT TERM
   for attempt in {1..40}; do
     kill -0 "$SERVER_PID" 2>/dev/null || { echo 'Server stopped. Is port 4173 already in use?'; return 1; }
@@ -28,6 +28,9 @@ main(){
   curl --fail --silent http://127.0.0.1:4173/pi >/dev/null
   "$BROWSER" --kiosk --noerrdialogs --disable-session-crashed-bubble \
     --user-data-dir="$CACHE_DIR/chromium" \
-    'http://127.0.0.1:4173/pi'
+    'http://127.0.0.1:4173/pi' &
+  BROWSER_PID=$!
+  # Either the browser closing or the touch Close request ends this dedicated session.
+  wait -n "$SERVER_PID" "$BROWSER_PID"
 }
 main "$@"

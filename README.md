@@ -67,7 +67,7 @@ Run the installer as your normal desktop user, without putting `sudo` before it.
 
 **Double-click ASCII Genesis on the Raspberry Pi desktop.** It opens the ocean full-screen. If Raspberry Pi OS asks whether to trust or execute the desktop launcher, choose Execute/Allow Launching. The installer attempts to mark the icon trusted, but desktop behavior varies by OS release.
 
-Tap the water to show controls. They fade after eight seconds. Pause stops travel and swimming; Step advances once; New world starts over. **Alt+F4** closes the ocean and returns to the desktop. Opening the icon twice will not start two oceans. There is no saved-world state; each launch starts a new scene. Quiet mode is saved separately in the browser profile.
+Tap the water to show controls. They fade after eight seconds. Pause stops travel and swimming; Step advances once; New world starts over. Tap **Close ocean** to return to the Raspberry Pi desktop without a keyboard. This works when opened using the desktop icon or its launch script; a standalone browser preview reports that desktop closing is unavailable. **Alt+F4** also works. Opening the icon twice will not start two oceans. There is no saved-world state; each launch starts a new scene. Quiet mode is saved separately in the browser profile.
 
 The layout is fixed to 1280 × 400. Browser zoom should stay at 100%. This project has no other hardware profiles or cube modes.
 
@@ -139,6 +139,7 @@ Checks cover all 26 designs appearing in rotation, ecological limits, continuous
 node simulator/core-check.mjs
 node simulator/render-check.mjs
 node simulator/openai_bridge_check.mjs
+node simulator/close-check.mjs
 python3 raspberry-pi/desktop-check.py
 ```
 

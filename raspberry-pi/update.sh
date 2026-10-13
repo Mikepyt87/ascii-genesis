@@ -25,6 +25,7 @@ git archive "$NEW" | tar -x -C "$CHECK_DIR"
 node "$CHECK_DIR/simulator/core-check.mjs" >/dev/null || fail 'The new simulation failed its checks. Keeping your current version.'
 node "$CHECK_DIR/simulator/openai_bridge_check.mjs" >/dev/null || fail 'The new API bridge failed its checks. Keeping your current version.'
 node "$CHECK_DIR/simulator/render-check.mjs" >/dev/null || fail 'The new renderer failed its checks. Keeping your current version.'
+node "$CHECK_DIR/simulator/close-check.mjs" >/dev/null || fail 'The desktop close control failed its checks. Keeping your current version.'
 for script in "$CHECK_DIR"/raspberry-pi/*.sh; do bash -n "$script" || fail 'The new launcher failed its checks.'; done
 git merge --ff-only "$NEW" >/dev/null || fail 'Update could not be applied. Check local changes.'
 python3 "$APP_ROOT/raspberry-pi/install-desktop.py" >/dev/null
@@ -32,4 +33,3 @@ message 'ASCII Genesis is updated. Open the ocean from its desktop icon.'
 
 }
 main "$@"
-

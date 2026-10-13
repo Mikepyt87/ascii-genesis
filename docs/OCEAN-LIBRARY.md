@@ -994,7 +994,7 @@ _
 
 ### Controls and readouts
 
-The touch panel is an interface overlay rather than an ocean object. It contains Pause or Resume, Step, New world, AI event, Quiet mode, Creature parade, Lighting, the habitat name and day/night label, tide counter, narration text, and connection status. It appears when you tap the water and fades after eight seconds. The algae, plankton, fry, and hunter counters exist in the page but are hidden in the full-screen layout.
+The touch panel is an interface overlay rather than an ocean object. It contains Pause or Resume, Step, New world, AI event, Quiet mode, Creature parade, Lighting, Close ocean, the habitat name and day/night label, tide counter, narration text, and connection status. It appears when you tap the water and fades after eight seconds. The algae, plankton, fry, and hunter counters exist in the page but are hidden in the full-screen layout. Close ocean returns to the Pi desktop when launched through its desktop icon; it ends the dedicated browser and server session. A standalone browser preview stays open and shows an explanatory message.
 
 The Lighting button switches between the ocean cycle and local clock; both modes are described under [movement and lighting](#movement-and-lighting). The older controls image predates this extra button.
 

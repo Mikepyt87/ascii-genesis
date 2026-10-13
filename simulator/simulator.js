@@ -229,6 +229,17 @@
   function showClock(){clockButton.textContent=clockMode==='local'?'Lighting: local clock':'Lighting: ocean cycle';}
   clockButton.onclick=()=>{clockMode=clockMode==='local'?'cycle':'local';worldOptions.clockMode=clockMode;core.life.setClockMode(sim,clockMode);try{localStorage.setItem('ascii-genesis-clock',clockMode);}catch{}showClock();};
   showClock();
+  const closeButton=document.getElementById('close');
+  closeButton.onclick=async()=>{
+    if(closeButton.disabled)return;
+    const status=document.getElementById('status');closeButton.disabled=true;status.textContent='Closing the ocean…';
+    try{
+      const response=await fetch('/api/close',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});
+      const data=await response.json();
+      if(!response.ok)throw new Error(data.error||'Could not close the ocean.');
+      running=false;
+    }catch(error){status.textContent=error.message||'Could not contact the desktop launcher.';closeButton.disabled=false;}
+  };
   document.getElementById('reset').onclick=()=>{sim=core.world(GenesisSeed(),fishArt.length/2,worldOptions);document.getElementById('event').textContent='A new habitat takes shape. Watch the small life find its balance.';draw();};
   document.getElementById('ai').onclick=async e=>{
     if(aiBusy)return;aiBusy=true;e.currentTarget.disabled=true;

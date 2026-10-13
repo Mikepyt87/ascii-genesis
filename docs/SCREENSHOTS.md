@@ -79,6 +79,8 @@ Tap the water to reveal this panel. It fades after eight seconds so the ocean ca
 | Pause or Resume | Stops or resumes swimming, travel, visitors, and encounters. |
 | Step | Advances the whole simulation by one tick, useful while paused. |
 | New world | Starts a fresh scene and resets its timers. |
+| Close ocean | Returns to the Pi desktop when opened through the desktop launcher. |
+| Lighting | Switches between the ocean cycle and local-clock lighting. |
 | AI event | Requests optional narration through your own configured OpenAI API connection. It does not control the ocean. |
 | Creature parade | Shows all 26 designs in a two-minute lineup, then returns to the normal ocean. |
 | Quiet mode | Turns hunting off or on. The preference is remembered in the browser profile. |
@@ -87,6 +89,6 @@ The ocean, diver, and encounters all work **offline without an API key**. The AI
 
 ## Build and run it
 
-The supported setup is a **Raspberry Pi 4 Model B, Raspberry Pi OS Desktop 64-bit, and the Waveshare 7.9-inch screen rotated to 1280 × 400**. For the included enclosure build, print **one case and two legs** from the [print guide](../3d-printing/README.md). The installer adds native Raspberry Pi desktop launch and update icons. Open the ocean with its desktop icon; use Alt+F4 to return to the desktop.
+The supported setup is a **Raspberry Pi 4 Model B, Raspberry Pi OS Desktop 64-bit, and the Waveshare 7.9-inch screen rotated to 1280 × 400**. For the included enclosure build, print **one case and two legs** from the [print guide](../3d-printing/README.md). The installer adds native Raspberry Pi desktop launch and update icons. Open the ocean with its desktop icon; tap the water, then **Close ocean** to return to the desktop. Alt+F4 also works. Older control screenshots predate the Close and Lighting buttons.
 
 See the [README](../README.md) for the hardware list, installation from GitHub, updates, and troubleshooting. See [artwork credits](../THIRD-PARTY.txt) for the Asciiquarium sources and original project drawings, distributed under GPL-2.0-or-later.

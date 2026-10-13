@@ -13,6 +13,8 @@ jobs:
       - run: node simulator/core-check.mjs
       - run: node simulator/render-check.mjs
       - run: node simulator/openai_bridge_check.mjs
+      - run: node simulator/close-check.mjs
       - run: python3 raspberry-pi/desktop-check.py
+      - run: python3 raspberry-pi/launch-close-check.py
       - run: for script in raspberry-pi/*.sh; do bash -n "$script"; done
       - run: bash raspberry-pi/update-check.sh
