@@ -41,6 +41,13 @@
       paint.fillStyle=spriteColor(ch,art.masks[y]?.[x]||' ',palette);
       paint.fillText(ch,x*advance,y*fishFont);
     }));
+    // Align the crawler's visible feet, rather than the font's transparent line padding.
+    if(['shore crab','reef lobster'].includes(art.name)&&typeof paint.getImageData==='function'){
+      const pixels=paint.getImageData(0,0,image.width,image.height).data;
+      let lastInk=image.height-1;
+      outer:for(let y=image.height-1;y>=0;y--)for(let x=0;x<image.width;x++)if(pixels[(y*image.width+x)*4+3]){lastInk=y;break outer;}
+      sim.profiles[index].footInset=image.height-1-lastInk;
+    }
     return image;
   });
   // Original diver art: two gentle flipper poses, cached in both directions.
@@ -78,7 +85,29 @@
     const paint=image.getContext('2d');paint.font=ctx.font;paint.textBaseline='top';paint.fillStyle=color;
     rows.forEach((row,y)=>paint.fillText(row,0,y*fishFont));return image;
   }
-  const wreckImage=scenerySprite(['       __|__','  ____/_____|___','  \\____[]_____/','    /_/   /_/'],'#64888b');
+  const groundGlyph=scenerySprite(['_'],'#36575a'),groundPaint=groundGlyph.getContext('2d');let groundInk=0;
+  if(typeof groundPaint.getImageData==='function'){
+    const pixels=groundPaint.getImageData(0,0,groundGlyph.width,groundGlyph.height).data;
+    outer:for(let y=0;y<groundGlyph.height;y++)for(let x=0;x<groundGlyph.width;x++)if(pixels[(y*groundGlyph.width+x)*4+3]){groundInk=y;break outer;}
+    for(const p of sim.profiles)if(['shore crab','reef lobster'].includes(p.name))p.footInset=(p.footInset||0)+groundInk;
+  }
+  worldOptions.footInsets=sim.profiles.map(p=>p.footInset||0);
+  const wreckImage=scenerySprite([
+    '                    |',
+    '               _____|_____',
+    '              /___________\\',
+    '       _______|  []   []  |________',
+    '  ____/  [] [] |__________| [] []   \\___',
+    '  \\             [_______]            /',
+    '   \\______                  _______/',
+    '          \\________________/',
+    '            /_/        /_/'
+  ],'#64888b');
+  let wreckFootInset=0;const wreckPaint=wreckImage.getContext('2d');
+  if(typeof wreckPaint.getImageData==='function'){
+    const pixels=wreckPaint.getImageData(0,0,wreckImage.width,wreckImage.height).data;
+    outer:for(let y=wreckImage.height-1;y>=0;y--)for(let x=0;x<wreckImage.width;x++)if(pixels[(y*wreckImage.width+x)*4+3]){wreckFootInset=wreckImage.height-1-y;break outer;}
+  }
   const coralImage=scenerySprite(['  \\ | /',' _/\\|/\\_','    ||','   _||_'],'#b8869e');
   const eelImage=scenerySprite([' __    __','/  \\__/ o>','\\_______/'],'#ad9b77');
   const whaleRows=['          ___','    _____/   \\________________',' __/                         o \\__','<__    _________________________  >','   \\__/     \\____/       \\_____/'];
@@ -122,11 +151,13 @@
     // The wreck is attached to an ocean coordinate, so it scrolls through the entire view.
     for(let segment=Math.floor(sim.travel/64)-1;segment<=Math.ceil((sim.travel+core.W)/64);segment++){
       if(((segment%6)+6)%6!==5)continue;
-      const x=(segment*64+12-sim.travel)/core.W*screenW,y=floorAt(x);
+      const x=(segment*64+12-sim.travel)/core.W*screenW;
+      const y=Math.min(...Array.from({length:Math.ceil(wreckImage.width/pitch)+1},(_,i)=>floorAt(x+i*pitch)));
       if(x+ wreckImage.width<0||x>screenW)continue;
-      ctx.drawImage(wreckImage,x,y-wreckImage.height-8);
+      const wreckTop=y-wreckImage.height+groundInk-2+wreckFootInset;
+      ctx.drawImage(wreckImage,x,wreckTop);
       const peek=Math.sin(sim.tick*.018+segment);
-      if(peek>.7){ctx.globalAlpha=Math.min(1,(peek-.7)/.15);ctx.drawImage(eelImage,x+20,y-wreckImage.height-28);ctx.globalAlpha=1;}
+      if(peek>.7){ctx.globalAlpha=Math.min(1,(peek-.7)/.15);ctx.drawImage(eelImage,x+advance*17,wreckTop+font*5);ctx.globalAlpha=1;}
     }
   }
   function draw(){

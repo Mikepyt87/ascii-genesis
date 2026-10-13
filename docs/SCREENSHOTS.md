@@ -26,7 +26,7 @@ Two original ASCII Genesis cephalopods join the rotation: a rose squid with a po
 
 ![A green sea turtle with a patterned shell swimming above kelp](screenshots/turtle.jpg)
 
-The sea turtle brings the collection to 21 creature designs. Its original project artwork includes a green shell, flippers, and a small head. Both swimming directions are included in the [Ocean Library](OCEAN-LIBRARY.md#sea-turtle).
+The sea turtle brings the collection to 26 creature and vehicle designs. Its original project artwork includes a green shell, flippers, and a small head. Both swimming directions are included in the [Ocean Library](OCEAN-LIBRARY.md#sea-turtle).
 
 ![The creature parade with staggered swimmers, a disabled parade button, and 85 seconds remaining](screenshots/parade.jpg)
 
@@ -43,6 +43,12 @@ Travel gradually changes the setting. Open sand has a lower seabed and shorter, 
 ![An ASCII diver with a tank and fins crossing the upper water above seaweed](screenshots/diver.jpg)
 
 A diver occasionally swims across with gently alternating flippers and a small trail of bubbles. The first visit is scheduled after 5–10 minutes; another wait begins after departure. An active encounter can delay the visit. The diver stays separate from the eight-fish limit, and its bubbles fade away instead of accumulating.
+
+## Bottom creatures and the larger wreck
+
+![Crab and lobster on the seabed, with shark, whale, submarine, and eel in the larger wreck](screenshots/bottom-creatures-wreck.png)
+
+This staged Canvas-renderer preview shows the five new designs together. Crab and lobster feet follow the floor, including during the parade. The shark can join occasional hunts; the regular humpback whale glides through the rotation, while the yellow submarine is a decorative vehicle. The wreck is nine rows tall and over four times the peeking eel's width. The complete library includes all 26 regular designs in one collection.
 
 ## Predator encounter
 
@@ -74,7 +80,7 @@ Tap the water to reveal this panel. It fades after eight seconds so the ocean ca
 | Step | Advances the whole simulation by one tick, useful while paused. |
 | New world | Starts a fresh scene and resets its timers. |
 | AI event | Requests optional narration through your own configured OpenAI API connection. It does not control the ocean. |
-| Creature parade | Shows all 21 designs in a two-minute lineup, then returns to the normal ocean. |
+| Creature parade | Shows all 26 designs in a two-minute lineup, then returns to the normal ocean. |
 | Quiet mode | Turns hunting off or on. The preference is remembered in the browser profile. |
 
 The ocean, diver, and encounters all work **offline without an API key**. The AI button requires separate setup and working API access; the screenshot does not demonstrate a successful API call.

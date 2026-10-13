@@ -8,10 +8,10 @@ let cachedGlyphs=0,images=0,interval,clock=1000000,painted=[];
 const context=(cached=false)=>({font:'',fillStyle:'',textBaseline:'',fillRect(){},
   fillText(glyph,x,y){if(cached)cachedGlyphs++;else painted.push({glyph,x,y,color:this.fillStyle});},measureText(){return {width:9.6};},
   drawImage(image,x,y){assert.ok(image.width>0&&image.height>0);assert.ok(Number.isFinite(x)&&Number.isFinite(y));images++;}});
-const main=context(),elements=new Map();
+const main=context(),elements=new Map(),cachedCanvases=[];
 const tank={width:1280,height:400,dataset:{fishFont:'16'},getContext:()=>main};
 const document={getElementById(id){if(id==='tank')return tank;if(!elements.has(id))elements.set(id,{setAttribute(){}});return elements.get(id);},
- createElement(tag){assert.equal(tag,'canvas');return {getContext:()=>context(true)};}};
+ createElement(tag){assert.equal(tag,'canvas');const paint=context(true),image={paint,getContext:()=>paint};cachedCanvases.push(image);return image;}};
 let world;
 const settings=new Map();
 vm.runInNewContext(fs.readFileSync(new URL('./simulator.js',import.meta.url),'utf8'),{
@@ -19,6 +19,8 @@ vm.runInNewContext(fs.readFileSync(new URL('./simulator.js',import.meta.url),'ut
  localStorage:{getItem:k=>settings.get(k),setItem:(k,v)=>settings.set(k,v)},
  setInterval(fn,ms){assert.equal(ms,350);interval=()=>{clock+=350;fn();};},Date:class extends Date{constructor(){super('2026-10-12T12:00:00');}static now(){return clock;}},console});
 const initial=cachedGlyphs;assert.ok(initial>0);assert.ok(images>0);
+const wreck=cachedCanvases.find(c=>c.paint.fillStyle==='#64888b'),eel=cachedCanvases.find(c=>c.paint.fillStyle==='#ad9b77');
+assert.ok(wreck.width>=eel.width*4&&wreck.height>=eel.height*2.5,'Wreck must visibly dwarf its peeking eel');
 // Ground marks and plant roots must share the same camera displacement, including lattice crossings.
 for(let n=0;n<12;n++){
   const beforeTravel=world.travel,old=painted;painted=[];interval();

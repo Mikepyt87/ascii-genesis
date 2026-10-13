@@ -1,6 +1,6 @@
 # ASCII Genesis Ocean Library
 
-A field guide to everything currently drawn or simulated in the Raspberry Pi 4 ocean on the Waveshare 7.9-inch screen. The regular collection contains **17 fish designs, a squid, an octopus, a sea turtle, and a jellyfish, 42 directional drawings, two microscopic life types, a two-pose diver, bubbles, kelp, seabed contours, sediment texture, and water across six habitats**. An occasional diver visits, and brief predator encounters sometimes end in a catch. Quiet mode turns hunting off. A peeking eel and distant whale are additional visiting wildlife, documented alongside the diver.
+A field guide to everything currently drawn or simulated in the Raspberry Pi 4 ocean on the Waveshare 7.9-inch screen. The regular collection contains **25 sea-creature designs and a submarine, 52 directional drawings, two microscopic life types, a two-pose diver, bubbles, kelp, seabed contours, sediment texture, and water across six habitats**. An occasional diver visits, and brief predator encounters sometimes end in a catch. Quiet mode turns hunting off. A peeking eel and distant whale are additional visiting wildlife, documented alongside the diver.
 
 ## Thanks to the original creators
 
@@ -10,13 +10,13 @@ Much of the character of this ocean comes from [Asciiquarium](https://github.com
 
 Fish names describe the artwork. They are not verified biological species, and the ocean is a stylized simulation rather than a scientifically accurate marine food web. All creatures share the same population and edge rules, with distinct movement for rays, turtles, octopuses, and jellyfish.
 
-**Appearance determines hunting eligibility.** Large ocean fish, silver spearfish, and copper morays have the hunter role. Tiny fish, little triangular fish, reef fish, and box fish can be selected as prey in encounters. Other designs cruise without being selected for hunts. These are artistic simulation roles, not claims about real diets. There are no fixed species territories.
+**Appearance determines hunting eligibility.** Large ocean fish, silver spearfish, copper morays, and reef sharks have the hunter role. Tiny fish, little triangular fish, reef fish, and box fish can be selected as prey in encounters. Other designs cruise without being selected for hunts. These are artistic simulation roles, not claims about real diets. There are no fixed species territories.
 
 The artwork below is copied from the actual sprite collection, with its spaces preserved. Each entry shows both directions. Dimensions are character columns by text rows, including spacing, and can differ between directions. The screen uses a 16-pixel monospaced font: each row is 16 pixels tall and each character is roughly 9.6 pixels wide, depending on the browser font.
 
 ## Library navigation
 
-- [Creature index](#creature-index) and [all 21 creature drawings](#creature-drawings)
+- [Creature index](#creature-index) and [all 26 creature drawings](#creature-drawings)
 - [Visiting wildlife](#visiting-wildlife-index): diver, peeking eel, and distant whale
 - [Movement, schools, and lighting](#movement-and-lighting)
 - [Other objects](#other-objects-index), [scenery](#expanded-ocean-objects), and [habitats](#habitats)
@@ -47,10 +47,15 @@ The artwork below is copied from the actual sprite collection, with its spaces p
 | 19 | [violet octopus](#violet-octopus) | violet and muted purple | ASCII Genesis |
 | 20 | [sea turtle](#sea-turtle) | soft green and teal green | ASCII Genesis |
 | 21 | [moon jellyfish](#moon-jellyfish) | pale blue and lavender | ASCII Genesis |
+| 22 | [shore crab](#shore-crab) | warm copper | ASCII Genesis |
+| 23 | [reef lobster](#reef-lobster) | red and rust | ASCII Genesis |
+| 24 | [reef shark](#reef-shark) | slate blue | ASCII Genesis |
+| 25 | [humpback whale](#humpback-whale) | soft blue | ASCII Genesis |
+| 26 | [yellow submarine](#yellow-submarine) | muted yellow | ASCII Genesis |
 
 ## Visiting wildlife index
 
-The numbered collection contains 21 rotating creature designs and is the parade lineup. These additional visitors have their own drawings and behavior; they do not occupy the regular swimmer slots or join the parade.
+The numbered collection contains 25 sea-creature designs and one submarine, making 26 regular designs in the parade lineup. These additional visitors have their own drawings and behavior; they do not occupy the regular swimmer slots or join the parade.
 
 | Visitor | Appearance and behavior | Source |
 | --- | --- | --- |
@@ -65,7 +70,7 @@ The numbered collection contains 21 rotating creature designs and is the parade 
 - Normal individual speeds range from 0.18 to just under 0.45 world cells per tick. At 350 milliseconds per tick and 1280 pixels across 48 world cells, that is roughly 14 to 34 pixels per second. A center crosses the visible width in about 37 to 93 seconds. Jellyfish and octopus arrivals are slower (0.12 and 0.16 cells per tick); schools share a group speed. See [movement and lighting](#movement-and-lighting).
 - Fish keep their drawing and direction for their whole crossing. Ordinary departures are removed after their center reaches 20 world cells beyond an edge. Normal arrivals start 10 cells beyond an edge. An encounter pair starts 10 and 18 cells beyond the same edge. A successful catch is the only removal inside the visible screen.
 - Fry can consume nearby plankton. Hunters normally cruise; selected encounter pairs briefly chase, and some catch prey. There is no breeding, aging, health, or hunger system for individual swimmers.
-- The renderer keeps each drawing above the local seabed and caches all 42 creature images. Travel changes which designs enter next; it does not transform fish already on screen.
+- The renderer keeps each drawing above the local seabed and caches all 52 creature images. Travel changes which designs enter next; it does not transform fish already on screen.
 
 ## Creature drawings
 
@@ -674,6 +679,140 @@ Facing left (21 columns × 5 rows):
   ( | ) |      
 ```
 
+### shore crab
+
+**Original ASCII Genesis artwork; GPL-2.0-or-later.** Design 22.
+
+**Behavior:** A slow seabed crawler. New arrivals move at 0.10 cells per tick. Its feet stay two screen pixels above the highest floor under its full width, including during the parade. It is not selected for hunts.
+
+**Right-facing: 17 columns × 5 rows**
+
+```text
+   __         __ 
+  /  \ (o o) /  \
+  \__/--___--\__/
+    / /|||\ \    
+   /_/ ||| \_\   
+```
+
+**Left-facing: 17 columns × 5 rows**
+
+```text
+ __         __   
+/  \ (o o) /  \  
+\__/--___--\__/  
+    / /|||\ \    
+   /_/ ||| \_\   
+```
+### reef lobster
+
+**Original ASCII Genesis artwork; GPL-2.0-or-later.** Design 23.
+
+**Behavior:** A red lobster with claws, segmented body, and walking legs. New arrivals move at 0.12 cells per tick. It uses the same grounded placement as the crab and stays at the bottom through terrain changes and the parade. It is not selected for hunts.
+
+**Right-facing: 24 columns × 6 rows**
+
+```text
+                     __ 
+                ____/  \
+  _/\_  _ _ _  / o  \__/
+ <_  _>=|=|=|=(_____)-->
+   \/   / / /  \ \ \__  
+       /_/ /_   \_\___> 
+```
+
+**Left-facing: 24 columns × 6 rows**
+
+```text
+ __                     
+/  \____                
+\__/  o \  _ _ _  _/\_  
+<--(_____)=|=|=|=<_  _> 
+  __/ / /  \ \ \   \/   
+ <___/_/   _\ \_\       
+```
+### reef shark
+
+**Original ASCII Genesis artwork; GPL-2.0-or-later.** Design 24.
+
+**Behavior:** A slate-blue shark with a tall dorsal fin, gill marks, and a pointed snout. It cruises in the normal rotation and is also eligible as an occasional pursuit predator. Existing quiet mode, contact rules, and encounter cooldowns apply.
+
+**Right-facing: 27 columns × 6 rows**
+
+```text
+               /|          
+    /\   _____/ |______    
+   /  \_/   ---   o    \__ 
+  <   _    (((           _>
+   \_/ '----.____   ____/  
+             \__\_/        
+```
+
+**Left-facing: 27 columns × 6 rows**
+
+```text
+          |\               
+    ______| \_____   /\    
+ __/    o   ---   \_/  \   
+<_           )))    _   >  
+  \____   ____.----' \_/   
+        \_/__/             
+```
+### humpback whale
+
+**Original ASCII Genesis artwork; GPL-2.0-or-later.** Design 25.
+
+**Behavior:** A larger blue whale with a rounded body, tail flukes, and a long flipper. It joins the regular rotation at 0.16 cells per tick with a gentle vertical glide. It is separate from the faint distant-whale discovery, and is not selected for hunts.
+
+**Right-facing: 37 columns × 6 rows**
+
+```text
+                 ____                
+       _________/    \____________   
+  __  /                        o  \_ 
+ <  \/      __                    __)
+  \_/\_____/  \__________________/   
+             \____/                  
+```
+
+**Left-facing: 37 columns × 6 rows**
+
+```text
+                ____                 
+   ____________/    \_________       
+ _/  o                        \  __  
+(__                    __      \/  > 
+   \__________________/  \_____/\_/  
+                  \____/             
+```
+### yellow submarine
+
+**Original ASCII Genesis artwork; GPL-2.0-or-later.** Design 26.
+
+**Behavior:** A yellow research submarine with a periscope, three portholes, and a rear propeller housing. It travels at 0.20 cells per tick and keeps its depth, subject to the seabed clamp. This is a vehicle, not an animal: it uses a regular display slot but does not eat plankton, hunt, or count as fry/hunters in the food web.
+
+**Right-facing: 27 columns × 6 rows**
+
+```text
+               _           
+              | |_         
+          ____|___|____    
+   __   .'             '.  
+  [__]==|  (o) (o) (o)   )>
+        '.___=======___.'  
+```
+
+**Left-facing: 27 columns × 6 rows**
+
+```text
+           _               
+         _| |              
+    ____|___|____          
+  .'             '.   __   
+<(   (o) (o) (o)  |==[__]  
+  '.___=======___.'        
+```
+
 ## Visiting wildlife drawings
 
 ### Diver artwork
@@ -734,7 +873,7 @@ Facing left (21 columns × 5 rows):
 
 ### Peeking eel
 
-**Original ASCII Genesis artwork; GPL-2.0-or-later.** sandy copper `#ad9b77`, three rows. A separate decorative eel fades in and out at the wreck opening during brief windows of its slow sine cycle. It does not replace or change a swimming copper moray and is not a hunting agent.
+**Original ASCII Genesis artwork; GPL-2.0-or-later.** sandy copper `#ad9b77`, three rows. A separate decorative eel fades in and out from the enlarged wreck’s central hull opening during brief windows of its slow sine cycle. It does not replace or change a swimming copper moray and is not a hunting agent.
 
 ```text
  __    __
@@ -744,7 +883,7 @@ Facing left (21 columns × 5 rows):
 
 ### Distant whale
 
-**Original ASCII Genesis artwork; GPL-2.0-or-later.** muted blue `#426573`, five rows, mirrored for both directions. It starts 24 world cells outside an edge and travels at 0.16 cells per tick until it fully clears the opposite side. It appears behind the normal scene, with restrained opacity. Only one whale/glow discovery can exist at once.
+**Original ASCII Genesis artwork; GPL-2.0-or-later.** muted blue `#426573`, five rows, mirrored for both directions. It starts 24 world cells outside an edge and travels at 0.16 cells per tick until it fully clears the opposite side. It appears behind the normal scene, with restrained opacity. This visitor is separate from the regular humpback whale design above. Only one whale/glow discovery can exist at once.
 
 ```text
           ___
@@ -761,6 +900,8 @@ Facing left (21 columns × 5 rows):
 - **Rays:** glide up and down by 1.5 world rows without changing direction.
 - **Turtles:** start a gentle surface visit after 100 movement ticks, turn back after 180, and return toward their original depth. This is a stylized surface visit, not a breathing simulation.
 - **Octopuses:** new arrivals cruise at 0.16 cells per tick and approach a point nine rows above the local seabed. Artwork remains clamped above the ground.
+- **Crab and lobster:** slow horizontal crawling, grounded along the highest seabed point under the body. Both stay grounded in the parade too.
+- **Whale and submarine:** the regular whale glides gently up and down; the submarine maintains a steady depth. The submarine occupies one of the eight display slots but is excluded from the food web.
 - **Day/night:** the default cycle lasts 20 minutes of unpaused simulation time. Light is brightest at its start, darkest halfway through, and smoothly changes throughout. Local-clock mode follows the Pi's hour and minute, brightest at noon and darkest at midnight. The clock button's preference survives resets and reopening. Pausing holds the picture; resuming local-clock mode follows the current time. Night tint opacity never exceeds 18 percent.
 - **Night arrivals:** every fourth arrival may favor a lanternfish or jellyfish if that drawing is available, while ordinary design rotation continues. This is artistic scheduling, not a biological claim.
 - The normal world, species movement, lighting, and discovery timers are held during the creature parade. Quiet mode does not turn off peaceful additions.
@@ -880,13 +1021,18 @@ These are original ASCII Genesis scenery and decorative effects, under GPL-2.0-o
 
 ### Shipwreck
 
- blue green `#64888b`, four rows. One fixed wreck coordinate per shipwreck habitat segment, drawn above the local floor. It enters and exits through scrolling; it is not respawned inside the view.
+ blue green `#64888b`, nine rows, over four times the width and three times the height of the peeking eel. One fixed wreck coordinate per shipwreck habitat segment, drawn above the local floor. It enters and exits through scrolling; it is not respawned inside the view.
 
 ```text
-       __|__
-  ____/_____|___
-  \____[]_____/
-    /_/   /_/
+                    |
+               _____|_____
+              /___________\
+       _______|  []   []  |________
+  ____/  [] [] |__________| [] []   \___
+  \             [_______]            /
+   \______                  _______/
+          \________________/
+            /_/        /_/
 ```
 
 ### Glowing plankton patch
@@ -903,8 +1049,8 @@ These are original ASCII Genesis scenery and decorative effects, under GPL-2.0-o
 | --- | --- | --- |
 | Algae | Small green teal dot, ` . `, color `#4fb89d` | Starts with 76 cells. Regrows slowly near existing patches and receives occasional additions near the seabed. Declines through natural loss, plankton feeding, travel, and terrain changes. Limited to 100 cells. |
 | Plankton | Small pale mint `o`, color `#8fffe0` | Starts with 34 cells. Can drift to neighboring water cells, consume adjacent algae, rarely divide, and naturally disappear. Incoming additions help maintain a light food supply. Limited to 45 cells. |
-| Fry | One of the full fish drawings | Non-predator designs receive this role. Each step, a fry with neighboring plankton has a 34 percent chance of consuming one adjacent plankton cell. Fry do not visibly grow into adults. |
-| Hunter | One of the full fish drawings | Large ocean fish, silver spearfish, and copper moray drawings receive this role. Only the selected encounter pair hunts at a time; other hunters keep cruising. |
+| Fry | One of the full fish drawings | Non-predator creature designs receive this role; the submarine is excluded. Each step, a fry with neighboring plankton has a 34 percent chance of consuming one adjacent plankton cell. Fry do not visibly grow into adults. |
+| Hunter | One of the full fish drawings | Large ocean fish, silver spearfish, copper moray, and reef shark drawings receive this role. Only the selected encounter pair hunts at a time; other hunters keep cruising. |
 | Empty water | Near-black background, `#02090c` | Open space between the creatures and scenery. Not an organism or particle effect. |
 
 The model uses a 48 × 48 cell grid beneath the detailed drawings. Its text-only symbols are a dot for algae, o for plankton, > for fry, and @ for a hunter. Full-screen mode replaces the last two with fish artwork. If fish occupy the same grid cell, the hidden counters can undercount them; the swimmer list holds their individual identities.
@@ -962,9 +1108,10 @@ Small bubbles rise near the diver, changing from an o to a dot before vanishing.
 
 | Encounter role | Eligible drawings |
 | --- | --- |
-| Predator | Large ocean fish, silver spearfish, copper moray |
+| Predator | Large ocean fish, silver spearfish, copper moray, reef shark |
 | Prey | Tiny fish, little triangular fish, reef fish, box fish |
-| Cruising only | Angelfish, striped fish, rounded fish, diamond fish, curly-fin fish, sunburst puffer, ribbon bannerfish, violet kite ray, blue lanternfish, rose squid, violet octopus, sea turtle, moon jellyfish |
+| Cruising only | Angelfish, striped fish, rounded fish, diamond fish, curly-fin fish, sunburst puffer, ribbon bannerfish, violet kite ray, blue lanternfish, rose squid, violet octopus, sea turtle, moon jellyfish, shore crab, reef lobster, humpback whale |
+| Decorative vehicle | Yellow submarine; no food-web interaction |
 
 After a 2 to 4 minute cooldown, the simulation waits for two swimmer slots and no diver before bringing in a predator and prey from the same edge. Both begin outside the display and cruise into view together. Only one encounter can be active. The cooldown restarts when it ends, so visible encounters are farther apart than the cooldown alone.
 
@@ -988,17 +1135,17 @@ The implementation caps swimmers at eight, divers at one, and bubbles at five. C
 
 ## Creature parade
 
-Tap the water and press **Creature parade · 2 min**. All 21 creature designs, including the turtle, squid, and octopus, make a complete left-to-right crossing during a two-minute showcase. They are staggered across four swimming lanes, with no more than eight parade swimmers at once. Every design starts fully beyond the left edge and leaves fully beyond the right edge. The diver is a visiting person and is not part of the sea-creature lineup.
+Tap the water and press **Creature parade · 2 min**. All 26 creature and vehicle designs, including the turtle, squid, and octopus, make a complete left-to-right crossing during a two-minute showcase. They are staggered across four swimming lanes, with crabs and lobsters rendered along the floor instead, with no more than eight parade swimmers at once. Every design starts fully beyond the left edge and leaves fully beyond the right edge. The diver is a visiting person and is not part of the sea-creature lineup.
 
 The showcase uses separate swimmers and preserves the normal world's positions, ecosystem, terrain, and encounter timers. Ordinary swimmers blend out at the start; once the lineup has finished crossing, they blend back in during the final two seconds. The normal ocean resumes automatically at the end. There are no hunts during the parade, and quiet mode does not prevent it.
 
 The countdown uses elapsed running time. Pause freezes it; Step advances it by one 350-millisecond tick. If started while paused, press Resume to run it. The parade button is disabled until it finishes, so repeated presses cannot extend the timer. New world cancels the parade. Parade state is not saved between launches.
 
-Parade swimmers move at about 61 screen pixels per second so the whole lineup can finish within two minutes. Their images use the existing cache. Checks verify that all designs become fully visible and fully exit, the population cap holds, the timer reaches 120 seconds, and the normal ecosystem is preserved and resumes correctly.
+Parade swimmers move at about 67 screen pixels per second for the current collection so the whole lineup can finish within two minutes. Their images use the existing cache. Checks verify that all designs become fully visible and fully exit, the population cap holds, the timer reaches 120 seconds, and the normal ecosystem is preserved and resumes correctly.
 
 ## Artwork and maintenance
 
-Eleven designs come from Asciiquarium 1.1. The upstream code credits Kirk Baucom and credits most ASCII artwork to Joan Stark; expanded marine biodiversity was backported by Claudio Matsuoka. Ten creature drawings are original to ASCII Genesis, including the squid, octopus, turtle, and jellyfish. All are distributed with this project under GPL-2.0-or-later. See [credits](../THIRD-PARTY.txt), [license](../LICENSE.txt), and the preserved [upstream source](../third-party/asciiquarium-upstream.pl).
+Eleven designs come from Asciiquarium 1.1. The upstream code credits Kirk Baucom and credits most ASCII artwork to Joan Stark; expanded marine biodiversity was backported by Claudio Matsuoka. Fifteen creature and vehicle drawings are original to ASCII Genesis, including the squid, octopus, turtle, and jellyfish. All are distributed with this project under GPL-2.0-or-later. See [credits](../THIRD-PARTY.txt), [license](../LICENSE.txt), and the preserved [upstream source](../third-party/asciiquarium-upstream.pl).
 
 The installed artwork is in [fish-art.js](../simulator/fish-art.js). Its source drawings and extraction rules are in [original-fish.mjs](../third-party/original-fish.mjs) and [restore-sprites.mjs](../third-party/restore-sprites.mjs). The running rules are in [aquarium.js](../simulator/aquarium.js); colors, terrain drawing, and sprite placement are in [simulator.js](../simulator/simulator.js).
 

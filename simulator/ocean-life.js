@@ -2,7 +2,8 @@
   'use strict';
   const W=48,H=48,FRY=3,HUNTER=4;
   // Eligibility belongs to artwork, never to a randomly assigned food-web role.
-  const predators=new Set(['large ocean fish','silver spearfish','copper moray']);
+  const predators=new Set(['large ocean fish','silver spearfish','copper moray','reef shark']);
+  const bottomNames=new Set(['shore crab','reef lobster']);
   const preyNames=new Set(['tiny fish','little triangular fish','reef fish','box fish']);
   const interval=(rng,min,max)=>Math.round((min+rng()*(max-min))*1000/350);
   function setup(w,art=[],options={}){
@@ -13,13 +14,13 @@
       const points=[];
       s.masks.forEach((row,y)=>[...row].forEach((c,x)=>{if(c==='5')points.push({x:(x+.5)*advance,y:(y+.5)*font});}));
       points.sort((a,b)=>index%2?a.x-b.x:b.x-a.x);
-      return {name:s.name,width,height,mouth:points[0]||{x:width/2,y:height/2}};
+      return {name:s.name,width,height,footInset:options.footInsets?.[index]||0,mouth:points[0]||{x:width/2,y:height/2}};
     });
     w.life={quiet:!!options.quiet,nextEncounter:interval(w.rng,120,240),nextDiver:interval(w.rng,300,600),
       encounter:null,diver:null,bubbles:[],lastOutcome:null};
     w.ocean={elapsed:0,clockMode:options.clockMode==='local'?'local':'cycle',localHour:12,light:1,
       nextSchool:interval(w.rng,60,120),nextDiscovery:interval(w.rng,300,600),discovery:null};
-    for(const f of w.fish)f.kind=predators.has(w.profiles[f.design*2]?.name)?HUNTER:FRY;
+    for(const f of w.fish)f.kind=w.profiles[f.design*2]?.name==='yellow submarine'?0:predators.has(w.profiles[f.design*2]?.name)?HUNTER:FRY;
     // Keep the microscopic grid consistent with the new design-based roles.
     for(let i=0;i<w.cells.length;i++)if(w.cells[i]===FRY||w.cells[i]===HUNTER)w.cells[i]=0;
     for(const f of w.fish)w.cells[Math.floor(f.y)*W+Math.floor(f.x)]=f.kind;
@@ -56,7 +57,10 @@
     }else if(name==='violet octopus'){
       const col=Math.max(0,Math.min(W-1,Math.floor(f.x)));
       const target=w.floor[col]-9;f.y+=Math.max(-.2,Math.min(.2,target-f.y));
-    }
+    }else if(bottomNames.has(name)){
+      const b=box(w,f);f.y=(b.top+b.height/2)/(w.view.height/H);
+    }else if(name==='humpback whale')f.y=f.baseY+Math.sin(f.age*.018)*.7;
+    else if(name==='yellow submarine')f.y=f.baseY;
     f.y=Math.max(5,Math.min(H-5,f.y));
   }
   function addSchool(w,reserve=0){
@@ -70,7 +74,10 @@
   }
   function startParade(w){
     if(w.parade)return false;
-    const speed=.8,margin=10,travelMs=(W+2*margin)/speed*350;
+    const margin=10;
+    // Increase only the showcase pace as its collection grows, keeping at most eight entries.
+    const speed=Math.max(.8,(W+2*margin)*350*(w.designCount+7)/(8*118000)*1.05);
+    const travelMs=(W+2*margin)/speed*350;
     w.parade={elapsed:0,duration:120000,speed,margin,travelMs,
       spacing:w.designCount>1?(120000-travelMs-2000)/(w.designCount-1):0,fish:[]};
     advanceParade(w,0);
@@ -96,7 +103,8 @@
     const first=Math.min(W-1,Math.max(0,Math.floor(left/cx)));
     const last=Math.max(first+1,Math.min(W,Math.ceil((left+width)/cx)+1));
     const floor=Math.min(...w.floor.slice(first,last))*cy;
-    return {left,top:Math.max(8,Math.min(floor-height-8,f.y*cy-height/2)),width,height};
+    const bottom=bottomNames.has(p?.name);
+    return {left,top:Math.max(8,bottom?floor-height-2+(p.footInset||0):Math.min(floor-height-8,f.y*cy-height/2)),width,height};
   }
   function mouth(w,f){const b=box(w,f),p=profile(w,f);return {x:b.left+(p?.mouth.x||b.width/2),y:b.top+(p?.mouth.y||b.height/2)};}
   function finish(w,result){

@@ -76,5 +76,44 @@ export const originalFish = [
       | ) | (
       ( | ( |
       | ( | )
+`},
+  {name:'shore crab',color:'#d69a76',fin:'#b87359',art:String.raw`
+   __         __
+  /  \ (o o) /  \
+  \__/--___--\__/
+    / /|||\ \
+   /_/ ||| \_\
+`},
+  {name:'reef lobster',color:'#cf8175',fin:'#a96159',art:String.raw`
+                     __
+                ____/  \
+  _/\_  _ _ _  / o  \__/
+ <_  _>=|=|=|=(_____)-->
+   \/   / / /  \ \ \__
+       /_/ /_   \_\___>
+`},
+  {name:'reef shark',color:'#91adbf',fin:'#688598',art:String.raw`
+               /|
+    /\   _____/ |______
+   /  \_/   ---   o    \__
+  <   _    (((           _>
+   \_/ '----.____   ____/
+             \__\_/
+`},
+  {name:'humpback whale',color:'#91b8c9',fin:'#6e91aa',art:String.raw`
+                 ____
+       _________/    \____________
+  __  /                        o  \_
+ <  \/      __                    __)
+  \_/\_____/  \__________________/
+             \____/
+`},
+  {name:'yellow submarine',color:'#d3bc72',fin:'#aa9461',art:String.raw`
+               _
+              | |_
+          ____|___|____
+   __   .'             '.
+  [__]==|  (o) (o) (o)   )>
+        '.___=======___.'
 `}
 ];

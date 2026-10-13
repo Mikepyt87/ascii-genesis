@@ -128,12 +128,12 @@
       let design=(id+w.habitat.region*3)%w.designCount;
       // Some night arrivals favor lanternfish and jellyfish; ordinary rotation continues.
       if(w.ocean.light<.35&&id%4===0){const nocturnal=w.profiles.findIndex(p=>p.name===(id%8===0?'moon jellyfish':'blue lanternfish'));if(nocturnal>=0&&nocturnal/2<w.designCount)design=Math.floor(nocturnal/2);}
-      const kind=life.predators.has(w.profiles[design*2]?.name)?HUNTER:FRY;
       const name=w.profiles[design*2]?.name;
-      const speed=name==='moon jellyfish'?.12:name==='violet octopus'?.16:.18+rng()*.27;
+      const kind=name==='yellow submarine'?EMPTY:life.predators.has(name)?HUNTER:FRY;
+      const speed=name==='moon jellyfish'?.12:name==='violet octopus'?.16:name==='shore crab'?.1:name==='reef lobster'?.12:name==='humpback whale'?.16:name==='yellow submarine'?.2:.18+rng()*.27;
       w.fish.push({id,kind,x:right?-10:W+10,y:6+rng()*25,design,right,speed});
     }
-    for(const fish of w.fish)if(fish.x>=0&&fish.x<W){
+    for(const fish of w.fish)if(fish.kind!==EMPTY&&fish.x>=0&&fish.x<W){
       const i=Math.floor(fish.y)*W+Math.floor(fish.x);
       if(Math.floor(fish.y)<w.floor[Math.floor(fish.x)])next[i]=fish.kind;
     }
