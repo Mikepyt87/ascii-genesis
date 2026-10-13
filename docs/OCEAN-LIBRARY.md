@@ -1,6 +1,6 @@
 # ASCII Genesis Ocean Library
 
-A field guide to everything currently drawn or simulated in the Raspberry Pi 4 ocean on the Waveshare 7.9-inch screen. The collection contains **17 fish designs, a squid, an octopus, a sea turtle, and a jellyfish, 42 directional drawings, two microscopic life types, a two-pose diver, bubbles, kelp, seabed contours, sediment texture, and water across six habitats**. An occasional diver visits, and brief predator encounters sometimes end in a catch. Quiet mode turns hunting off.
+A field guide to everything currently drawn or simulated in the Raspberry Pi 4 ocean on the Waveshare 7.9-inch screen. The regular collection contains **17 fish designs, a squid, an octopus, a sea turtle, and a jellyfish, 42 directional drawings, two microscopic life types, a two-pose diver, bubbles, kelp, seabed contours, sediment texture, and water across six habitats**. An occasional diver visits, and brief predator encounters sometimes end in a catch. Quiet mode turns hunting off. A peeking eel and distant whale are additional visiting wildlife, documented alongside the diver.
 
 ## Thanks to the original creators
 
@@ -14,25 +14,13 @@ Fish names describe the artwork. They are not verified biological species, and t
 
 The artwork below is copied from the actual sprite collection, with its spaces preserved. Each entry shows both directions. Dimensions are character columns by text rows, including spacing, and can differ between directions. The screen uses a 16-pixel monospaced font: each row is 16 pixels tall and each character is roughly 9.6 pixels wide, depending on the browser font.
 
-## Other objects index
+## Library navigation
 
-All swimmer drawings appear in the next index. Every other visible ocean object has an entry here; habitat settings and the control panel are included too. Tank, mask, arms, and fins are parts of one diver sprite, rather than independent objects.
-
-| Object or feature | Category | Visual example and details |
-| --- | --- | --- |
-| Diver | Visiting character | [Both poses and directions](#diver-artwork) |
-| Diver bubbles | Temporary particles | [Rising bubbles](#diver-bubbles) |
-| Algae | Simulated life | [Algae dots](#algae-dots) |
-| Plankton | Simulated life | [Plankton glyphs](#plankton-glyphs) |
-| Kelp stalks and fronds | Procedural scenery | [Kelp artwork](#kelp-artwork) |
-| Seabed contour | Procedural scenery | [Floor contour](#floor-contour) |
-| Sediment texture | Procedural scenery | [Sediment marks](#sediment-marks) |
-| Water | Background | [Water background](#water-background) |
-| Six ocean habitats | Habitat settings | [Habitats](#habitats) |
-| Coral, seagrass, wreck, eel, whale, and glow patch | Scenery and discoveries | [Expanded ocean objects](#expanded-ocean-objects) |
-| Day/night lighting and schools | Local behavior | [Movement and lighting](#movement-and-lighting) |
-| Touch panel and readouts | Interface | [Controls and readouts](#controls-and-readouts) |
-| Prey shrinking at mouth contact | Fish animation | [Catch and feeding](#catch-and-feeding) |
+- [Creature index](#creature-index) and [all 21 creature drawings](#creature-drawings)
+- [Visiting wildlife](#visiting-wildlife-index): diver, peeking eel, and distant whale
+- [Movement, schools, and lighting](#movement-and-lighting)
+- [Other objects](#other-objects-index), [scenery](#expanded-ocean-objects), and [habitats](#habitats)
+- [Encounters](#visitors-and-encounters), [parade](#creature-parade), and [artwork credits](#artwork-and-maintenance)
 
 ## Creature index
 
@@ -60,16 +48,26 @@ All swimmer drawings appear in the next index. Every other visible ocean object 
 | 20 | [sea turtle](#sea-turtle) | soft green and teal green | ASCII Genesis |
 | 21 | [moon jellyfish](#moon-jellyfish) | pale blue and lavender | ASCII Genesis |
 
+## Visiting wildlife index
+
+The numbered collection contains 21 rotating creature designs and is the parade lineup. These additional visitors have their own drawings and behavior; they do not occupy the regular swimmer slots or join the parade.
+
+| Visitor | Appearance and behavior | Source |
+| --- | --- | --- |
+| [Diver](#diver-artwork) | Two poses, both directions, short-lived bubbles | ASCII Genesis |
+| [Peeking eel](#peeking-eel) | Sandy copper eel at a scrolling wreck opening | ASCII Genesis |
+| [Distant whale](#distant-whale) | Muted blue silhouette, both directions, rare crossing | ASCII Genesis |
+
 ## Shared swimming behavior
 
 - A new world begins with six swimmers already in the scene. Their roles follow their designs. Later arrivals, including encounter pairs, start beyond an edge.
 - Up to eight swimmers may exist at once, including swimmers outside the visible screen. A normal arrival opportunity occurs every 24 ticks, about 8.4 seconds, when there is room. A pending encounter reserves two slots so it can introduce a suitable pair without exceeding the cap.
-- Normal individual speeds range from 0.18 to just under 0.45 world cells per tick. At 350 milliseconds per tick and 1280 pixels across 48 world cells, that is roughly 14 to 34 pixels per second. A center crosses the visible width in about 37 to 93 seconds.
+- Normal individual speeds range from 0.18 to just under 0.45 world cells per tick. At 350 milliseconds per tick and 1280 pixels across 48 world cells, that is roughly 14 to 34 pixels per second. A center crosses the visible width in about 37 to 93 seconds. Jellyfish and octopus arrivals are slower (0.12 and 0.16 cells per tick); schools share a group speed. See [movement and lighting](#movement-and-lighting).
 - Fish keep their drawing and direction for their whole crossing. Ordinary departures are removed after their center reaches 20 world cells beyond an edge. Normal arrivals start 10 cells beyond an edge. An encounter pair starts 10 and 18 cells beyond the same edge. A successful catch is the only removal inside the visible screen.
 - Fry can consume nearby plankton. Hunters normally cruise; selected encounter pairs briefly chase, and some catch prey. There is no breeding, aging, health, or hunger system for individual swimmers.
 - The renderer keeps each drawing above the local seabed and caches all 42 creature images. Travel changes which designs enter next; it does not transform fish already on screen.
 
-## Fish drawings
+## Creature drawings
 
 ### angelfish
 
@@ -78,7 +76,7 @@ A broad rounded body, swept upper fin, forked tail, and a small eye near the nos
 - **Color:** warm gold.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 14 × 6; left 14 × 6 characters.
-- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
+- **Behavior:** see [shared swimming rules](#shared-swimming-behavior), [movement styles](#movement-and-lighting), and [encounter eligibility](#predators-and-prey).
 
 Facing right:
 
@@ -109,7 +107,7 @@ A compact oval body with a pointed upper and lower fin, forked tail, and round e
 - **Color:** soft blue.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 7 × 5; left 7 × 5 characters.
-- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
+- **Behavior:** see [shared swimming rules](#shared-swimming-behavior), [movement styles](#movement-and-lighting), and [encounter eligibility](#predators-and-prey).
 
 Facing right:
 
@@ -138,7 +136,7 @@ Dense colon markings fill the body, with layered slash fins and a wide forked ta
 - **Color:** dusty rose.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 16 × 5; left 16 × 5 characters.
-- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
+- **Behavior:** see [shared swimming rules](#shared-swimming-behavior), [movement styles](#movement-and-lighting), and [encounter eligibility](#predators-and-prey).
 
 Facing right:
 
@@ -167,7 +165,7 @@ A three-line silhouette with a small outlined body and a simple crossed tail.
 - **Color:** pale cream.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 5 × 3; left 5 × 3 characters.
-- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
+- **Behavior:** see [shared swimming rules](#shared-swimming-behavior), [movement styles](#movement-and-lighting), and [encounter eligibility](#predators-and-prey).
 
 Facing right:
 
@@ -192,7 +190,7 @@ A low rounded outline with short fins and a small forked tail.
 - **Color:** peach and coral.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 9 × 3; left 9 × 3 characters.
-- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
+- **Behavior:** see [shared swimming rules](#shared-swimming-behavior), [movement styles](#movement-and-lighting), and [encounter eligibility](#predators-and-prey).
 
 Facing right:
 
@@ -217,7 +215,7 @@ A tall angular outline with pointed top and bottom fins around a compact body.
 - **Color:** sage green.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 6 × 5; left 6 × 5 characters.
-- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
+- **Behavior:** see [shared swimming rules](#shared-swimming-behavior), [movement styles](#movement-and-lighting), and [encounter eligibility](#predators-and-prey).
 
 Facing right:
 
@@ -246,7 +244,7 @@ A three-line pointed fish with short upper and lower fins and a crossed tail.
 - **Color:** lavender.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 5 × 3; left 5 × 3 characters.
-- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
+- **Behavior:** see [shared swimming rules](#shared-swimming-behavior), [movement styles](#movement-and-lighting), and [encounter eligibility](#predators-and-prey).
 
 Facing right:
 
@@ -271,7 +269,7 @@ A small box-shaped outline with a round eye and a crossed tail.
 - **Color:** teal.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 5 × 3; left 5 × 3 characters.
-- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
+- **Behavior:** see [shared swimming rules](#shared-swimming-behavior), [movement styles](#movement-and-lighting), and [encounter eligibility](#predators-and-prey).
 
 Facing right:
 
@@ -296,7 +294,7 @@ Curved upper and lower fins frame a rounded body, with a curly tail and a promin
 - **Color:** warm gold.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 10 × 7; left 10 × 7 characters.
-- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
+- **Behavior:** see [shared swimming rules](#shared-swimming-behavior), [movement styles](#movement-and-lighting), and [encounter eligibility](#predators-and-prey).
 
 Facing right:
 
@@ -329,7 +327,7 @@ The largest classic drawing: a broad body, large eye, gill marks, forked tail, a
 - **Color:** soft blue.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 23 × 8; left 23 × 8 characters.
-- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
+- **Behavior:** see [shared swimming rules](#shared-swimming-behavior), [movement styles](#movement-and-lighting), and [encounter eligibility](#predators-and-prey).
 
 Facing right:
 
@@ -364,7 +362,7 @@ A long tapered silhouette with a swept top fin, paired gill marks, and a forked 
 - **Color:** dusty rose.
 - **Artwork:** Adapted Asciiquarium drawing; see [artwork credits](../THIRD-PARTY.txt).
 - **Size:** right 16 × 5; left 16 × 5 characters.
-- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
+- **Behavior:** see [shared swimming rules](#shared-swimming-behavior), [movement styles](#movement-and-lighting), and [encounter eligibility](#predators-and-prey).
 
 Facing right:
 
@@ -393,7 +391,7 @@ A round dotted body surrounded by small spine marks, with a short tail and point
 - **Color:** gold and bronze.
 - **Artwork:** Original ASCII Genesis drawing in [original-fish.mjs](../third-party/original-fish.mjs).
 - **Size:** right 16 × 5; left 16 × 5 characters.
-- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
+- **Behavior:** see [shared swimming rules](#shared-swimming-behavior), [movement styles](#movement-and-lighting), and [encounter eligibility](#predators-and-prey).
 
 Facing right:
 
@@ -422,7 +420,7 @@ A tall striped body with extended upper and lower fins and a trailing lower ribb
 - **Color:** silver blue and gold.
 - **Artwork:** Original ASCII Genesis drawing in [original-fish.mjs](../third-party/original-fish.mjs).
 - **Size:** right 19 × 8; left 19 × 8 characters.
-- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
+- **Behavior:** see [shared swimming rules](#shared-swimming-behavior), [movement styles](#movement-and-lighting), and [encounter eligibility](#predators-and-prey).
 
 Facing right:
 
@@ -457,7 +455,7 @@ An elongated body with a long pointed bill, tall top fin, and forked tail.
 - **Color:** ice blue and slate blue.
 - **Artwork:** Original ASCII Genesis drawing in [original-fish.mjs](../third-party/original-fish.mjs).
 - **Size:** right 23 × 5; left 23 × 5 characters.
-- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
+- **Behavior:** see [shared swimming rules](#shared-swimming-behavior), [movement styles](#movement-and-lighting), and [encounter eligibility](#predators-and-prey).
 
 Facing right:
 
@@ -486,7 +484,7 @@ A long curved body with a low profile, broad head, and small eye.
 - **Color:** copper and rust.
 - **Artwork:** Original ASCII Genesis drawing in [original-fish.mjs](../third-party/original-fish.mjs).
 - **Size:** right 21 × 4; left 21 × 4 characters.
-- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
+- **Behavior:** see [shared swimming rules](#shared-swimming-behavior), [movement styles](#movement-and-lighting), and [encounter eligibility](#predators-and-prey).
 
 Facing right:
 
@@ -513,7 +511,7 @@ A wide kite-shaped body with angled wings and a long thin trailing tail.
 - **Color:** violet and muted purple.
 - **Artwork:** Original ASCII Genesis drawing in [original-fish.mjs](../third-party/original-fish.mjs).
 - **Size:** right 19 × 5; left 19 × 5 characters.
-- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
+- **Behavior:** see [shared swimming rules](#shared-swimming-behavior), [movement styles](#movement-and-lighting), and [encounter eligibility](#predators-and-prey).
 
 Facing right:
 
@@ -542,7 +540,7 @@ A compact rounded fish with body markings and a small stalk ending in a light-li
 - **Color:** muted blue green.
 - **Artwork:** Original ASCII Genesis drawing in [original-fish.mjs](../third-party/original-fish.mjs).
 - **Size:** right 16 × 6; left 16 × 6 characters.
-- **Behavior:** shared swimming rules above; encounter eligibility is listed under visitors and encounters.
+- **Behavior:** see [shared swimming rules](#shared-swimming-behavior), [movement styles](#movement-and-lighting), and [encounter eligibility](#predators-and-prey).
 
 Facing right:
 
@@ -565,12 +563,6 @@ Facing left:
   \____.-'\/    
    \_/          
 ```
-
-## Squid and octopus drawings
-
-These two original project designs are cephalopods, bringing the collection, including the turtle, to 21 creature designs. They join the same eight-swimmer population as fish and travel in either direction. They keep their artwork for the whole crossing and arrive and depart beyond the screen edges. Their arms are static ASCII artwork; octopuses ease down toward the seabed. They do not jet, release ink, change color, or participate in predator encounters.
-
-The simplified ecosystem currently assigns them the fry role, including the generic plankton-feeding rule. That is a simulation simplification rather than a claim about real cephalopod diets.
 
 ### rose squid
 
@@ -628,8 +620,6 @@ Facing left (16 columns × 7 rows):
 (_( (_|||_) )_) 
 ```
 
-## Sea turtle drawing
-
 ### sea turtle
 
 A soft green sea turtle with a patterned rounded shell, flippers, a small tail, and a head with a cream eye. It joins the same varying-speed, off-screen arrival and departure rotation as the fish and cephalopods. Its artwork is static. It is neither a predator nor selected prey in hunting encounters.
@@ -656,9 +646,35 @@ Facing left (21 columns × 5 rows):
     \_/\_____/\_/    
 ```
 
-## Other object drawings
+### moon jellyfish
 
-The diver drawings below are copied directly from the current renderer. The remaining objects use glyphs placed by procedural rules, so they have no single fixed multi-line sprite. Their entries show the actual glyphs and explain how they form the scene.
+**Original ASCII Genesis artwork; GPL-2.0-or-later.** Design 21; pale blue `#a8c9e8` with lavender fins/tentacles `#8e9fc9`. A rounded bell with dangling tentacles. Not a hunter or selected prey.
+
+**Right-facing: 15 columns × 7 rows**
+
+```text
+       .----.  
+     .'      '.
+    (  .  .   )
+     '--------'
+      | ) | (  
+      ( | ( |  
+      | ( | )  
+```
+
+**Left-facing: 15 columns × 7 rows**
+
+```text
+  .----.       
+.'      '.     
+(   .  .  )    
+'--------'     
+  ) | ( |      
+  | ) | )      
+  ( | ) |      
+```
+
+## Visiting wildlife drawings
 
 ### Diver artwork
 
@@ -715,6 +731,65 @@ The diver drawings below are copied directly from the current renderer. The rema
 ```
 
 **Behavior:** visits after 5–10 minute waits, enters and leaves fully off screen, swims gently through the upper water, and remains enabled in quiet mode. At most one diver exists at a time. See [visiting diver](#visiting-diver) for scheduling details. Source: [simulator.js](../simulator/simulator.js), original project artwork under GPL-2.0-or-later.
+
+### Peeking eel
+
+**Original ASCII Genesis artwork; GPL-2.0-or-later.** sandy copper `#ad9b77`, three rows. A separate decorative eel fades in and out at the wreck opening during brief windows of its slow sine cycle. It does not replace or change a swimming copper moray and is not a hunting agent.
+
+```text
+ __    __
+/  \__/ o>
+\_______/
+```
+
+### Distant whale
+
+**Original ASCII Genesis artwork; GPL-2.0-or-later.** muted blue `#426573`, five rows, mirrored for both directions. It starts 24 world cells outside an edge and travels at 0.16 cells per tick until it fully clears the opposite side. It appears behind the normal scene, with restrained opacity. Only one whale/glow discovery can exist at once.
+
+```text
+          ___
+    _____/   \________________
+ __/                         o \__
+<__    _________________________  >
+   \__/     \____/       \_____/
+```
+
+## Movement and lighting
+
+- **Schools:** three tiny or little triangular fish arrive together from the same edge when three slots are available. School opportunities wait 60–120 seconds and can be delayed by crowding or hunts. Members share their direction and speed. A hunter within eight world cells makes them spread vertically; they ease back together afterward. Total swimmers remain capped at eight.
+- **Jellyfish:** new arrivals cruise at 0.12 cells per tick, rise 0.025 cells per tick toward row eight, and bob gently. Their cached drawing pulses by up to 3.5 percent in width.
+- **Rays:** glide up and down by 1.5 world rows without changing direction.
+- **Turtles:** start a gentle surface visit after 100 movement ticks, turn back after 180, and return toward their original depth. This is a stylized surface visit, not a breathing simulation.
+- **Octopuses:** new arrivals cruise at 0.16 cells per tick and approach a point nine rows above the local seabed. Artwork remains clamped above the ground.
+- **Day/night:** the default cycle lasts 20 minutes of unpaused simulation time. Light is brightest at its start, darkest halfway through, and smoothly changes throughout. Local-clock mode follows the Pi's hour and minute, brightest at noon and darkest at midnight. The clock button's preference survives resets and reopening. Pausing holds the picture; resuming local-clock mode follows the current time. Night tint opacity never exceeds 18 percent.
+- **Night arrivals:** every fourth arrival may favor a lanternfish or jellyfish if that drawing is available, while ordinary design rotation continues. This is artistic scheduling, not a biological claim.
+- The normal world, species movement, lighting, and discovery timers are held during the creature parade. Quiet mode does not turn off peaceful additions.
+
+## Other objects index
+
+Regular creatures and visiting wildlife appear in the indexes above. Every other visible ocean object has an entry here; habitat settings and the control panel are included too. Tank, mask, arms, and fins are parts of one diver sprite, rather than independent objects.
+
+| Object or feature | Category | Visual example and details |
+| --- | --- | --- |
+| Diver bubbles | Temporary particles | [Rising bubbles](#diver-bubbles) |
+| Algae | Simulated life | [Algae dots](#algae-dots) |
+| Plankton | Simulated life | [Plankton glyphs](#plankton-glyphs) |
+| Kelp stalks and fronds | Procedural scenery | [Kelp artwork](#kelp-artwork) |
+| Seabed contour | Procedural scenery | [Floor contour](#floor-contour) |
+| Sediment texture | Procedural scenery | [Sediment marks](#sediment-marks) |
+| Water | Background | [Water background](#water-background) |
+| Six ocean habitats | Habitat settings | [Habitats](#habitats) |
+| Coral | Procedural scenery | [Branching coral](#coral) |
+| Seagrass | Procedural scenery | [Seagrass leaves](#seagrass) |
+| Shipwreck | Scrolling scenery | [Wreck artwork](#shipwreck) |
+| Glowing plankton patch | Decorative discovery | [Temporary glowing marks](#glowing-plankton-patch) |
+| Day/night lighting and schools | Local behavior | [Movement and lighting](#movement-and-lighting) |
+| Touch panel and readouts | Interface | [Controls and readouts](#controls-and-readouts) |
+| Prey shrinking at mouth contact | Fish animation | [Catch and feeding](#catch-and-feeding) |
+
+## Other object drawings
+
+The diver drawings below are copied directly from the current renderer. The remaining objects use glyphs placed by procedural rules, so they have no single fixed multi-line sprite. Their entries show the actual glyphs and explain how they form the scene.
 
 ### Diver bubbles
 
@@ -778,9 +853,49 @@ _
 
 ### Controls and readouts
 
-The touch panel is an interface overlay rather than an ocean object. It contains Pause or Resume, Step, New world, AI event, Quiet mode, Creature parade, the habitat name, tide counter, narration text, and connection status. It appears when you tap the water and fades after eight seconds. The algae, plankton, fry, and hunter counters exist in the page but are hidden in the full-screen layout.
+The touch panel is an interface overlay rather than an ocean object. It contains Pause or Resume, Step, New world, AI event, Quiet mode, Creature parade, Lighting, the habitat name and day/night label, tide counter, narration text, and connection status. It appears when you tap the water and fades after eight seconds. The algae, plankton, fry, and hunter counters exist in the page but are hidden in the full-screen layout.
+
+The Lighting button switches between the ocean cycle and local clock; both modes are described under [movement and lighting](#movement-and-lighting). The older controls image predates this extra button.
 
 See the [controls screenshot](screenshots/controls.jpg) and [screenshot tour](SCREENSHOTS.md#touch-controls). Source: [pi.html](../simulator/pi.html) and [simulator.js](../simulator/simulator.js).
+
+## Expanded ocean objects
+
+These are original ASCII Genesis scenery and decorative effects, under GPL-2.0-or-later. Coral and wreck drawings are cached once; seagrass and glowing marks are drawn procedurally. They do not reproduce, consume food, or count as swimmers.
+
+### Coral
+
+ muted rose `#b8869e`, four rows. Sparse branching clumps grow visually from the floor in coral gardens and scroll with world coordinates.
+
+```text
+  \ | /
+ _/\|/\_
+    ||
+   _||_
+```
+
+### Seagrass
+
+ uses the same five green shades as kelp, with straighter `|` and `/` leaves. Heights and positions vary deterministically with world coordinates and seed in seagrass habitats.
+
+### Shipwreck
+
+ blue green `#64888b`, four rows. One fixed wreck coordinate per shipwreck habitat segment, drawn above the local floor. It enters and exits through scrolling; it is not respawned inside the view.
+
+```text
+       __|__
+  ____/_____|___
+  \____[]_____/
+    /_/   /_/
+```
+
+### Glowing plankton patch
+
+ 18 pale blue `·`/`o` marks, separate from the ecological plankton grid. It fades in, drifts gently, and fades out over 86 ticks (about 30 seconds), without creating new food-web cells.
+
+### Discovery scheduling
+
+ the first whale or glow patch waits 5–10 minutes; another 5–10 minute cooldown begins after it finishes. Active hunts or divers delay discovery starts. Discovery visits also delay new hunters and divers, keeping the scene from accumulating simultaneous events. Whale crossings last about 3.5 minutes, including their off-screen travel. Glowing patches last about 30 seconds. The eel follows the wreck's independent peek cycle.
 
 ## Small life and food web
 
@@ -849,7 +964,7 @@ Small bubbles rise near the diver, changing from an o to a dot before vanishing.
 | --- | --- |
 | Predator | Large ocean fish, silver spearfish, copper moray |
 | Prey | Tiny fish, little triangular fish, reef fish, box fish |
-| Cruising only | Angelfish, striped fish, rounded fish, diamond fish, curly-fin fish, sunburst puffer, ribbon bannerfish, violet kite ray, blue lanternfish, rose squid, violet octopus, sea turtle |
+| Cruising only | Angelfish, striped fish, rounded fish, diamond fish, curly-fin fish, sunburst puffer, ribbon bannerfish, violet kite ray, blue lanternfish, rose squid, violet octopus, sea turtle, moon jellyfish |
 
 After a 2 to 4 minute cooldown, the simulation waits for two swimmer slots and no diver before bringing in a predator and prey from the same edge. Both begin outside the display and cruise into view together. Only one encounter can be active. The cooldown restarts when it ends, so visible encounters are farther apart than the cooldown alone.
 
@@ -888,88 +1003,3 @@ Eleven designs come from Asciiquarium 1.1. The upstream code credits Kirk Baucom
 The installed artwork is in [fish-art.js](../simulator/fish-art.js). Its source drawings and extraction rules are in [original-fish.mjs](../third-party/original-fish.mjs) and [restore-sprites.mjs](../third-party/restore-sprites.mjs). The running rules are in [aquarium.js](../simulator/aquarium.js); colors, terrain drawing, and sprite placement are in [simulator.js](../simulator/simulator.js).
 
 When adding a design, preserve both swimming directions, color masks, credits, and enough off-screen margin for its full width. Update the design-count checks and this library alongside the artwork. The visitor and encounter implementation is in [ocean-life.js](../simulator/ocean-life.js), with checks in [life-check.mjs](../simulator/life-check.mjs). Keep this library in sync when changing behavior.
-
-## Moon jellyfish
-
-**Original ASCII Genesis artwork; GPL-2.0-or-later.** Design 21; pale blue `#a8c9e8` with lavender fins/tentacles `#8e9fc9`. A rounded bell with dangling tentacles. Not a hunter or selected prey.
-
-**Right-facing: 15 columns × 7 rows**
-
-```text
-       .----.  
-     .'      '.
-    (  .  .   )
-     '--------'
-      | ) | (  
-      ( | ( |  
-      | ( | )  
-```
-
-**Left-facing: 15 columns × 7 rows**
-
-```text
-  .----.       
-.'      '.     
-(   .  .  )    
-'--------'     
-  ) | ( |      
-  | ) | )      
-  ( | ) |      
-```
-
-## Movement and lighting
-
-- **Schools:** three tiny or little triangular fish arrive together from the same edge when three slots are available. School opportunities wait 60–120 seconds and can be delayed by crowding or hunts. Members share their direction and speed. A hunter within eight world cells makes them spread vertically; they ease back together afterward. Total swimmers remain capped at eight.
-- **Jellyfish:** new arrivals cruise at 0.12 cells per tick, rise 0.025 cells per tick toward row eight, and bob gently. Their cached drawing pulses by up to 3.5 percent in width.
-- **Rays:** glide up and down by 1.5 world rows without changing direction.
-- **Turtles:** start a gentle surface visit after 100 movement ticks, turn back after 180, and return toward their original depth. This is a stylized surface visit, not a breathing simulation.
-- **Octopuses:** new arrivals cruise at 0.16 cells per tick and approach a point nine rows above the local seabed. Artwork remains clamped above the ground.
-- **Day/night:** the default cycle lasts 20 minutes of unpaused simulation time. Light is brightest at its start, darkest halfway through, and smoothly changes throughout. Local-clock mode follows the Pi's hour and minute, brightest at noon and darkest at midnight. The clock button's preference survives resets and reopening. Pausing holds the picture; resuming local-clock mode follows the current time. Night tint opacity never exceeds 18 percent.
-- **Night arrivals:** every fourth arrival may favor a lanternfish or jellyfish if that drawing is available, while ordinary design rotation continues. This is artistic scheduling, not a biological claim.
-- The normal world, species movement, lighting, and discovery timers are held during the creature parade. Quiet mode does not turn off peaceful additions.
-
-## Expanded ocean objects
-
-All of these drawings are original ASCII Genesis scenery, under GPL-2.0-or-later. They are cached once in the renderer. They do not reproduce, consume food, or count as swimmers.
-
-**Coral:** muted rose `#b8869e`, four rows. Sparse branching clumps grow visually from the floor in coral gardens and scroll with world coordinates.
-
-```text
-  \ | /
- _/\|/\_
-    ||
-   _||_
-```
-
-**Seagrass:** uses the same five green shades as kelp, with straighter `|` and `/` leaves. Heights and positions vary deterministically with world coordinates and seed in seagrass habitats.
-
-**Shipwreck:** blue green `#64888b`, four rows. One fixed wreck coordinate per shipwreck habitat segment, drawn above the local floor. It enters and exits through scrolling; it is not respawned inside the view.
-
-```text
-       __|__
-  ____/_____|___
-  \____[]_____/
-    /_/   /_/
-```
-
-**Peeking eel:** sandy copper `#ad9b77`, three rows. A separate decorative eel fades in and out at the wreck opening during brief windows of its slow sine cycle. It does not replace or change a swimming copper moray and is not a hunting agent.
-
-```text
- __    __
-/  \__/ o>
-\_______/
-```
-
-**Distant whale:** muted blue `#426573`, five rows, mirrored for both directions. It starts 24 world cells outside an edge and travels at 0.16 cells per tick until it fully clears the opposite side. It appears behind the normal scene, with restrained opacity. Only one whale/glow discovery can exist at once.
-
-```text
-          ___
-    _____/   \________________
- __/                         o \__
-<__    _________________________  >
-   \__/     \____/       \_____/
-```
-
-**Glowing plankton patch:** 18 pale blue `·`/`o` marks, separate from the ecological plankton grid. It fades in, drifts gently, and fades out over 86 ticks (about 30 seconds), without creating new food-web cells.
-
-**Discovery scheduling:** the first whale or glow patch waits 5–10 minutes; another 5–10 minute cooldown begins after it finishes. Active hunts or divers delay discovery starts. Discovery visits also delay new hunters and divers, keeping the scene from accumulating simultaneous events. Whale crossings last about 3.5 minutes, including their off-screen travel. Glowing patches last about 30 seconds. The eel follows the wreck's independent peek cycle.
