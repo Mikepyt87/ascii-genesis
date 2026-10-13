@@ -88,11 +88,16 @@
     const font=Number(canvas.dataset.fishFont)||14, pitch=font*.6;
     ctx.font=font+'px "Courier New", monospace';ctx.textBaseline='top';
     const floorAt=x=>core.terrainAt(sim.travel+x/screenW*core.W)/core.H*screenH;
-    for(let x=0;x<screenW;x+=pitch){
-      const y=floorAt(x);
+    // Sample fixed world columns, then translate them with the same camera as the plants.
+    const cameraPixels=sim.travel*screenW/core.W;
+    const firstColumn=Math.floor(cameraPixels/pitch)-1;
+    const lastColumn=Math.ceil((cameraPixels+screenW)/pitch)+1;
+    for(let column=firstColumn;column<=lastColumn;column++){
+      const worldPixel=column*pitch,x=worldPixel-cameraPixels;
+      const y=core.terrainAt(worldPixel/screenW*core.W)/core.H*screenH;
       ctx.fillStyle='#36575a';ctx.fillText('_',x,y);
       ctx.fillStyle='#203b40';
-      for(let depth=font;depth<screenH-y;depth+=font)if(Math.floor((x+sim.travel*screenW/core.W)/pitch+depth/font)%5===0)ctx.fillText('.',x,y+depth);
+      for(let depth=font;depth<screenH-y;depth+=font)if((column+depth/font)%5===0)ctx.fillText('.',x,y+depth);
     }
     // Sparse kelp clumps sway slowly; they are scenery, not additional animals.
     const kelpGreens=['#438b55','#62b878','#82c76b','#4fa66b','#a0cd78'];
@@ -106,7 +111,8 @@
       const habitat=core.habitatAt(worldX),height=Math.max(2,Math.round((4+hash%15)*habitat.kelp)),shade=hash%kelpGreens.length;
       const bottom=floorAt(base)-font;
       for(let n=0;n<height;n++){
-        const sway=Math.sin(sim.tick*.045+n*.65+worldX)*pitch*.65;
+        // Roots stay fixed in the seabed; only the upper fronds sway.
+        const sway=Math.sin(sim.tick*.045+n*.65+worldX)*pitch*.65*n/Math.max(1,height-1);
         ctx.fillStyle=kelpGreens[(shade+(n%4===0?1:0))%kelpGreens.length];
         ctx.fillText(habitat.name==='Seagrass bed'?(n%2?'/':'|'):(n%2?'(':')'),base+sway,bottom-n*font);
         if(n>0&&n%2===0)ctx.fillText('/',base+sway+pitch,bottom-n*font);

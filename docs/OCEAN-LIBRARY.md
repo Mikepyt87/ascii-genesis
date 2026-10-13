@@ -827,7 +827,7 @@ Actual stalk and frond glyphs:
 (  )  /
 ```
 
-**Type:** procedural scenery. Alternating parentheses draw stalk segments; slash marks form side fronds at alternating heights. Stalks sway slightly side to side. Five greens vary between clumps and along each plant: `#438b55`, `#62b878`, `#82c76b`, `#4fa66b`, `#a0cd78`.
+**Type:** procedural scenery. Alternating parentheses draw stalk segments; slash marks form side fronds at alternating heights. Roots stay attached to the seabed; sway increases toward the upper fronds. Plant roots, floor underscores, and sediment dots use the same camera displacement, about 6.1 screen pixels per second. Ground glyphs are anchored to fixed world columns rather than redrawn on a stationary screen grid. Five greens vary between clumps and along each plant: `#438b55`, `#62b878`, `#82c76b`, `#4fa66b`, `#a0cd78`.
 
 **Placement:** clumps belong to fixed world coordinates and scroll past the camera. **Height:** 2–18 text rows, scaled by habitat. They can be tall in a kelp meadow and short over open sand. Stalks and fronds are parts of the same generated plant, and they do not grow as ecological algae cells. Source: [simulator.js](../simulator/simulator.js); see [kelp and seaweed](#kelp-and-seaweed) for the planting rules.
 
