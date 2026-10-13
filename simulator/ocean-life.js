@@ -17,12 +17,57 @@
     });
     w.life={quiet:!!options.quiet,nextEncounter:interval(w.rng,120,240),nextDiver:interval(w.rng,300,600),
       encounter:null,diver:null,bubbles:[],lastOutcome:null};
+    w.ocean={elapsed:0,clockMode:options.clockMode==='local'?'local':'cycle',localHour:12,light:1,
+      nextSchool:interval(w.rng,60,120),nextDiscovery:interval(w.rng,300,600),discovery:null};
     for(const f of w.fish)f.kind=predators.has(w.profiles[f.design*2]?.name)?HUNTER:FRY;
     // Keep the microscopic grid consistent with the new design-based roles.
     for(let i=0;i<w.cells.length;i++)if(w.cells[i]===FRY||w.cells[i]===HUNTER)w.cells[i]=0;
     for(const f of w.fish)w.cells[Math.floor(f.y)*W+Math.floor(f.x)]=f.kind;
   }
   function profile(w,f){return w.profiles[f.design*2+(f.right?0:1)];}
+  function setClockMode(w,mode){w.ocean.clockMode=mode==='local'?'local':'cycle';}
+  function advanceOcean(w,elapsedMs){
+    const o=w.ocean;o.elapsed+=Math.max(0,Number.isFinite(elapsedMs)?elapsedMs:350);
+    const phase=o.clockMode==='local'?o.localHour/24:(o.elapsed/1200000+.5)%1;
+    o.light=.5+.5*Math.cos((phase-.5)*2*Math.PI);
+    if(!o.discovery&&!w.life.encounter&&!w.life.diver&&w.tick>=o.nextDiscovery){
+      const right=w.rng()<.5;
+      o.discovery={type:w.rng()<.5?'whale':'glow',right,x:right?-24:72,y:9,age:0};
+    }
+    if(o.discovery){const d=o.discovery;d.age++;
+      if(d.type==='whale')d.x+=(d.right?1:-1)*.16;
+      if(d.type==='whale'?(d.x<-24||d.x>72):d.age>=86){o.discovery=null;o.nextDiscovery=w.tick+interval(w.rng,300,600);}
+    }
+  }
+  function moveCreature(w,f){
+    const e=w.life.encounter;if(e&&(f.id===e.hunterId||f.id===e.preyId))return;
+    const name=profile(w,f)?.name;f.age=(f.age||0)+1;f.baseY??=f.y;
+    if(f.school){
+      const threat=w.fish.find(h=>h.kind===HUNTER&&Math.abs(h.x-f.x)<8);
+      const spread=threat?(f.schoolLane-1)*3:0;
+      const target=f.baseY+spread+Math.sin(f.age*.055)*.3;
+      f.y+=Math.max(-.18,Math.min(.18,target-f.y));
+    }else if(name==='moon jellyfish'){
+      f.y=Math.max(8,f.baseY-f.age*.025+Math.sin(f.age*.16)*.3);
+    }else if(name==='violet kite ray')f.y=f.baseY+Math.sin(f.age*.035)*1.5;
+    else if(name==='sea turtle'){
+      const surfacing=f.age>=100&&f.age<180;
+      const target=surfacing?8:f.baseY;f.y+=Math.max(-.15,Math.min(.15,target-f.y));
+    }else if(name==='violet octopus'){
+      const col=Math.max(0,Math.min(W-1,Math.floor(f.x)));
+      const target=w.floor[col]-9;f.y+=Math.max(-.2,Math.min(.2,target-f.y));
+    }
+    f.y=Math.max(5,Math.min(H-5,f.y));
+  }
+  function addSchool(w,reserve=0){
+    const o=w.ocean;if(w.tick<o.nextSchool||w.life.encounter||w.fish.length>5-reserve)return false;
+    const choices=[];for(let i=0;i<w.designCount;i++)if(['tiny fish','little triangular fish'].includes(w.profiles[i*2]?.name))choices.push(i);
+    if(!choices.length){o.nextSchool=w.tick+interval(w.rng,60,120);return false;}
+    const design=choices[Math.floor(w.rng()*choices.length)],right=w.rng()<.5,y=12+w.rng()*12;
+    const group=w.nextFishId,speed=.24+w.rng()*.08;
+    for(let lane=0;lane<3;lane++)w.fish.push({id:w.nextFishId++,kind:FRY,design,right,x:right?-10-lane*2:W+10+lane*2,y:y+lane*.8,speed,school:group+1,schoolLane:lane});
+    o.nextSchool=w.tick+interval(w.rng,60,120);return true;
+  }
   function startParade(w){
     if(w.parade)return false;
     const speed=.8,margin=10,travelMs=(W+2*margin)/speed*350;
@@ -80,7 +125,7 @@
   }
   function before(w){
     const l=w.life;
-    if(!l.quiet&&!l.encounter&&!l.diver&&w.tick>=l.nextEncounter)startEncounter(w);
+    if(!l.quiet&&!l.encounter&&!l.diver&&!w.ocean.discovery&&w.tick>=l.nextEncounter)startEncounter(w);
     let e=l.encounter;
     if(e){
       const h=w.fish.find(f=>f.id===e.hunterId),p=w.fish.find(f=>f.id===e.preyId);
@@ -120,7 +165,7 @@
       }
     }
     // A diver is a rare visitor, separate from the eight-fish population.
-    if(!l.diver&&!l.encounter&&w.tick>=l.nextDiver){
+    if(!l.diver&&!l.encounter&&!w.ocean.discovery&&w.tick>=l.nextDiver){
       const right=w.rng()<.5;l.diver={x:right?-10:W+10,y:7+w.rng()*5,right,age:0};
     }
     if(l.diver){
@@ -139,6 +184,7 @@
     }
     return box(w,f);
   }
-  root.OceanLife={setup,profile,box,mouth,displayBox,before,after,setQuiet,predators,startParade,advanceParade};
+  root.OceanLife={setup,profile,box,mouth,displayBox,before,after,setQuiet,predators,startParade,advanceParade,
+    advanceOcean,moveCreature,addSchool,setClockMode};
   if(typeof module!=='undefined'&&module.exports)module.exports=root.OceanLife;
 })(typeof globalThis!=='undefined'?globalThis:this);

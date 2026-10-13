@@ -1,6 +1,6 @@
 # ASCII Genesis Ocean Library
 
-A field guide to everything currently drawn or simulated in the Raspberry Pi 4 ocean on the Waveshare 7.9-inch screen. The collection contains **17 fish designs, a squid, an octopus, and a sea turtle, 40 directional drawings, two microscopic life types, a two-pose diver, bubbles, kelp, seabed contours, sediment texture, and water across three habitats**. An occasional diver visits, and brief predator encounters sometimes end in a catch. Quiet mode turns hunting off.
+A field guide to everything currently drawn or simulated in the Raspberry Pi 4 ocean on the Waveshare 7.9-inch screen. The collection contains **17 fish designs, a squid, an octopus, a sea turtle, and a jellyfish, 42 directional drawings, two microscopic life types, a two-pose diver, bubbles, kelp, seabed contours, sediment texture, and water across six habitats**. An occasional diver visits, and brief predator encounters sometimes end in a catch. Quiet mode turns hunting off.
 
 ## Thanks to the original creators
 
@@ -8,7 +8,7 @@ Much of the character of this ocean comes from [Asciiquarium](https://github.com
 
 ## How to read the collection
 
-Fish names describe the artwork. They are not verified biological species, and the ocean is a stylized simulation rather than a scientifically accurate marine food web. A bannerfish, moray, or ray currently follows the same basic swimming rules as the other drawings.
+Fish names describe the artwork. They are not verified biological species, and the ocean is a stylized simulation rather than a scientifically accurate marine food web. All creatures share the same population and edge rules, with distinct movement for rays, turtles, octopuses, and jellyfish.
 
 **Appearance determines hunting eligibility.** Large ocean fish, silver spearfish, and copper morays have the hunter role. Tiny fish, little triangular fish, reef fish, and box fish can be selected as prey in encounters. Other designs cruise without being selected for hunts. These are artistic simulation roles, not claims about real diets. There are no fixed species territories.
 
@@ -28,7 +28,9 @@ All swimmer drawings appear in the next index. Every other visible ocean object 
 | Seabed contour | Procedural scenery | [Floor contour](#floor-contour) |
 | Sediment texture | Procedural scenery | [Sediment marks](#sediment-marks) |
 | Water | Background | [Water background](#water-background) |
-| Kelp meadow, rocky reef, open sand | Habitat settings | [Habitats](#habitats) |
+| Six ocean habitats | Habitat settings | [Habitats](#habitats) |
+| Coral, seagrass, wreck, eel, whale, and glow patch | Scenery and discoveries | [Expanded ocean objects](#expanded-ocean-objects) |
+| Day/night lighting and schools | Local behavior | [Movement and lighting](#movement-and-lighting) |
 | Touch panel and readouts | Interface | [Controls and readouts](#controls-and-readouts) |
 | Prey shrinking at mouth contact | Fish animation | [Catch and feeding](#catch-and-feeding) |
 
@@ -56,6 +58,7 @@ All swimmer drawings appear in the next index. Every other visible ocean object 
 | 18 | [rose squid](#rose-squid) | rose and dusty pink | ASCII Genesis |
 | 19 | [violet octopus](#violet-octopus) | violet and muted purple | ASCII Genesis |
 | 20 | [sea turtle](#sea-turtle) | soft green and teal green | ASCII Genesis |
+| 21 | [moon jellyfish](#moon-jellyfish) | pale blue and lavender | ASCII Genesis |
 
 ## Shared swimming behavior
 
@@ -64,7 +67,7 @@ All swimmer drawings appear in the next index. Every other visible ocean object 
 - Normal individual speeds range from 0.18 to just under 0.45 world cells per tick. At 350 milliseconds per tick and 1280 pixels across 48 world cells, that is roughly 14 to 34 pixels per second. A center crosses the visible width in about 37 to 93 seconds.
 - Fish keep their drawing and direction for their whole crossing. Ordinary departures are removed after their center reaches 20 world cells beyond an edge. Normal arrivals start 10 cells beyond an edge. An encounter pair starts 10 and 18 cells beyond the same edge. A successful catch is the only removal inside the visible screen.
 - Fry can consume nearby plankton. Hunters normally cruise; selected encounter pairs briefly chase, and some catch prey. There is no breeding, aging, health, or hunger system for individual swimmers.
-- The renderer keeps each drawing above the local seabed and caches all 40 creature images. Travel changes which designs enter next; it does not transform fish already on screen.
+- The renderer keeps each drawing above the local seabed and caches all 42 creature images. Travel changes which designs enter next; it does not transform fish already on screen.
 
 ## Fish drawings
 
@@ -565,7 +568,7 @@ Facing left:
 
 ## Squid and octopus drawings
 
-These two original project designs are cephalopods, bringing the collection, including the turtle, to 20 creature designs. They join the same eight-swimmer population as fish and travel in either direction. They keep their artwork for the whole crossing and arrive and depart beyond the screen edges. Their arms are static ASCII artwork; they do not jet, release ink, change color, or participate in predator encounters.
+These two original project designs are cephalopods, bringing the collection, including the turtle, to 21 creature designs. They join the same eight-swimmer population as fish and travel in either direction. They keep their artwork for the whole crossing and arrive and depart beyond the screen edges. Their arms are static ASCII artwork; octopuses ease down toward the seabed. They do not jet, release ink, change color, or participate in predator encounters.
 
 The simplified ecosystem currently assigns them the fry role, including the generic plankton-feeding rule. That is a simulation simplification rather than a claim about real cephalopod diets.
 
@@ -771,7 +774,7 @@ _
 
 ### Water background
 
-**Type:** a solid canvas background, with no ASCII glyph; **color:** near black `#02090c`. It fills the complete 1280 × 400 drawing area before terrain and creatures are drawn. The empty space keeps the character art readable. It has no animated surface, waves, sky, or day/night cycle. Source: [simulator.js](../simulator/simulator.js).
+**Type:** a solid canvas background, with no ASCII glyph; **color:** near black `#02090c`. It fills the complete 1280 × 400 drawing area before terrain and creatures are drawn. The empty space keeps the character art readable. It has no animated surface, waves, or sky. Day/night lighting gradually adjusts the background and adds a restrained blue tint at night. Source: [simulator.js](../simulator/simulator.js).
 
 ### Controls and readouts
 
@@ -809,21 +812,24 @@ Underscore characters draw a rolling floor in muted blue green, `#36575a`. Spars
 
 The camera advances 0.08 world cells each tick, roughly 6.1 screen pixels per second. It takes about 3.5 minutes to travel one screen width at the normal update rate. The terrain and kelp stay attached to world positions; fish swim independently. The environmental grid shifts left as travel crosses whole columns.
 
-There are currently no separate rock, coral, shell, wreck, castle, treasure, or surface-wave objects. The diver and its short-lived bubbles are described below. Rocky reef is a habitat name for a different contour and plant density, not a collection of individual rock sprites. Objects elsewhere in the bundled upstream Asciiquarium source are not automatically part of this ocean.
+Coral, shipwrecks, and peeking eels now join the scrolling scenery. There are no separate rock, shell, castle, treasure, or surface-wave objects. The diver and its short-lived bubbles are described below. Rocky reef is a habitat name for a different contour and plant density, not a collection of individual rock sprites. Objects elsewhere in the bundled upstream Asciiquarium source are not automatically part of this ocean.
 
 ## Habitats
 
-The journey blends between these three habitat settings. Values below describe each habitat at its unblended setting, not sharp boundaries. The center-of-screen label picks the nearer habitat while the visible floor and plants vary smoothly across the screen.
+The journey blends between these six habitat settings. Values below describe each habitat at its unblended setting, not sharp boundaries. The center-of-screen label picks the nearer habitat while the visible floor and plants vary smoothly across the screen.
 
 | Habitat | Base floor depth in the 48-row world | Kelp height multiplier | Incoming plankton threshold | Algae addition interval |
 | --- | --- | --- | --- | --- |
 | Kelp meadow | 41 | 1.00 | 28 | 12 ticks, about 4.2 seconds |
 | Rocky reef | 38 | 0.50 | 24 | 18 ticks, about 6.3 seconds |
 | Open sand | 44 | 0.12 | 16 | 36 ticks, about 12.6 seconds |
+| Coral garden | 39 | 0.22 | 26 | 16 ticks, about 5.6 seconds |
+| Seagrass bed | 42 | 0.65 | 28 | 14 ticks, about 4.9 seconds |
+| Shipwreck depths | 43 | 0.08 | 18 | 32 ticks, about 11.2 seconds |
 
 Higher floor-depth numbers place the floor lower on the display. The rolling contour modifies these base depths. Nutrient additions are only attempted when the chosen cell is empty and the algae cap has room. Plankton additions are attempted every 20 ticks, about seven seconds, when the count is below the current threshold; that threshold is not a guaranteed population.
 
-Each transition spans 64 world cells, about 4 minutes 40 seconds. The habitat settings repeat every 192 cells, about 14 minutes. Plant patterns depend on position and seed, so repeating habitat settings do not mean an identical still image. These timings assume continuous running at the intended tick rate; pauses and device delays extend them.
+Each transition spans 64 world cells, about 4 minutes 40 seconds. The habitat settings repeat every 384 cells, about 28 minutes. Plant patterns depend on position and seed, so repeating habitat settings do not mean an identical still image. These timings assume continuous running at the intended tick rate; pauses and device delays extend them.
 
 ## Visitors and encounters
 
@@ -867,7 +873,7 @@ The implementation caps swimmers at eight, divers at one, and bubbles at five. C
 
 ## Creature parade
 
-Tap the water and press **Creature parade · 2 min**. All 20 creature designs, including the turtle, squid, and octopus, make a complete left-to-right crossing during a two-minute showcase. They are staggered across four swimming lanes, with no more than eight parade swimmers at once. Every design starts fully beyond the left edge and leaves fully beyond the right edge. The diver is a visiting person and is not part of the sea-creature lineup.
+Tap the water and press **Creature parade · 2 min**. All 21 creature designs, including the turtle, squid, and octopus, make a complete left-to-right crossing during a two-minute showcase. They are staggered across four swimming lanes, with no more than eight parade swimmers at once. Every design starts fully beyond the left edge and leaves fully beyond the right edge. The diver is a visiting person and is not part of the sea-creature lineup.
 
 The showcase uses separate swimmers and preserves the normal world's positions, ecosystem, terrain, and encounter timers. Ordinary swimmers blend out at the start; once the lineup has finished crossing, they blend back in during the final two seconds. The normal ocean resumes automatically at the end. There are no hunts during the parade, and quiet mode does not prevent it.
 
@@ -877,8 +883,93 @@ Parade swimmers move at about 61 screen pixels per second so the whole lineup ca
 
 ## Artwork and maintenance
 
-Eleven designs come from Asciiquarium 1.1. The upstream code credits Kirk Baucom and credits most ASCII artwork to Joan Stark; expanded marine biodiversity was backported by Claudio Matsuoka. Nine creature drawings are original to ASCII Genesis, including the squid, octopus, and turtle. All are distributed with this project under GPL-2.0-or-later. See [credits](../THIRD-PARTY.txt), [license](../LICENSE.txt), and the preserved [upstream source](../third-party/asciiquarium-upstream.pl).
+Eleven designs come from Asciiquarium 1.1. The upstream code credits Kirk Baucom and credits most ASCII artwork to Joan Stark; expanded marine biodiversity was backported by Claudio Matsuoka. Ten creature drawings are original to ASCII Genesis, including the squid, octopus, turtle, and jellyfish. All are distributed with this project under GPL-2.0-or-later. See [credits](../THIRD-PARTY.txt), [license](../LICENSE.txt), and the preserved [upstream source](../third-party/asciiquarium-upstream.pl).
 
 The installed artwork is in [fish-art.js](../simulator/fish-art.js). Its source drawings and extraction rules are in [original-fish.mjs](../third-party/original-fish.mjs) and [restore-sprites.mjs](../third-party/restore-sprites.mjs). The running rules are in [aquarium.js](../simulator/aquarium.js); colors, terrain drawing, and sprite placement are in [simulator.js](../simulator/simulator.js).
 
 When adding a design, preserve both swimming directions, color masks, credits, and enough off-screen margin for its full width. Update the design-count checks and this library alongside the artwork. The visitor and encounter implementation is in [ocean-life.js](../simulator/ocean-life.js), with checks in [life-check.mjs](../simulator/life-check.mjs). Keep this library in sync when changing behavior.
+
+## Moon jellyfish
+
+**Original ASCII Genesis artwork; GPL-2.0-or-later.** Design 21; pale blue `#a8c9e8` with lavender fins/tentacles `#8e9fc9`. A rounded bell with dangling tentacles. Not a hunter or selected prey.
+
+**Right-facing: 15 columns × 7 rows**
+
+```text
+       .----.  
+     .'      '.
+    (  .  .   )
+     '--------'
+      | ) | (  
+      ( | ( |  
+      | ( | )  
+```
+
+**Left-facing: 15 columns × 7 rows**
+
+```text
+  .----.       
+.'      '.     
+(   .  .  )    
+'--------'     
+  ) | ( |      
+  | ) | )      
+  ( | ) |      
+```
+
+## Movement and lighting
+
+- **Schools:** three tiny or little triangular fish arrive together from the same edge when three slots are available. School opportunities wait 60–120 seconds and can be delayed by crowding or hunts. Members share their direction and speed. A hunter within eight world cells makes them spread vertically; they ease back together afterward. Total swimmers remain capped at eight.
+- **Jellyfish:** new arrivals cruise at 0.12 cells per tick, rise 0.025 cells per tick toward row eight, and bob gently. Their cached drawing pulses by up to 3.5 percent in width.
+- **Rays:** glide up and down by 1.5 world rows without changing direction.
+- **Turtles:** start a gentle surface visit after 100 movement ticks, turn back after 180, and return toward their original depth. This is a stylized surface visit, not a breathing simulation.
+- **Octopuses:** new arrivals cruise at 0.16 cells per tick and approach a point nine rows above the local seabed. Artwork remains clamped above the ground.
+- **Day/night:** the default cycle lasts 20 minutes of unpaused simulation time. Light is brightest at its start, darkest halfway through, and smoothly changes throughout. Local-clock mode follows the Pi's hour and minute, brightest at noon and darkest at midnight. The clock button's preference survives resets and reopening. Pausing holds the picture; resuming local-clock mode follows the current time. Night tint opacity never exceeds 18 percent.
+- **Night arrivals:** every fourth arrival may favor a lanternfish or jellyfish if that drawing is available, while ordinary design rotation continues. This is artistic scheduling, not a biological claim.
+- The normal world, species movement, lighting, and discovery timers are held during the creature parade. Quiet mode does not turn off peaceful additions.
+
+## Expanded ocean objects
+
+All of these drawings are original ASCII Genesis scenery, under GPL-2.0-or-later. They are cached once in the renderer. They do not reproduce, consume food, or count as swimmers.
+
+**Coral:** muted rose `#b8869e`, four rows. Sparse branching clumps grow visually from the floor in coral gardens and scroll with world coordinates.
+
+```text
+  \ | /
+ _/\|/\_
+    ||
+   _||_
+```
+
+**Seagrass:** uses the same five green shades as kelp, with straighter `|` and `/` leaves. Heights and positions vary deterministically with world coordinates and seed in seagrass habitats.
+
+**Shipwreck:** blue green `#64888b`, four rows. One fixed wreck coordinate per shipwreck habitat segment, drawn above the local floor. It enters and exits through scrolling; it is not respawned inside the view.
+
+```text
+       __|__
+  ____/_____|___
+  \____[]_____/
+    /_/   /_/
+```
+
+**Peeking eel:** sandy copper `#ad9b77`, three rows. A separate decorative eel fades in and out at the wreck opening during brief windows of its slow sine cycle. It does not replace or change a swimming copper moray and is not a hunting agent.
+
+```text
+ __    __
+/  \__/ o>
+\_______/
+```
+
+**Distant whale:** muted blue `#426573`, five rows, mirrored for both directions. It starts 24 world cells outside an edge and travels at 0.16 cells per tick until it fully clears the opposite side. It appears behind the normal scene, with restrained opacity. Only one whale/glow discovery can exist at once.
+
+```text
+          ___
+    _____/   \________________
+ __/                         o \__
+<__    _________________________  >
+   \__/     \____/       \_____/
+```
+
+**Glowing plankton patch:** 18 pale blue `·`/`o` marks, separate from the ecological plankton grid. It fades in, drifts gently, and fades out over 86 ticks (about 30 seconds), without creating new food-web cells.
+
+**Discovery scheduling:** the first whale or glow patch waits 5–10 minutes; another 5–10 minute cooldown begins after it finishes. Active hunts or divers delay discovery starts. Discovery visits also delay new hunters and divers, keeping the scene from accumulating simultaneous events. Whale crossings last about 3.5 minutes, including their off-screen travel. Glowing patches last about 30 seconds. The eel follows the wreck's independent peek cycle.

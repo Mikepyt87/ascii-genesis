@@ -2,7 +2,7 @@
 
 ASCII Genesis is a quiet, traveling ASCII ocean for a Raspberry Pi 4 and a Waveshare 7.9-inch HDMI touchscreen. Fish pass through the scene at different speeds while the seabed and seaweed scroll slowly past. This tour shows what to expect before building your own.
 
-These are captures of the current browser renderer at **1280 × 400**, taken on a desktop rather than photographed on the Pi. Scenes were advanced and held still for capture, including the rare visitor and encounter. Actual visits are spaced out during normal use, and every new world varies.
+These are desktop previews of the current renderer at **1280 × 400**, rather than photographs of the Pi. Existing JPEGs are browser captures; the new PNG previews below use the same renderer through a Canvas harness. Scenes were advanced and held still, including rare visitors and encounters. Actual visits are spaced out during normal use, and every new world varies.
 
 ## Thanks to the original creators
 
@@ -26,7 +26,7 @@ Two original ASCII Genesis cephalopods join the rotation: a rose squid with a po
 
 ![A green sea turtle with a patterned shell swimming above kelp](screenshots/turtle.jpg)
 
-The sea turtle brings the collection to 20 creature designs. Its original project artwork includes a green shell, flippers, and a small head. Both swimming directions are included in the [Ocean Library](OCEAN-LIBRARY.md#sea-turtle).
+The sea turtle brings the collection to 21 creature designs. Its original project artwork includes a green shell, flippers, and a small head. Both swimming directions are included in the [Ocean Library](OCEAN-LIBRARY.md#sea-turtle).
 
 ![The creature parade with staggered swimmers, a disabled parade button, and 85 seconds remaining](screenshots/parade.jpg)
 
@@ -52,6 +52,16 @@ A silver spearfish follows a smaller reef fish in this example. Encounter pairs 
 
 Only one encounter can run at a time. A 2–4 minute cooldown, available swimmer slots, and the time to enter the scene keep these moments spaced apart. **Quiet mode** disables hunting while keeping normal swimming and diver visits.
 
+## Jellyfish, coral gardens, and discoveries
+
+![Moon jellyfish and turtle above sparse coral with a glowing patch](screenshots/jellyfish-coral.png)
+
+The new moon jellyfish drifts upward and pulses gently. Coral gardens add sparse branching scenery attached to the scrolling seabed. The glowing patch is a short decorative discovery with 18 marks; it does not add ecological plankton.
+
+![Night ocean with jellyfish, turtle, distant whale, and a scrolling wreck](screenshots/night-wreck.png)
+
+The ocean now includes six habitats. This staged night preview shows the shipwreck depths and a rare distant whale. The eel peeks from a wreck during its own brief windows. A remembered lighting button chooses a 20-minute ocean cycle or the Pi's local clock. Small schools, gliding rays, surfacing turtles, and seabed octopuses add movement variety during normal running.
+
 ## Touch controls
 
 ![Ocean controls showing Pause, Step, New world, AI event, and Quiet mode on](screenshots/controls.jpg)
@@ -64,7 +74,7 @@ Tap the water to reveal this panel. It fades after eight seconds so the ocean ca
 | Step | Advances the whole simulation by one tick, useful while paused. |
 | New world | Starts a fresh scene and resets its timers. |
 | AI event | Requests optional narration through your own configured OpenAI API connection. It does not control the ocean. |
-| Creature parade | Shows all 20 designs in a two-minute lineup, then returns to the normal ocean. |
+| Creature parade | Shows all 21 designs in a two-minute lineup, then returns to the normal ocean. |
 | Quiet mode | Turns hunting off or on. The preference is remembered in the browser profile. |
 
 The ocean, diver, and encounters all work **offline without an API key**. The AI button requires separate setup and working API access; the screenshot does not demonstrate a successful API call.

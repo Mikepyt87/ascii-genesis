@@ -27,7 +27,8 @@
   const fishFont=Number(canvas.dataset.fishFont)||16;
   ctx.font=fishFont+'px "Courier New", monospace';
   const advance=ctx.measureText('M').width;
-  const worldOptions={art:fishArt,font:fishFont,advance,width:screenW,height:screenH,quiet};
+  let clockMode='cycle';try{clockMode=localStorage.getItem('ascii-genesis-clock')==='local'?'local':'cycle';}catch{}
+  const worldOptions={art:fishArt,font:fishFont,advance,width:screenW,height:screenH,quiet,clockMode};
   sim=core.world(GenesisSeed(),fishArt.length/2,worldOptions);
   const spriteCache=fishArt.map((art,index)=>{
     const image=document.createElement('canvas');
@@ -72,6 +73,16 @@
     rows.forEach((row,y)=>[...row].forEach((c,x)=>{if(c===' ')return;paint.fillStyle=colors[y][x];paint.fillText(c,x*advance,y*fishFont);}));
     return image;
   });
+  function scenerySprite(rows,color){
+    const image=document.createElement('canvas');image.width=Math.ceil(Math.max(...rows.map(r=>r.length))*advance);image.height=rows.length*fishFont;
+    const paint=image.getContext('2d');paint.font=ctx.font;paint.textBaseline='top';paint.fillStyle=color;
+    rows.forEach((row,y)=>paint.fillText(row,0,y*fishFont));return image;
+  }
+  const wreckImage=scenerySprite(['       __|__','  ____/_____|___','  \\____[]_____/','    /_/   /_/'],'#64888b');
+  const coralImage=scenerySprite(['  \\ | /',' _/\\|/\\_','    ||','   _||_'],'#b8869e');
+  const eelImage=scenerySprite([' __    __','/  \\__/ o>','\\_______/'],'#ad9b77');
+  const whaleRows=['          ___','    _____/   \\________________',' __/                         o \\__','<__    _________________________  >','   \\__/     \\____/       \\_____/'];
+  const whaleImages=[scenerySprite(whaleRows,'#426573'),scenerySprite(whaleRows.map(r=>[...r.padEnd(36)].reverse().map(c=>mirror[c]||c).join('')),'#426573')];
   function GenesisSeed(){return (Date.now() ^ 0xA51A2026)>>>0;}
   function drawSeabed(){
     const font=Number(canvas.dataset.fishFont)||14, pitch=font*.6;
@@ -97,13 +108,29 @@
       for(let n=0;n<height;n++){
         const sway=Math.sin(sim.tick*.045+n*.65+worldX)*pitch*.65;
         ctx.fillStyle=kelpGreens[(shade+(n%4===0?1:0))%kelpGreens.length];
-        ctx.fillText(n%2?'(':')',base+sway,bottom-n*font);
+        ctx.fillText(habitat.name==='Seagrass bed'?(n%2?'/':'|'):(n%2?'(':')'),base+sway,bottom-n*font);
         if(n>0&&n%2===0)ctx.fillText('/',base+sway+pitch,bottom-n*font);
       }
+      if(habitat.name==='Coral garden'&&hash%3===0)ctx.drawImage(coralImage,base,bottom-coralImage.height+font);
+    }
+    // The wreck is attached to an ocean coordinate, so it scrolls through the entire view.
+    for(let segment=Math.floor(sim.travel/64)-1;segment<=Math.ceil((sim.travel+core.W)/64);segment++){
+      if(((segment%6)+6)%6!==5)continue;
+      const x=(segment*64+12-sim.travel)/core.W*screenW,y=floorAt(x);
+      if(x+ wreckImage.width<0||x>screenW)continue;
+      ctx.drawImage(wreckImage,x,y-wreckImage.height-8);
+      const peek=Math.sin(sim.tick*.018+segment);
+      if(peek>.7){ctx.globalAlpha=Math.min(1,(peek-.7)/.15);ctx.drawImage(eelImage,x+20,y-wreckImage.height-28);ctx.globalAlpha=1;}
     }
   }
   function draw(){
-    ctx.fillStyle='#02090c';ctx.fillRect(0,0,screenW,screenH);
+    const light=sim.ocean.light;
+    ctx.fillStyle=light<.35?'#020610':'#02090c';ctx.fillRect(0,0,screenW,screenH);
+    const discovery=sim.ocean.discovery;
+    if(discovery?.type==='whale'){
+      const image=whaleImages[discovery.right?0:1];ctx.globalAlpha=.65;
+      ctx.drawImage(image,discovery.x*screenW/core.W-image.width/2,discovery.y*screenH/core.H);ctx.globalAlpha=1;
+    }
     drawSeabed();
     const cellX=screenW/core.W, cellY=screenH/core.H;
     ctx.font='10px Consolas, "Courier New", monospace';ctx.textBaseline='top';
@@ -123,7 +150,9 @@
       const image=spriteCache[fish.design*2+(fish.right?0:1)];
       const b=core.life.displayBox(sim,fish);
       if(b.left+b.width<0||b.left>screenW)continue;
-      ctx.globalAlpha=alpha;ctx.drawImage(image,b.left,b.top,b.width,b.height);ctx.globalAlpha=1;
+      const jelly=fishArt[fish.design*2]?.name==='moon jellyfish';
+      const pulse=jelly?1+Math.sin((fish.age||0)*.16)*.035:1;
+      ctx.globalAlpha=alpha;ctx.drawImage(image,b.left+b.width*(1-pulse)/2,b.top,b.width*pulse,b.height);ctx.globalAlpha=1;
     }
     const diver=sim.life.diver;
     if(diver&&normalAlpha>0){
@@ -134,12 +163,23 @@
     ctx.globalAlpha=normalAlpha;
     for(const bubble of sim.life.bubbles)ctx.fillText(bubble.age<10?'o':'.',bubble.x*cellX,bubble.y*cellY);
     ctx.globalAlpha=1;
-    const c=core.counts(sim);document.getElementById('tick').textContent=parade?`PARADE · ${Math.ceil((parade.duration-parade.elapsed)/1000)}s`:`${sim.habitat.name} · TIDE ${String(sim.tick).padStart(4,'0')}`;
+    if(discovery?.type==='glow'){
+      ctx.fillStyle='#81cbd9';
+      const fade=Math.min(1,discovery.age/12,(86-discovery.age)/12);
+      ctx.globalAlpha=fade*.65;
+      for(let i=0;i<18;i++)ctx.fillText(i%3?'·':'o',screenW*(.18+(i*17%60)/100)+Math.sin(sim.tick*.025+i)*4,screenH*(.15+(i*7%50)/100));
+      ctx.globalAlpha=1;
+    }
+    ctx.fillStyle='#0c1330';ctx.globalAlpha=(1-light)*.18;ctx.fillRect(0,0,screenW,screenH);ctx.globalAlpha=1;
+    const c=core.counts(sim);document.getElementById('tick').textContent=parade?`PARADE · ${Math.ceil((parade.duration-parade.elapsed)/1000)}s`:`${sim.habitat.name} · ${light<.35?'NIGHT':'DAY'} · TIDE ${String(sim.tick).padStart(4,'0')}`;
     const paradeButton=document.getElementById('parade');
     paradeButton.disabled=!!parade;paradeButton.textContent=parade?'Parade running…':'Creature parade · 2 min';
     for(const [id,value] of [['plankton',c.plankton],['fry',c.fry],['hunters',c.hunters],['algae',c.algae]])document.getElementById(id).textContent=value;
   }
-  function step(elapsedMs=350){core.step(sim,typeof elapsedMs==='number'?elapsedMs:350);draw();}
+  function step(elapsedMs=350){
+    if(clockMode==='local'){const now=new Date();sim.ocean.localHour=now.getHours()+now.getMinutes()/60;}
+    core.step(sim,typeof elapsedMs==='number'?elapsedMs:350);draw();
+  }
   function animationClock(){return typeof performance!=='undefined'?performance.now():Date.now();}
   document.getElementById('parade').onclick=()=>{if(core.life.startParade(sim)){lastFrame=animationClock();draw();}};
   document.getElementById('pause').onclick=e=>{running=!running;e.currentTarget.textContent=running?'Pause':'Resume';};
@@ -148,6 +188,10 @@
   function showQuiet(){quietButton.textContent=`Quiet mode: ${quiet?'on':'off'}`;quietButton.setAttribute('aria-pressed',String(quiet));}
   quietButton.onclick=()=>{quiet=!quiet;worldOptions.quiet=quiet;core.life.setQuiet(sim,quiet);try{localStorage.setItem('ascii-genesis-quiet',String(quiet));}catch{}showQuiet();};
   showQuiet();
+  const clockButton=document.getElementById('clock');
+  function showClock(){clockButton.textContent=clockMode==='local'?'Lighting: local clock':'Lighting: ocean cycle';}
+  clockButton.onclick=()=>{clockMode=clockMode==='local'?'cycle':'local';worldOptions.clockMode=clockMode;core.life.setClockMode(sim,clockMode);try{localStorage.setItem('ascii-genesis-clock',clockMode);}catch{}showClock();};
+  showClock();
   document.getElementById('reset').onclick=()=>{sim=core.world(GenesisSeed(),fishArt.length/2,worldOptions);document.getElementById('event').textContent='A new habitat takes shape. Watch the small life find its balance.';draw();};
   document.getElementById('ai').onclick=async e=>{
     if(aiBusy)return;aiBusy=true;e.currentTarget.disabled=true;

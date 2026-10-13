@@ -13,7 +13,7 @@ Start with [Asciiquarium](https://github.com/cmatsuoka/asciiquarium), the termin
 | **Claudio Matsuoka** | Expanded marine biodiversity, backported from the Asciiquarium Android live wallpaper | The expanded upstream fish collection and repository from which our bundled source was obtained. |
 | **Asciiquarium contributors and maintainers** | Ongoing shared work around the original project | Keeping the source and creative foundation available for people to learn from and adapt. |
 
-Eleven of our twenty creature designs are adapted from Asciiquarium 1.1. Their directional drawings, spacing, and component color masks are preserved in the browser adaptation. The duplicate diamond design was omitted. The original notices and full source remain in [asciiquarium-upstream.pl](third-party/asciiquarium-upstream.pl); the adapted collection is in [fish-art.js](simulator/fish-art.js). See [THIRD-PARTY.txt](THIRD-PARTY.txt) and [LICENSE.txt](LICENSE.txt), GPL-2.0-or-later.
+Eleven of our twenty-one creature designs are adapted from Asciiquarium 1.1. Their directional drawings, spacing, and component color masks are preserved in the browser adaptation. The duplicate diamond design was omitted. The original notices and full source remain in [asciiquarium-upstream.pl](third-party/asciiquarium-upstream.pl); the adapted collection is in [fish-art.js](simulator/fish-art.js). See [THIRD-PARTY.txt](THIRD-PARTY.txt) and [LICENSE.txt](LICENSE.txt), GPL-2.0-or-later.
 
 The original terminal program uses Term::Animation and Curses. We also acknowledge that terminal-animation foundation, while this version renders through a browser canvas.
 
@@ -29,7 +29,9 @@ Thanks also to the [Raspberry Pi](https://www.raspberrypi.com/) and Raspberry Pi
 
 ## What this project adds
 
-Mikepyt87 built and tested the desk display and supplied its printable enclosure and legs. Development used assistance from OpenAI tools. The additions in this repository include six new fish drawings, a squid, an octopus, a sea turtle, the diver, browser rendering, traveling terrain, the simplified food web, occasional encounters, the two-minute creature parade, desktop launchers, updates, and optional API narration. These additions build on the earlier projects' ideas and artwork.
+Mikepyt87 built and tested the desk display and supplied its printable enclosure and legs. Development used assistance from OpenAI tools. The additions in this repository include six new fish drawings, a squid, an octopus, a sea turtle, a jellyfish, the diver, browser rendering, traveling terrain, the simplified food web, schools, species movement, six habitats, day/night lighting, rare discoveries, occasional encounters, the two-minute creature parade, desktop launchers, updates, and optional API narration. These additions build on the earlier projects' ideas and artwork.
+
+The coral, wreck, peeking eel, and distant whale are also original project drawings in the renderer; they are not extracted from the upstream collection.
 
 ## Sharing and contributing
 

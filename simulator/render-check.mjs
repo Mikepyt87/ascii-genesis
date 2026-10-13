@@ -17,7 +17,7 @@ const settings=new Map();
 vm.runInNewContext(fs.readFileSync(new URL('./simulator.js',import.meta.url),'utf8'),{
  window:{AquariumCore:{...core,world(...args){world=core.world(...args);return world;}},AsciiquariumSprites:globalThis.AsciiquariumSprites},document,
  localStorage:{getItem:k=>settings.get(k),setItem:(k,v)=>settings.set(k,v)},
- setInterval(fn,ms){assert.equal(ms,350);interval=()=>{clock+=350;fn();};},Date:{now:()=>clock},console});
+ setInterval(fn,ms){assert.equal(ms,350);interval=()=>{clock+=350;fn();};},Date:class extends Date{constructor(){super('2026-10-12T12:00:00');}static now(){return clock;}},console});
 const initial=cachedGlyphs;assert.ok(initial>0);assert.ok(images>0);
 world.life.nextDiver=0;
 for(let n=0;n<1000;n++)interval();
@@ -35,4 +35,9 @@ for(let i=0;i<350;i++)interval();
 assert.equal(world.parade,null);assert.equal(elements.get('parade').disabled,false);
 assert.equal(cachedGlyphs,initial,'Parade reuses all cached creature drawings');
 elements.get('parade').onclick();elements.get('reset').onclick();assert.equal(world.parade,undefined);
+elements.get('clock').onclick();assert.equal(world.ocean.clockMode,'local');assert.equal(settings.get('ascii-genesis-clock'),'local');interval();
+elements.get('reset').onclick();assert.equal(world.ocean.clockMode,'local','Reset preserves clock preference');
+world.ocean.discovery={type:'whale',right:true,x:24,y:8,age:20};interval();
+world.ocean.discovery={type:'glow',right:true,x:24,y:8,age:20};interval();
+assert.equal(cachedGlyphs,initial,'Discoveries reuse cached artwork');
 console.log('Pi renderer: cached sprites, finite geometry, 1000 frames, pause, step and reset passed.');

@@ -2,7 +2,7 @@
 
 A quiet traveling ASCII ocean for **Raspberry Pi 4 Model B and the Waveshare 7.9-inch HDMI touchscreen**, used horizontally at **1280 × 400**.
 
-Seventeen fish designs, a squid, an octopus, and a sea turtle swim through kelp meadows, rocky reefs, and open sand. Terrain travels slowly, food and plant cover change by habitat, and fish enter and leave beyond the edges. The ocean runs offline. Optional narration is separate from the simulation.
+Seventeen fish designs, a squid, an octopus, a sea turtle, and a jellyfish travel through six habitats, including coral gardens, seagrass beds, and shipwreck depths. Terrain travels slowly, food and plant cover change by habitat, and fish enter and leave beyond the edges. The ocean runs offline. Optional narration is separate from the simulation.
 
 ## Built on work worth celebrating
 
@@ -22,7 +22,7 @@ The ocean works offline, launches from a Raspberry Pi desktop icon, and includes
 
 ## Ocean library
 
-Browse the [Ocean Library](docs/OCEAN-LIBRARY.md) for all 20 creature designs with both directional drawings, their colors and sizes, the diver in both poses and directions, bubbles, small life, kelp, terrain, sediment, water, controls, habitat settings, and current behavior. It also describes the occasional diver, short predator encounters, rare catches, and quiet-mode control.
+Browse the [Ocean Library](docs/OCEAN-LIBRARY.md) for all 21 creature designs with both directional drawings, their colors and sizes, the diver in both poses and directions, bubbles, small life, kelp, terrain, sediment, water, controls, habitat settings, and current behavior. It also describes the occasional diver, short predator encounters, rare catches, and quiet-mode control.
 
 ## Hardware and screen setup
 
@@ -73,13 +73,23 @@ The layout is fixed to 1280 × 400. Browser zoom should stay at 100%. This proje
 
 ## Two minute creature parade
 
-Tap the water, then press **Creature parade · 2 min** to show all 20 creature designs crossing the screen. The parade includes the sea turtle, squid, and octopus. It preserves the normal ecosystem, disables hunting during the showcase, and returns to your ocean automatically after two minutes. Pause and Step work during the parade; New world cancels it. If you start it while paused, press Resume. Quiet mode also allows the parade.
+Tap the water, then press **Creature parade · 2 min** to show all 21 creature designs crossing the screen. The parade includes the sea turtle, squid, and octopus. It preserves the normal ecosystem, disables hunting during the showcase, and returns to your ocean automatically after two minutes. Pause and Step work during the parade; New world cancels it. If you start it while paused, press Resume. Quiet mode also allows the parade.
 
 ## Occasional visitors and hunting
 
 A diver may arrive after 5–10 minutes, then wait another 5–10 minutes after departing before visiting again. Predator encounters have a 2–4 minute cooldown, followed by the wait for free swimmer slots and the pair to enter from off screen. Both fish burst ahead of ordinary swimmers during a pursuit, then ease back to cruising. Most chases end in escape; rare catches visibly shrink the prey into the predator's mouth. All of this works offline.
 
 Tap the water and turn **Quiet mode: on** to disable hunting. Divers and gentle swimming continue. The preference survives restarting the app. Pause and Step apply to every animation. See the [Ocean Library](docs/OCEAN-LIBRARY.md#visitors-and-encounters) for eligibility, timing, and limits.
+
+## A growing ocean
+
+Small schools of three fish occasionally enter together, scatter vertically near hunters, and regroup once the threat passes. Rays glide gently up and down; turtles make a brief surface visit; octopuses settle near the seabed. Moon jellyfish drift slowly across the screen, rise, and gently pulse. All 21 creatures are included in the parade.
+
+The journey now blends through kelp meadow, rocky reef, open sand, coral garden, seagrass bed, and shipwreck depths. Coral and wreck drawings stay attached to the scrolling world. An eel occasionally peeks from a wreck. Rare discoveries include a distant whale crossing or a brief patch of glowing plankton. Whale and glow discoveries wait 5–10 minutes, then another wait starts after they finish; visitors and hunts can delay them. These are decorative visits, not additional food-web agents.
+
+Tap **Lighting: ocean cycle** to switch to **Lighting: local clock**. The default gently alternates day and night over a 20-minute cycle. Local-clock mode follows the Pi's local time, brightest at noon and darkest at midnight. The setting is remembered. Night stays readable and favors occasional jellyfish and lanternfish arrivals. Pause freezes the scene; the parade preserves the ambient cycle and visitor timers.
+
+The eight-swimmer population and algae/plankton caps remain in place. Quiet mode keeps the peaceful additions while disabling hunts.
 
 ## Updates and new fish
 
@@ -121,9 +131,9 @@ Restrict that file with `chmod 600 ~/.config/ascii-genesis/openai.env`. Restart 
 
 ## Performance and validation
 
-The Pi 4 renderer rasterizes the 40 directional creature images and four diver images once and reuses them. It retains the 350 ms simulation interval, fixed 1280 × 400 canvas, and eight-swimmer limit, plus at most one diver and five short-lived bubbles. There are no npm dependencies, continuous API requests, or 60-fps rendering loop. This reduces repeated fish text drawing; actual CPU usage and frame timing must be measured on your Pi 4.
+The Pi 4 renderer rasterizes the 42 directional creature images and four diver images once and reuses them. It retains the 350 ms simulation interval, fixed 1280 × 400 canvas, and eight-swimmer limit, plus at most one diver and five short-lived bubbles. Decorative whale or glow visits are bounded and their artwork is cached too. There are no npm dependencies, continuous API requests, or 60-fps rendering loop. This reduces repeated fish text drawing; actual CPU usage and frame timing must be measured on your Pi 4.
 
-Checks cover all 20 designs appearing in rotation, ecological limits, continuous terrain, off-screen departures, rare catches at visible mouth contact, escape survival, diver limits, quiet mode, cached sprite rendering, pause/reset behavior, and mock narration. Desktop installation is tested in a temporary folder. Linux CI checks script syntax as well. These checks do not replace physical display, touch, power, and OS startup testing.
+Checks cover all 21 designs appearing in rotation, ecological limits, continuous terrain, off-screen departures, rare catches at visible mouth contact, escape survival, diver limits, quiet mode, cached sprite rendering, pause/reset behavior, and mock narration. Desktop installation is tested in a temporary folder. Linux CI checks script syntax as well. These checks do not replace physical display, touch, power, and OS startup testing.
 
 ```bash
 node simulator/core-check.mjs
@@ -144,7 +154,7 @@ python3 raspberry-pi/desktop-check.py
 
 ## Artwork and license
 
-The [Asciiquarium creators and OpenGhost community](CREDITS.md) deserve prominent credit for the work that brought us here. Eleven designs derive from Asciiquarium; nine are original ASCII Genesis creature drawings. See [THIRD-PARTY.txt](THIRD-PARTY.txt) and [LICENSE.txt](LICENSE.txt), GPL-2.0-or-later. Source drawings and their generator are in `third-party/`. Regenerate the fish collection from the project root with `node third-party/restore-sprites.mjs`.
+The [Asciiquarium creators and OpenGhost community](CREDITS.md) deserve prominent credit for the work that brought us here. Eleven designs derive from Asciiquarium; ten are original ASCII Genesis creature drawings. See [THIRD-PARTY.txt](THIRD-PARTY.txt) and [LICENSE.txt](LICENSE.txt), GPL-2.0-or-later. Source drawings and their generator are in `third-party/`. Regenerate the fish collection from the project root with `node third-party/restore-sprites.mjs`.
 
 ### Diagnose an API connection
 

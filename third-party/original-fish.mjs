@@ -67,5 +67,14 @@ export const originalFish = [
   _ /__/__|__\__\ __
  <_(   \__|__/  )(o)>
     \_/\_____/\_/
+`},
+  {name:'moon jellyfish',color:'#a8c9e8',fin:'#8e9fc9',art:String.raw`
+       .----.
+     .'      '.
+    (  .  .   )
+     '--------'
+      | ) | (
+      ( | ( |
+      | ( | )
 `}
 ];

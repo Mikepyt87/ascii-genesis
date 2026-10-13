@@ -18,15 +18,18 @@ To regenerate fish-art.js, run from the package root:
 
 No artwork from the other researched community aquarium projects is included.
 
-Nine additional creature designs were created for ASCII Genesis: sunburst puffer,
+Ten additional creature designs were created for ASCII Genesis: sunburst puffer,
 ribbon bannerfish, silver spearfish, copper moray, violet kite ray, and
-blue lanternfish, rose squid, violet octopus, and sea turtle. These are original project drawings, not Asciiquarium
+blue lanternfish, rose squid, violet octopus, sea turtle, and moon jellyfish. These are original project drawings, not Asciiquarium
 upstream art. Their editable source is third-party/original-fish.mjs and
 they are provided under GPL-2.0-or-later with this project. The combined
-collection now contains 20 designs, each with both swimming directions.
+collection now contains 21 designs, each with both swimming directions.
 
 The two-pose diver and its mirrored views are original ASCII Genesis art,
 provided under GPL-2.0-or-later in simulator/simulator.js.
+
+The coral, shipwreck, peeking eel, and distant whale scenery are original
+ASCII Genesis drawings in simulator/simulator.js, GPL-2.0-or-later.
 
 PROJECT ORIGINS AND ACKNOWLEDGMENTS
 

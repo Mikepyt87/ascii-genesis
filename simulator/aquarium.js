@@ -7,11 +7,14 @@
   const HABITATS=[
     {name:'Kelp meadow',depth:41,kelp:1,nutrients:12,food:28},
     {name:'Rocky reef',depth:38,kelp:.5,nutrients:18,food:24},
-    {name:'Open sand',depth:44,kelp:.12,nutrients:36,food:16}
+    {name:'Open sand',depth:44,kelp:.12,nutrients:36,food:16},
+    {name:'Coral garden',depth:39,kelp:.22,nutrients:16,food:26},
+    {name:'Seagrass bed',depth:42,kelp:.65,nutrients:14,food:28},
+    {name:'Shipwreck depths',depth:43,kelp:.08,nutrients:32,food:18}
   ];
   function habitatAt(distance){
     const segment=Math.floor(distance/64),t=distance/64-segment;
-    const blend=t*t*(3-2*t),a=HABITATS[((segment%3)+3)%3],b=HABITATS[((segment+1)%3+3)%3];
+    const blend=t*t*(3-2*t),count=HABITATS.length,a=HABITATS[((segment%count)+count)%count],b=HABITATS[((segment+1)%count+count)%count];
     return {name:blend<.5?a.name:b.name,region:segment,depth:a.depth+(b.depth-a.depth)*blend,
       kelp:a.kelp+(b.kelp-a.kelp)*blend,nutrients:Math.round(a.nutrients+(b.nutrients-a.nutrients)*blend),
       food:a.food+(b.food-a.food)*blend};
@@ -59,6 +62,7 @@
   function step(w,elapsedMs=350) {
     // Showcase swimmers have their own timeline; the normal ecosystem is preserved.
     if(w.parade){life.advanceParade(w,elapsedMs);return w;}
+    life.advanceOcean(w,elapsedMs);
     const oldColumn=Math.floor(w.travel);
     w.travel+=.08;
     w.habitat=habitatAt(w.travel+W/2);
@@ -95,6 +99,7 @@
     life.before(w);
     for(const fish of w.fish){
       fish.x+=(fish.right?1:-1)*(fish.velocity??fish.speed);
+      life.moveCreature(w,fish);
       if(fish.x<0||fish.x>=W)continue;
       const i=Math.floor(fish.y)*W+Math.floor(fish.x);
       const prey=waterNeighbors(i).filter(j=>next[j]===PLANKTON);
@@ -117,11 +122,16 @@
     }
     // An open ocean occasionally receives a visitor, without crowding the scene.
     const reserve=!w.life.quiet&&!w.life.encounter&&w.tick>=w.life.nextEncounter?2:0;
+    life.addSchool(w,reserve);
     if(w.tick%24===23 && w.fish.length<8-reserve){
       const id=w.nextFishId++, right=rng()<.5;
-      const design=(id+w.habitat.region*3)%w.designCount;
+      let design=(id+w.habitat.region*3)%w.designCount;
+      // Some night arrivals favor lanternfish and jellyfish; ordinary rotation continues.
+      if(w.ocean.light<.35&&id%4===0){const nocturnal=w.profiles.findIndex(p=>p.name===(id%8===0?'moon jellyfish':'blue lanternfish'));if(nocturnal>=0&&nocturnal/2<w.designCount)design=Math.floor(nocturnal/2);}
       const kind=life.predators.has(w.profiles[design*2]?.name)?HUNTER:FRY;
-      w.fish.push({id,kind,x:right?-10:W+10,y:6+rng()*25,design,right,speed:.18+rng()*.27});
+      const name=w.profiles[design*2]?.name;
+      const speed=name==='moon jellyfish'?.12:name==='violet octopus'?.16:.18+rng()*.27;
+      w.fish.push({id,kind,x:right?-10:W+10,y:6+rng()*25,design,right,speed});
     }
     for(const fish of w.fish)if(fish.x>=0&&fish.x<W){
       const i=Math.floor(fish.y)*W+Math.floor(fish.x);
