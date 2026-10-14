@@ -35,14 +35,16 @@ for(let n=0;n<12;n++){
   const greens=new Set(['#438b55','#62b878','#82c76b','#4fa66b','#a0cd78']);
   let roots=0;
   for(let slot=Math.floor(beforeTravel/4);slot<Math.ceil((beforeTravel+48)/4);slot++){
-    const hash=((Math.imul(slot+8192,1664525)^world.seed)>>>0);if(hash%5===0)continue;
-    const worldX=slot*4+(hash%29)/10,x=(worldX-beforeTravel)/48*1280;
+    const plant=core.plantAt(slot,world.seed);if(!plant.present)continue;
+    const {worldX}=plant,x=(worldX-beforeTravel)/48*1280;
     if(x<30||x>1250)continue;
     const y=core.terrainAt(worldX)/48*400-16;
     assert.ok(old.some(p=>greens.has(p.color)&&Math.abs(p.x-x)<1e-8&&Math.abs(p.y-y)<1e-8));
     assert.ok(painted.some(p=>greens.has(p.color)&&Math.abs(p.x-(x-displacement))<1e-8&&Math.abs(p.y-y)<1e-8),'Plant roots move with the same camera as the ground');roots++;
   }
   assert.ok(roots>0);
+  const ridge=old.find(p=>p.color==='#14262d'&&p.x>50&&p.x<1200);
+  assert.ok(ridge&&painted.some(p=>p.color===ridge.color&&Math.abs(p.y-ridge.y)<1e-8&&Math.abs(p.x-(ridge.x-displacement*.35))<1e-8),'Only the distant ridge uses slower parallax');
 }
 world.life.nextDiver=0;
 for(let n=0;n<1000;n++)interval();

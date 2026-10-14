@@ -47,3 +47,4 @@ await import('./life-check.mjs');
 await import('./parade-check.mjs');
 await import('./expansion-check.mjs');
 await import('./bottom-check.mjs');
+await import('./terrain-check.mjs');

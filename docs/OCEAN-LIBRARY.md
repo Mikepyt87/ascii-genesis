@@ -922,6 +922,8 @@ Regular creatures and visiting wildlife appear in the indexes above. Every other
 | Six ocean habitats | Habitat settings | [Habitats](#habitats) |
 | Coral | Procedural scenery | [Branching coral](#coral) |
 | Seagrass | Procedural scenery | [Seagrass leaves](#seagrass) |
+| Rocks, crevices, anchors, debris, and coral variants | Scrolling scenery | [Terrain landmarks](#terrain-landmarks) |
+| Distant ridge and sand ripples | Background and ground texture | [Depth and dunes](#depth-and-dunes) |
 | Shipwreck | Scrolling scenery | [Wreck artwork](#shipwreck) |
 | Glowing plankton patch | Decorative discovery | [Temporary glowing marks](#glowing-plankton-patch) |
 | Day/night lighting and schools | Local behavior | [Movement and lighting](#movement-and-lighting) |
@@ -970,7 +972,7 @@ Actual stalk and frond glyphs:
 
 **Type:** procedural scenery. Alternating parentheses draw stalk segments; slash marks form side fronds at alternating heights. Roots stay attached to the seabed; sway increases toward the upper fronds. Plant roots, floor underscores, and sediment dots use the same camera displacement, about 6.1 screen pixels per second. Ground glyphs are anchored to fixed world columns rather than redrawn on a stationary screen grid. Five greens vary between clumps and along each plant: `#438b55`, `#62b878`, `#82c76b`, `#4fa66b`, `#a0cd78`.
 
-**Placement:** clumps belong to fixed world coordinates and scroll past the camera. **Height:** 2–18 text rows, scaled by habitat. They can be tall in a kelp meadow and short over open sand. Stalks and fronds are parts of the same generated plant, and they do not grow as ecological algae cells. Source: [simulator.js](../simulator/simulator.js); see [kelp and seaweed](#kelp-and-seaweed) for the planting rules.
+**Placement:** clumps belong to fixed world coordinates and scroll past the camera. **Height:** 2–22 text rows, scaled by habitat. They can be tall in a kelp meadow and short over open sand. Stalks and fronds are parts of the same generated plant, and they do not grow as ecological algae cells. Source: [simulator.js](../simulator/simulator.js); see [kelp and seaweed](#kelp-and-seaweed) for the planting rules.
 
 ### Floor contour
 
@@ -978,7 +980,7 @@ Actual stalk and frond glyphs:
 _
 ```
 
-**Type:** procedural scenery; **color:** `#36575a`; **font:** 16 pixels on the target screen. Underscores are placed at the height of the rolling floor to form a continuous-looking seabed. The contour combines the blended habitat depth with two smooth waves. It scrolls with the camera. Fish artwork is clamped above it, and living cells below it are cleared. There is no separate rock sprite. Source: [aquarium.js](../simulator/aquarium.js) and [simulator.js](../simulator/simulator.js).
+**Type:** procedural scenery; **color:** `#36575a`; **font:** 16 pixels on the target screen. Underscores are placed at the height of the rolling floor to form a continuous-looking seabed. The contour blends habitat-specific shapes: smooth ledges in rocky reefs, broad dunes in sand, low outcrops in coral gardens, shallow undulations in seagrass, and deeper rolling basins near wrecks. It scrolls with the camera. Fish artwork is clamped above it, and living cells below it are cleared. Separate cached boulder and crevice drawings add rocky landmarks. Source: [aquarium.js](../simulator/aquarium.js) and [simulator.js](../simulator/simulator.js).
 
 ### Sediment marks
 
@@ -1002,11 +1004,11 @@ See the [controls screenshot](screenshots/controls.jpg) and [screenshot tour](SC
 
 ## Expanded ocean objects
 
-These are original ASCII Genesis scenery and decorative effects, under GPL-2.0-or-later. Coral and wreck drawings are cached once; seagrass and glowing marks are drawn procedurally. They do not reproduce, consume food, or count as swimmers.
+These are original ASCII Genesis scenery and decorative effects, under GPL-2.0-or-later. Coral, rock, anchor, debris, and wreck drawings are cached once; seagrass and glowing marks are drawn procedurally. They do not reproduce, consume food, or count as swimmers.
 
 ### Coral
 
- muted rose `#b8869e`, four rows. Sparse branching clumps grow visually from the floor in coral gardens and scroll with world coordinates.
+ Three original forms in muted rose `#b8869e`, lavender `#a786b9`, and sandy coral `#b9967c`, four to five rows tall. Sparse branching clusters belong to fixed world slots in coral gardens. The rose form is shown below; the additional forms are shown under terrain landmarks.
 
 ```text
   \ | /
@@ -1043,6 +1045,87 @@ These are original ASCII Genesis scenery and decorative effects, under GPL-2.0-o
 
  the first whale or glow patch waits 5–10 minutes; another 5–10 minute cooldown begins after it finishes. Active hunts or divers delay discovery starts. Discovery visits also delay new hunters and divers, keeping the scene from accumulating simultaneous events. Whale crossings last about 3.5 minutes, including their off-screen travel. Glowing patches last about 30 seconds. The eel follows the wreck's independent peek cycle.
 
+
+### Terrain landmarks
+
+All foreground landmarks stay at fixed world coordinates and move with the seabed, plants, and wreck. Their type and appearance depend on the world seed and local habitat. They enter and leave through the edges; redraws do not reroll their positions. At most one candidate is considered per 12-world-cell slot, and most slots are empty. These are decorative objects, not collision obstacles or new food-web agents.
+
+**Boulders:** three muted blue/gray/green forms, three to four rows, colors `#52666a`, `#5a626b`, and `#596c69`. Mostly found in rocky reefs, with occasional stones in kelp meadows.
+
+```text
+    ____
+ __/ .  \_
+/___..____\
+
+     ___
+ ___/   \
+/ .  __  \_
+\___/  \___/
+
+   ______
+ _/ .  . \_
+/__________\
+```
+
+**Crevice:** two small rocky banks around a central gap, three rows, `#4d6266`. Adds the appearance of shelter on rocky ground; animals do not yet enter the gap or react to it.
+
+```text
+   ___      ___
+ _/   \    /   \_
+/______\__/______\
+```
+
+**Anchor:** five rows, gray blue `#6f7b80`. Occasional landmarks near shipwreck depths and more sparsely on open sand.
+
+```text
+    O
+    |
+  --+--
+ \  |  /
+  \_|_/
+```
+
+**Wreck debris:** three broken timber/hull fragments, three rows each, colors `#576d72`, `#56666d`, and `#5e6c6d`. Separate from the large wreck and its eel.
+
+```text
+   __|___
+ _/[] __/
+ \__/__/
+
+  __    __
+ /_/\__/ /
+ \__[]__/
+
+ __/___
+/__/__/
+  /_/
+```
+
+**Additional coral forms:** branching lavender and sandy coral clusters, mixed with the original rose form.
+
+```text
+   /|   |\
+ _/ |\ /| \_
+    | Y |
+  __|_|_|__
+
+     _/\_
+  __/ /\ \__
+ /_/\ || /\_\
+      ||
+    __||__
+```
+
+### Depth and dunes
+
+**Distant ridge:** a faint blue-gray underscore contour (`#14262d`) drawn behind the foreground scenery. Its camera moves at 35 percent of the foreground speed, roughly 2.1 screen pixels per second. This is intentional depth parallax: foreground plants and ground continue moving together at roughly 6.1 pixels per second. The ridge has no collision or food-web role.
+
+**Sand ripples:** sparse dark blue-green `~` marks (`#28464a`) below the floor in open sand. They stay attached to the same world columns as sediment, so they do not slide independently.
+
+**Habitat contours:** rocky reefs use gently rounded terrace steps with steeper transitions between flatter ledges; sand uses broad dunes; coral gardens have low outcrops; seagrass stays comparatively level; wreck depths have broad deeper basins. Shapes blend continuously across habitat boundaries, rather than popping to new heights. Floor depth stays between rows 33 and 46, preserving water space and some bottom texture. No vertical camera movement is introduced.
+
+Source: [aquarium.js](../simulator/aquarium.js) and [simulator.js](../simulator/simulator.js). Tests in [terrain-check.mjs](../simulator/terrain-check.mjs) cover continuity, bounds, stable world positions, landmark variety, and vegetation contrast. Renderer checks verify equal foreground/root movement and slower background movement.
+
 ## Small life and food web
 
 | Item | Appearance | What it does now |
@@ -1063,7 +1146,7 @@ The food chain is **algae → plankton → fry → hunters**, with the final lin
 
 Kelp is drawn using alternating parentheses for the stalk and slash marks for side fronds. Five greens give it variation: `#438b55`, `#62b878`, `#82c76b`, `#4fa66b`, and `#a0cd78`. Some rows use a neighboring shade to break up flat color.
 
-Clumps belong to fixed positions in the traveling world. Their spacing and appearance depend on the world seed; they enter and leave at the edges as the camera moves. Height ranges from 2 to 18 text rows, scaled by the local habitat. Gentle sideways sway animates the stalks. These plants are scenery: fish do not eat them, and they are separate from the algae cells.
+Clumps belong to fixed positions in the traveling world. Their spacing and appearance depend on the world seed; they enter and leave at the edges as the camera moves. Height ranges from 2 to 22 text rows, scaled by habitat and patch density. Seagrass is capped at eight rows and has clustered blades. Broad patches alternate with bare ground. Roots stay fixed while upper fronds sway. These plants are scenery: fish do not eat them, and they are separate from the algae cells.
 
 ### Seabed contour
 
@@ -1073,7 +1156,7 @@ Underscore characters draw a rolling floor in muted blue green, `#36575a`. Spars
 
 The camera advances 0.08 world cells each tick, roughly 6.1 screen pixels per second. It takes about 3.5 minutes to travel one screen width at the normal update rate. The terrain and kelp stay attached to world positions; fish swim independently. The environmental grid shifts left as travel crosses whole columns.
 
-Coral, shipwrecks, and peeking eels now join the scrolling scenery. There are no separate rock, shell, castle, treasure, or surface-wave objects. The diver and its short-lived bubbles are described below. Rocky reef is a habitat name for a different contour and plant density, not a collection of individual rock sprites. Objects elsewhere in the bundled upstream Asciiquarium source are not automatically part of this ocean.
+Coral, shipwrecks, and peeking eels now join the scrolling scenery. Boulders, crevices, anchors, and wreck debris are also present. There are no shell, castle, treasure, or surface-wave objects. The diver and its short-lived bubbles are described below. Rocky reefs now include ledge-shaped contours and individual rock drawings. Objects elsewhere in the bundled upstream Asciiquarium source are not automatically part of this ocean.
 
 ## Habitats
 

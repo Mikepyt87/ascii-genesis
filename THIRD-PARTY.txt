@@ -29,7 +29,7 @@ collection now contains 26 designs, each with both swimming directions.
 The two-pose diver and its mirrored views are original ASCII Genesis art,
 provided under GPL-2.0-or-later in simulator/simulator.js.
 
-The coral, shipwreck, peeking eel, and distant whale scenery are original
+The coral, rocks, anchors, wreck debris, ridge, shipwreck, peeking eel, and distant whale scenery are original
 ASCII Genesis drawings in simulator/simulator.js, GPL-2.0-or-later.
 
 PROJECT ORIGINS AND ACKNOWLEDGMENTS

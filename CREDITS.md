@@ -31,7 +31,7 @@ Thanks also to the [Raspberry Pi](https://www.raspberrypi.com/) and Raspberry Pi
 
 Mikepyt87 built and tested the desk display and supplied its printable enclosure and legs. Development used assistance from OpenAI tools. The additions in this repository include seven new fish drawings, a squid, an octopus, a sea turtle, a jellyfish, a crab, a lobster, a shark, a whale, a submarine, the diver, browser rendering, traveling terrain, the simplified food web, schools, species movement, six habitats, day/night lighting, rare discoveries, occasional encounters, the two-minute creature parade, desktop launchers, updates, and optional API narration. These additions build on the earlier projects' ideas and artwork.
 
-The coral, wreck, peeking eel, and distant whale are also original project drawings in the renderer; they are not extracted from the upstream collection.
+The coral, rocks, anchors, wreck debris, ridge, wreck, peeking eel, and distant whale are also original project drawings in the renderer; they are not extracted from the upstream collection.
 
 ## Sharing and contributing
 

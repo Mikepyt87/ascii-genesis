@@ -68,6 +68,18 @@ The new moon jellyfish drifts upward and pulses gently. Coral gardens add sparse
 
 The ocean now includes six habitats. This staged night preview shows the shipwreck depths and a rare distant whale. The eel peeks from a wreck during its own brief windows. A remembered lighting button chooses a 20-minute ocean cycle or the Pi's local clock. Small schools, gliding rays, surfacing turtles, and seabed octopuses add movement variety during normal running.
 
+## Terrain variety
+
+![Rock ledges, crevices, patchy kelp, and a faint distant ridge](screenshots/terrain-rocks.png)
+
+![Three muted coral forms around low seabed outcrops](screenshots/terrain-coral.png)
+
+![Broad sandy contours, ripple marks, and sparse plants](screenshots/terrain-sand.png)
+
+![Deeper seabed, a large wreck, and scattered hull debris](screenshots/terrain-wreck.png)
+
+These staged Canvas-renderer previews show habitat-specific contours and world-anchored scenery. Foreground plants, sediment, rocks, and wrecks scroll together. Only the faint distant ridge uses a slower camera for depth. Landmarks and plant patches are determined by the world seed, so normal journeys vary. See the [complete object library](OCEAN-LIBRARY.md#terrain-landmarks) for all drawings and behavior.
+
 ## Touch controls
 
 ![Ocean controls showing Pause, Step, New world, AI event, and Quiet mode on](screenshots/controls.jpg)

@@ -19,7 +19,42 @@
       kelp:a.kelp+(b.kelp-a.kelp)*blend,nutrients:Math.round(a.nutrients+(b.nutrients-a.nutrients)*blend),
       food:a.food+(b.food-a.food)*blend};
   }
-  function terrainAt(distance){return habitatAt(distance).depth+1.4*Math.sin(distance*.19)+.7*Math.sin(distance*.43+1);}
+  function terrainShape(name,d){
+    switch(name){
+      case 'Rocky reef':return 2.5*Math.tanh(2*Math.sin(d*.16))+.45*Math.sin(d*.39);
+      case 'Open sand':return 1.8*Math.sin(d*.105)+.5*Math.sin(d*.21+1);
+      case 'Coral garden':return -2.4*Math.exp(-Math.pow(Math.sin(d*.12),2)/.22)+.6*Math.sin(d*.24);
+      case 'Seagrass bed':return .7*Math.sin(d*.12)+.35*Math.sin(d*.31);
+      case 'Shipwreck depths':return 1.8*Math.sin(d*.06)+.45*Math.sin(d*.23);
+      default:return 1.4*Math.sin(d*.19)+.7*Math.sin(d*.43+1);
+    }
+  }
+  function terrainAt(distance){
+    const segment=Math.floor(distance/64),t=distance/64-segment,blend=t*t*(3-2*t),n=HABITATS.length;
+    const a=HABITATS[((segment%n)+n)%n],b=HABITATS[((segment+1)%n+n)%n];
+    return Math.max(33,Math.min(46,a.depth+(b.depth-a.depth)*blend+terrainShape(a.name,distance)*(1-blend)+terrainShape(b.name,distance)*blend));
+  }
+  function plantAt(slot,seed){
+    const hash=((Math.imul(slot+8192,1664525)^seed)>>>0),worldX=slot*4+(hash%29)/10;
+    const habitat=habitatAt(worldX),patch=.5+.5*Math.sin(worldX*.075+(seed%97));
+    const density=habitat.name==='Open sand'?.1:habitat.name==='Shipwreck depths'?.12:habitat.name==='Seagrass bed'?.12+.85*patch:.4+.5*patch;
+    const present=hash%5!==0&&((hash>>>8)%100)<density*100;
+    let height=Math.max(2,Math.round((4+hash%15)*habitat.kelp*(.65+.5*patch)));
+    height=Math.min(habitat.name==='Seagrass bed'?8:22,height);
+    return {hash,worldX,habitat,height,present};
+  }
+  function sceneryAt(slot,seed){
+    const hash=((Math.imul(slot+16384,1103515245)^seed)>>>0),worldX=slot*12+2+(hash%41)/10;
+    const habitat=habitatAt(worldX).name;
+    if(hash%3!==0&&(habitat!=='Rocky reef'||hash%2!==0))return null;
+    let type;
+    if(habitat==='Rocky reef')type=hash%2?'boulder':'crevice';
+    else if(habitat==='Coral garden')type='coral';
+    else if(habitat==='Shipwreck depths')type=hash%2?'anchor':'debris';
+    else if(habitat==='Open sand'&&hash%9===0)type='anchor';
+    else if(habitat==='Kelp meadow'&&hash%6===0)type='boulder';
+    return type?{type,worldX,variant:(hash>>>10)%3}:null;
+  }
 
   function makeRng(seed) {
     let x = seed >>> 0 || 1;
@@ -149,6 +184,6 @@
     for(let y=0;y<H;y++){let line='';for(let x=0;x<W;x++)line+=GLYPH[w.cells[y*W+x]];rows.push(line);}
     return rows.join('\n');
   }
-  root.AquariumCore={W,H,EMPTY,ALGAE,PLANKTON,FRY,HUNTER,GLYPH,COLORS,world,step,counts,ascii,habitatAt,terrainAt,life};
+  root.AquariumCore={W,H,EMPTY,ALGAE,PLANKTON,FRY,HUNTER,GLYPH,COLORS,world,step,counts,ascii,habitatAt,terrainAt,plantAt,sceneryAt,life};
   if(typeof module!=='undefined'&&module.exports)module.exports=root.AquariumCore;
 })(typeof globalThis!=='undefined'?globalThis:this);

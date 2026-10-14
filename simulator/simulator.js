@@ -109,6 +109,18 @@
     outer:for(let y=wreckImage.height-1;y>=0;y--)for(let x=0;x<wreckImage.width;x++)if(pixels[(y*wreckImage.width+x)*4+3]){wreckFootInset=wreckImage.height-1-y;break outer;}
   }
   const coralImage=scenerySprite(['  \\ | /',' _/\\|/\\_','    ||','   _||_'],'#b8869e');
+  const coralClusters=[coralImage,
+    scenerySprite(['   /|   |\\',' _/ |\\ /| \\_','    | Y |','  __|_|_|__'],'#a786b9'),
+    scenerySprite(['     _/\\_','  __/ /\\ \\__',' /_/\\ || /\\_\\','      ||','    __||__'],'#b9967c')];
+  const rocks=[
+    scenerySprite(['    ____',' __/ .  \\_','/___..____\\'],'#52666a'),
+    scenerySprite(['     ___',' ___/   \\','/ .  __  \\_','\\___/  \\___/'],'#5a626b'),
+    scenerySprite(['   ______',' _/ .  . \\_','/__________\\'],'#596c69')];
+  const creviceImage=scenerySprite(['   ___      ___',' _/   \\    /   \\_','/______\\__/______\\'],'#4d6266');
+  const anchorImage=scenerySprite(['    O','    |','  --+--',' \\  |  /','  \\_|_/'],'#6f7b80');
+  const debrisImages=[scenerySprite(['   __|___',' _/[] __/',' \\__/__/'],'#576d72'),
+    scenerySprite(['  __    __',' /_/\\__/ /',' \\__[]__/'],'#56666d'),
+    scenerySprite([' __/___','/__/__/','  /_/'],'#5e6c6d')];
   const eelImage=scenerySprite([' __    __','/  \\__/ o>','\\_______/'],'#ad9b77');
   const whaleRows=['          ___','    _____/   \\________________',' __/                         o \\__','<__    _________________________  >','   \\__/     \\____/       \\_____/'];
   const whaleImages=[scenerySprite(whaleRows,'#426573'),scenerySprite(whaleRows.map(r=>[...r.padEnd(36)].reverse().map(c=>mirror[c]||c).join('')),'#426573')];
@@ -117,6 +129,14 @@
     const font=Number(canvas.dataset.fishFont)||14, pitch=font*.6;
     ctx.font=font+'px "Courier New", monospace';ctx.textBaseline='top';
     const floorAt=x=>core.terrainAt(sim.travel+x/screenW*core.W)/core.H*screenH;
+    // A distant ridge has its own slower camera; foreground roots and ground still match.
+    const distantCamera=sim.travel*.35*screenW/core.W,ridgePitch=pitch*2;
+    ctx.fillStyle='#14262d';
+    for(let column=Math.floor(distantCamera/ridgePitch)-1;column<=Math.ceil((distantCamera+screenW)/ridgePitch);column++){
+      const worldPixel=column*ridgePitch,x=worldPixel-distantCamera;
+      const y=screenH*(.76+.035*Math.sin(worldPixel*.009)+.018*Math.sin(worldPixel*.023));
+      ctx.fillText('_',x,y);
+    }
     // Sample fixed world columns, then translate them with the same camera as the plants.
     const cameraPixels=sim.travel*screenW/core.W;
     const firstColumn=Math.floor(cameraPixels/pitch)-1;
@@ -127,26 +147,36 @@
       ctx.fillStyle='#36575a';ctx.fillText('_',x,y);
       ctx.fillStyle='#203b40';
       for(let depth=font;depth<screenH-y;depth+=font)if((column+depth/font)%5===0)ctx.fillText('.',x,y+depth);
+      if(core.habitatAt(worldPixel/screenW*core.W).name==='Open sand'&&column%4===0){ctx.fillStyle='#28464a';ctx.fillText('~',x,y+font);}
     }
     // Sparse kelp clumps sway slowly; they are scenery, not additional animals.
     const kelpGreens=['#438b55','#62b878','#82c76b','#4fa66b','#a0cd78'];
     // Plants belong to fixed ocean coordinates, so they enter and leave at the edges.
     for(let slot=Math.floor(sim.travel/4)-1;slot<=Math.ceil((sim.travel+core.W)/4)+1;slot++){
-      const hash=((Math.imul(slot+8192,1664525)^sim.seed)>>>0);
-      if(hash%5===0)continue;
-      const worldX=slot*4+(hash%29)/10;
+      const plant=core.plantAt(slot,sim.seed);
+      if(!plant.present)continue;
+      const {hash,worldX,habitat,height}=plant;
       const base=(worldX-sim.travel)/core.W*screenW;
       if(base<-pitch*3||base>screenW+pitch*3)continue;
-      const habitat=core.habitatAt(worldX),height=Math.max(2,Math.round((4+hash%15)*habitat.kelp)),shade=hash%kelpGreens.length;
+      const shade=hash%kelpGreens.length;
       const bottom=floorAt(base)-font;
       for(let n=0;n<height;n++){
         // Roots stay fixed in the seabed; only the upper fronds sway.
         const sway=Math.sin(sim.tick*.045+n*.65+worldX)*pitch*.65*n/Math.max(1,height-1);
         ctx.fillStyle=kelpGreens[(shade+(n%4===0?1:0))%kelpGreens.length];
         ctx.fillText(habitat.name==='Seagrass bed'?(n%2?'/':'|'):(n%2?'(':')'),base+sway,bottom-n*font);
+        if(habitat.name==='Seagrass bed'&&n<height-1){ctx.fillText('/',base+sway-pitch,bottom-n*font);ctx.fillText('|',base+sway+pitch,bottom-n*font);}
         if(n>0&&n%2===0)ctx.fillText('/',base+sway+pitch,bottom-n*font);
       }
-      if(habitat.name==='Coral garden'&&hash%3===0)ctx.drawImage(coralImage,base,bottom-coralImage.height+font);
+    }
+    // Sparse landmarks belong to permanent world slots, so they never pop into the middle.
+    for(let slot=Math.floor(sim.travel/12)-2;slot<=Math.ceil((sim.travel+core.W)/12)+1;slot++){
+      const item=core.sceneryAt(slot,sim.seed);if(!item)continue;
+      const image=item.type==='coral'?coralClusters[item.variant]:item.type==='boulder'?rocks[item.variant]:item.type==='crevice'?creviceImage:item.type==='anchor'?anchorImage:debrisImages[item.variant];
+      const x=(item.worldX-sim.travel)/core.W*screenW;
+      if(x+image.width<0||x>screenW)continue;
+      const floor=Math.min(...Array.from({length:Math.ceil(image.width/pitch)+1},(_,i)=>floorAt(x+i*pitch)));
+      ctx.drawImage(image,x,floor-image.height+groundInk-2);
     }
     // The wreck is attached to an ocean coordinate, so it scrolls through the entire view.
     for(let segment=Math.floor(sim.travel/64)-1;segment<=Math.ceil((sim.travel+core.W)/64);segment++){
