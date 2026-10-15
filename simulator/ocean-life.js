@@ -17,7 +17,7 @@
       return {name:s.name,width,height,footInset:options.footInsets?.[index]||0,mouth:points[0]||{x:width/2,y:height/2}};
     });
     w.life={quiet:!!options.quiet,nextEncounter:interval(w.rng,120,240),nextDiver:interval(w.rng,300,600),
-      encounter:null,diver:null,bubbles:[],lastOutcome:null};
+      encounter:null,diver:null,bubbles:[],lastOutcome:null,overlaps:new Map()};
     w.ocean={elapsed:0,clockMode:options.clockMode==='local'?'local':'cycle',localHour:12,light:1,
       nextSchool:interval(w.rng,60,120),nextDiscovery:interval(w.rng,300,600),discovery:null};
     for(const f of w.fish)f.kind=w.profiles[f.design*2]?.name==='yellow submarine'?0:predators.has(w.profiles[f.design*2]?.name)?HUNTER:FRY;
@@ -131,6 +131,39 @@
     w.life.encounter={hunterId:hunter.id,preyId:prey.id,phase:'entering',age:0,catchAllowed:w.rng()<.2};
     return true;
   }
+  function cruiseTargets(w){
+    const targets=new Map(),pairs=w.life.overlaps,seen=new Set(),e=w.life.encounter;
+    const eligible=f=>!f.school&&!(e&&(f.id===e.hunterId||f.id===e.preyId));
+    for(let i=0;i<w.fish.length;i++)for(let j=i+1;j<w.fish.length;j++){
+      const a=w.fish[i],b=w.fish[j];
+      if(!eligible(a)||!eligible(b)||a.right!==b.right)continue;
+      const ab=box(w,a),bb=box(w,b);
+      const dx=Math.min(ab.left+ab.width,bb.left+bb.width)-Math.max(ab.left,bb.left);
+      const dy=Math.min(ab.top+ab.height,bb.top+bb.height)-Math.max(ab.top,bb.top);
+      const key=a.id<b.id?a.id+':'+b.id:b.id+':'+a.id;
+      const old=pairs.get(key);
+      // Release only after a little daylight appears between the drawings.
+      if(old?.active&&dx>-24&&dy>0){seen.add(key);}
+      else if(dx>Math.min(ab.width,bb.width)*.4&&dy>Math.min(ab.height,bb.height)*.4&&
+        Math.abs((a.velocity??a.speed)-(b.velocity??b.speed))<.09){
+        seen.add(key);
+        const pair=old||{ticks:0,active:false};pair.ticks++;
+        if(pair.ticks>=8&&!pair.active){
+          pair.active=true;
+          pair.front=((a.x-b.x)*(a.right?1:-1)>=0)?a.id:b.id;
+        }
+        pairs.set(key,pair);
+      }else continue;
+      const pair=pairs.get(key);
+      if(pair?.active)for(const f of [a,b]){
+        const speed=f.id===pair.front?Math.max(f.speed*1.35,f.speed+.12):Math.max(.06,f.speed-.06);
+        // A swimmer between two neighbors keeps the faster target, avoiding a tug of war.
+        targets.set(f.id,Math.max(targets.get(f.id)||0,speed));
+      }
+    }
+    for(const key of pairs.keys())if(!seen.has(key))pairs.delete(key);
+    return targets;
+  }
   function before(w){
     const l=w.life;
     if(!l.quiet&&!l.encounter&&!l.diver&&!w.ocean.discovery&&w.tick>=l.nextEncounter)startEncounter(w);
@@ -140,8 +173,9 @@
       if(!h||!p){finish(w,'escape');e=null;}
       else if(e.phase==='entering'&&h.x>7&&h.x<W-7&&p.x>7&&p.x<W-7){e.phase='chasing';e.age=0;}
     }
+    const cruise=cruiseTargets(w);
     for(const f of w.fish){
-      let speed=f.speed;
+      let speed=cruise.get(f.id)??f.speed;
       if(e?.phase==='chasing'){
         if(f.id===e.preyId)speed=e.catchAllowed?.72:.84;
         if(f.id===e.hunterId)speed=e.catchAllowed?.98:.72;

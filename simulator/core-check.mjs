@@ -35,7 +35,7 @@ for(let t=0;t<600;t++){
   for(const fish of before)if(fish.x>0&&fish.x<core.W){
     const after=crossings.fish.find(f=>f.id===fish.id);
     assert.ok(after,'A visible fish must not disappear');assert.equal(after.design,fish.design);
-    assert.ok(Math.abs(after.x-fish.x-(fish.right?1:-1)*fish.speed)<1e-10);
+    assert.ok(Math.abs(after.x-fish.x-(fish.right?1:-1)*after.velocity)<1e-10,'Movement follows the eased speed without jumps');
   }
 }
 for(let i=0;i<10000;i++){core.step(ocean);assert.ok(core.counts(ocean).plankton<=45);assert.ok(core.counts(ocean).algae<=100);assert.ok(ocean.fish.length<=8);assert.equal(new Set(ocean.fish.map(f=>f.id)).size,ocean.fish.length);}
@@ -48,3 +48,4 @@ await import('./parade-check.mjs');
 await import('./expansion-check.mjs');
 await import('./bottom-check.mjs');
 await import('./terrain-check.mjs');
+await import('./spacing-check.mjs');
