@@ -4,6 +4,12 @@ ASCII Genesis is a quiet, traveling ASCII ocean for a Raspberry Pi 4 and a Waves
 
 These are desktop previews of the current renderer at **1280 × 400**, rather than photographs of the Pi. Existing JPEGs are browser captures; the new PNG previews below use the same renderer through a Canvas harness. Scenes were advanced and held still, including rare visitors and encounters. Actual visits are spaced out during normal use, and every new world varies.
 
+## Lionfish
+
+![Two copper lionfish with pale stripes and fanned spines](screenshots/lionfish.png)
+
+A staged Canvas-renderer preview of the original lionfish drawing facing both directions. It joins ordinary arrivals and the two-minute parade. See its [library entry](OCEAN-LIBRARY.md#lionfish) for both drawings, colors, and behavior.
+
 ## Thanks to the original creators
 
 Much of the character of this ocean comes from [Asciiquarium](https://github.com/cmatsuoka/asciiquarium): **Kirk Baucom** created the original project, **Joan Stark** is credited upstream for most of its ASCII art, and **Claudio Matsuoka** expanded its marine biodiversity. Eleven fish designs here adapt their shared work. **xanderchinxyz and the [OpenGhost](https://github.com/xanderchinxyz/OpenGhost) contributors** inspired the initial physical-display exploration. Please visit their projects and read [Credits and project origins](../CREDITS.md).
@@ -26,7 +32,7 @@ Two original ASCII Genesis cephalopods join the rotation: a rose squid with a po
 
 ![A green sea turtle with a patterned shell swimming above kelp](screenshots/turtle.jpg)
 
-The sea turtle brings the collection to 26 creature and vehicle designs. Its original project artwork includes a green shell, flippers, and a small head. Both swimming directions are included in the [Ocean Library](OCEAN-LIBRARY.md#sea-turtle).
+The collection now includes 27 creature and vehicle designs, including the sea turtle and lionfish. Its original project artwork includes a green shell, flippers, and a small head. Both swimming directions are included in the [Ocean Library](OCEAN-LIBRARY.md#sea-turtle).
 
 ![The creature parade with staggered swimmers, a disabled parade button, and 85 seconds remaining](screenshots/parade.jpg)
 
@@ -48,7 +54,7 @@ A diver occasionally swims across with gently alternating flippers and a small t
 
 ![Crab and lobster on the seabed, with shark, whale, submarine, and eel in the larger wreck](screenshots/bottom-creatures-wreck.png)
 
-This staged Canvas-renderer preview shows the five new designs together. Crab and lobster feet follow the floor, including during the parade. The shark can join occasional hunts; the regular humpback whale glides through the rotation, while the yellow submarine is a decorative vehicle. The wreck is nine rows tall and over four times the peeking eel's width. The complete library includes all 26 regular designs in one collection.
+This staged Canvas-renderer preview shows the five new designs together. Crab and lobster feet follow the floor, including during the parade. The shark can join occasional hunts; the regular humpback whale glides through the rotation, while the yellow submarine is a decorative vehicle. The wreck is nine rows tall and over four times the peeking eel's width. The complete library includes all 27 regular designs in one collection.
 
 ## Predator encounter
 
@@ -94,7 +100,7 @@ Tap the water to reveal this panel. It fades after eight seconds so the ocean ca
 | Close ocean | Returns to the Pi desktop when opened through the desktop launcher. |
 | Lighting | Switches between the ocean cycle and local-clock lighting. |
 | AI event | Requests optional narration through your own configured OpenAI API connection. It does not control the ocean. |
-| Creature parade | Shows all 26 designs in a two-minute lineup, then returns to the normal ocean. |
+| Creature parade | Shows all 27 designs in a two-minute lineup, then returns to the normal ocean. |
 | Quiet mode | Turns hunting off or on. The preference is remembered in the browser profile. |
 
 The ocean, diver, and encounters all work **offline without an API key**. The AI button requires separate setup and working API access; the screenshot does not demonstrate a successful API call.
