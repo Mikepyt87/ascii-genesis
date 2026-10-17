@@ -8,10 +8,10 @@ function fixture(design,right=true,count=2){
   return w;
 }
 function tick(w){core.life.before(w);for(const f of w.fish)f.x+=(f.right?1:-1)*f.velocity;}
-for(const name of ['reef fish','shore crab','reef lobster','humpback whale'])for(const right of [true,false]){
+for(const name of ['reef fish','shore crab','reef lobster','peacock mantis shrimp','humpback whale'])for(const right of [true,false]){
   const w=fixture(art.findIndex(a=>a.name===name)/2,right),start=w.fish.map(f=>f.x);
   // Actual boxes detect floor-clamped overlap even when stored depths are different.
-  if(name==='shore crab'||name==='reef lobster')w.fish[1].y=5;
+  if(['shore crab','reef lobster','peacock mantis shrimp'].includes(name))w.fish[1].y=5;
   for(let n=0;n<7;n++)tick(w);
   assert.ok(w.fish.every(f=>f.velocity===f.speed),'Brief overlap keeps ordinary pace');
   for(let n=0;n<100;n++){

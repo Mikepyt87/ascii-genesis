@@ -5,6 +5,7 @@
 #define MINI_BOB 2
 #define MINI_GAP 4
 #define MINI_SWIM_TOP 23
+#define MINI_SCROLL_SPEED 3.6f
 #define MINI_SWIM_BOTTOM 145
 // Conservative inset for the panel's rounded corners, estimated from the board photo.
 #define MINI_SAFE_X 12

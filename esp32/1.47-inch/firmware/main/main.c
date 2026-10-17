@@ -35,7 +35,7 @@ static void text_large(const char *s,int x,int y,uint16_t c){
 }
 static float rnd(void){return (float)(esp_random()&65535)/65536.0f;}
 static void spawn(int slot,int index,int dir,float x,float y){fish[slot]=(swimmer_t){.art=(index&~1)+(dir<0),.dir=dir,.x=x,.y=y,.speed=3+rnd()*3,.phase=rnd()*6.28f,.active=true};}
-static void new_world(void){time_s=0;pending_art=-1;spawn(0,6,1,28,23);spawn(1,2,-1,156,55);spawn(2,38,-1,180,103);for(int i=0;i<4;i++){bubble_x[i]=20+rnd()*280;bubble_y[i]=23+rnd()*120;}paused=false;}
+static void new_world(void){time_s=0;pending_art=-1;spawn(0,6,1,28,23);spawn(1,MINI_MANTIS_INDEX,-1,156,55);spawn(2,38,-1,180,103);for(int i=0;i<4;i++){bubble_x[i]=20+rnd()*280;bubble_y[i]=23+rnd()*120;}paused=false;}
 static int free_y(int height){
     int chosen=-1,count=0;
     for(int y=MINI_SWIM_TOP;mini_band_fits(y,height);y++){
@@ -53,7 +53,7 @@ static void simulate(float dt){
         if(f->x>328||f->x+s->width*6<-8)f->active=false;
     }
     for(int i=0;i<3;i++)if(!fish[i].active){
-        if(pending_art<0){pending_art=(esp_random()%27)*2;pending_dir=rnd()<.5f?-1:1;}
+        if(pending_art<0){pending_art=(esp_random()%(MINI_SPRITE_COUNT/2))*2;pending_dir=rnd()<.5f?-1:1;}
         const mini_sprite_t *a=&mini_sprites[pending_art];int y=free_y(a->height*8);
         if(y>=0){spawn(i,pending_art,pending_dir,pending_dir>0?-a->width*6-2:322,y);pending_art=-1;}
         break;
@@ -66,7 +66,7 @@ static void draw_ocean(bool controls){
     text("ASCII GENESIS - MINI",20,8,pale);
     static const char *habitats[]={"KELP MEADOW","ROCKY REEF","OPEN SAND","CORAL GARDEN","SEAGRASS BED","WRECK DEPTHS"};
     const char *habitat=habitats[((int)(time_s/45))%6];text(habitat,300-strlen(habitat)*6,8,muted);
-    float scroll=time_s*1.8f;
+    float scroll=time_s*MINI_SCROLL_SPEED;
     for(int i=(int)floorf(scroll/6)-1;i*6<scroll+326;i++){float world_x=i*6;int x=mini_screen_x(world_x,scroll),ground=mini_ground_y(world_x);glyph(i%4==0?':':'.',x,ground+1,sand);glyph('_',x,ground-6,sand);}
     for(int p=(int)floorf((scroll-22)/57)-1;p*57+22<scroll+332;p++){
         float world_x=p*57+22;int x=mini_screen_x(world_x,scroll),ground=mini_ground_y(world_x),height=2+((p%3+3)%3);

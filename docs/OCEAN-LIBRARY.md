@@ -1,6 +1,6 @@
 # ASCII Genesis Ocean Library
 
-A field guide to everything currently drawn or simulated in the Raspberry Pi 4 ocean on the Waveshare 7.9-inch screen. The regular collection contains **26 sea-creature designs and a submarine, 54 directional drawings, two microscopic life types, a two-pose diver, bubbles, kelp, seabed contours, sediment texture, and water across six habitats**. An occasional diver visits, and brief predator encounters sometimes end in a catch. Quiet mode turns hunting off. A peeking eel and distant whale are additional visiting wildlife, documented alongside the diver.
+A field guide to everything currently drawn or simulated in the Raspberry Pi 4 ocean on the Waveshare 7.9-inch screen. The regular collection contains **27 sea-creature designs and a submarine, 56 directional drawings, two microscopic life types, a two-pose diver, bubbles, kelp, seabed contours, sediment texture, and water across six habitats**. An occasional diver visits, and brief predator encounters sometimes end in a catch. Quiet mode turns hunting off. A peeking eel and distant whale are additional visiting wildlife, documented alongside the diver.
 
 ## Thanks to the original creators
 
@@ -16,7 +16,7 @@ The artwork below is copied from the actual sprite collection, with its spaces p
 
 ## Library navigation
 
-- [Creature index](#creature-index) and [all 27 creature drawings](#creature-drawings)
+- [Creature index](#creature-index) and [all 28 creature drawings](#creature-drawings)
 - [Visiting wildlife](#visiting-wildlife-index): diver, peeking eel, and distant whale
 - [Movement, schools, and lighting](#movement-and-lighting)
 - [Other objects](#other-objects-index), [scenery](#expanded-ocean-objects), and [habitats](#habitats)
@@ -53,10 +53,11 @@ The artwork below is copied from the actual sprite collection, with its spaces p
 | 25 | [humpback whale](#humpback-whale) | soft blue | ASCII Genesis |
 | 26 | [yellow submarine](#yellow-submarine) | muted yellow | ASCII Genesis |
 | 27 | [lionfish](#lionfish) | copper and cream | ASCII Genesis |
+| 28 | [peacock mantis shrimp](#peacock-mantis-shrimp) | green, blue, and orange | ASCII Genesis |
 
 ## Visiting wildlife index
 
-The numbered collection contains 26 sea-creature designs and one submarine, making 27 regular designs in the parade lineup. These additional visitors have their own drawings and behavior; they do not occupy the regular swimmer slots or join the parade.
+The numbered collection contains 27 sea-creature designs and one submarine, making 28 regular designs in the parade lineup. These additional visitors have their own drawings and behavior; they do not occupy the regular swimmer slots or join the parade.
 
 | Visitor | Appearance and behavior | Source |
 | --- | --- | --- |
@@ -70,9 +71,9 @@ The numbered collection contains 26 sea-creature designs and one submarine, maki
 - Up to eight swimmers may exist at once, including swimmers outside the visible screen. A normal arrival opportunity occurs every 24 ticks, about 8.4 seconds, when there is room. A pending encounter reserves two slots so it can introduce a suitable pair without exceeding the cap.
 - Normal individual speeds range from 0.18 to just under 0.45 world cells per tick. At 350 milliseconds per tick and 1280 pixels across 48 world cells, that is roughly 14 to 34 pixels per second. A center crosses the visible width in about 37 to 93 seconds. Jellyfish and octopus arrivals are slower (0.12 and 0.16 cells per tick); schools share a group speed. See [movement and lighting](#movement-and-lighting).
 - Fish keep their drawing and direction for their whole crossing. Ordinary departures are removed after their center reaches 20 world cells beyond an edge. Normal arrivals start 10 cells beyond an edge. An encounter pair starts 10 and 18 cells beyond the same edge. A successful catch is the only removal inside the visible screen.
-- Brief overlaps are allowed. Unrelated same-direction swimmers with substantially overlapping displayed bodies and nearly matching speeds get a gentle spacing adjustment after eight ticks (2.8 seconds): the leader targets at least 0.12 cells per tick above its base pace, while the follower eases back by up to 0.06. Targets stay in place until the drawings have 24 pixels of horizontal clearance, or separate vertically, then ease back to base speed. This also accounts for floor-clamped crab and lobster drawings without lifting them off the ground. Schools and active encounter participants are excluded; the parade runs separately.
+- Brief overlaps are allowed. Unrelated same-direction swimmers with substantially overlapping displayed bodies and nearly matching speeds get a gentle spacing adjustment after eight ticks (2.8 seconds): the leader targets at least 0.12 cells per tick above its base pace, while the follower eases back by up to 0.06. Targets stay in place until the drawings have 24 pixels of horizontal clearance, or separate vertically, then ease back to base speed. This also accounts for floor-clamped crab, lobster, and mantis shrimp drawings without lifting them off the ground. Schools and active encounter participants are excluded; the parade runs separately.
 - Fry can consume nearby plankton. Hunters normally cruise; selected encounter pairs briefly chase, and some catch prey. There is no breeding, aging, health, or hunger system for individual swimmers.
-- The renderer keeps each drawing above the local seabed and caches all 54 creature images. Travel changes which designs enter next; it does not transform fish already on screen.
+- The renderer keeps each drawing above the local seabed and caches all 56 creature images. Travel changes which designs enter next; it does not transform fish already on screen.
 
 ## Creature drawings
 
@@ -851,6 +852,32 @@ A copper lionfish with pale diagonal body stripes, long dorsal spines, and a bro
        /  |  \        
 ```
 
+### peacock mantis shrimp
+
+**Original ASCII Genesis artwork; GPL-2.0-or-later.** Design 28.
+
+Stalked cream eyes, a segmented green body, a tail fan, blue legs, and orange folded clubs. Both editions share these five-row directional drawings. In the Pi edition it stays on the seabed, follows changing terrain, and joins the two-minute parade. It is decorative and is not selected for hunting encounters. The Mini includes it in its three-creature rotation and opening scene.
+
+**Right-facing: 22 columns × 5 rows**
+
+```text
+                 o   o
+                  \_/
+ _/\_  _ _ _ __.-'==\
+<_  _>=|=|=|=|_    _)>
+  \/   /_/_/   \_(] (]
+```
+
+**Left-facing: 22 columns × 5 rows**
+
+```text
+o   o
+ \_/
+ /=='-.__ _ _ _  _/\_
+<(_    _|=|=|=|=<_  _>
+[) [)_/   \_\_\   \/
+```
+
 ## Visiting wildlife drawings
 
 ### Diver artwork
@@ -938,7 +965,7 @@ A copper lionfish with pale diagonal body stripes, long dorsal spines, and a bro
 - **Rays:** glide up and down by 1.5 world rows without changing direction.
 - **Turtles:** start a gentle surface visit after 100 movement ticks, turn back after 180, and return toward their original depth. This is a stylized surface visit, not a breathing simulation.
 - **Octopuses:** new arrivals cruise at 0.16 cells per tick and approach a point nine rows above the local seabed. Artwork remains clamped above the ground.
-- **Crab and lobster:** slow horizontal crawling, grounded along the highest seabed point under the body. Both stay grounded in the parade too.
+- **Crab, lobster, and mantis shrimp:** slow horizontal crawling, grounded along the highest seabed point under the body. They stay grounded in the parade too.
 - **Whale and submarine:** the regular whale glides gently up and down; the submarine maintains a steady depth. The submarine occupies one of the eight display slots but is excluded from the food web.
 - **Day/night:** the default cycle lasts 20 minutes of unpaused simulation time. Light is brightest at its start, darkest halfway through, and smoothly changes throughout. Local-clock mode follows the Pi's hour and minute, brightest at noon and darkest at midnight. The clock button's preference survives resets and reopening. Pausing holds the picture; resuming local-clock mode follows the current time. Night tint opacity never exceeds 18 percent.
 - **Night arrivals:** every fourth arrival may favor a lanternfish or jellyfish if that drawing is available, while ordinary design rotation continues. This is artistic scheduling, not a biological claim.
@@ -1231,7 +1258,7 @@ Small bubbles rise near the diver, changing from an o to a dot before vanishing.
 | --- | --- |
 | Predator | Large ocean fish, silver spearfish, copper moray, reef shark |
 | Prey | Tiny fish, little triangular fish, reef fish, box fish |
-| Cruising only | Angelfish, striped fish, rounded fish, diamond fish, curly-fin fish, sunburst puffer, ribbon bannerfish, violet kite ray, blue lanternfish, rose squid, violet octopus, sea turtle, moon jellyfish, shore crab, reef lobster, humpback whale |
+| Cruising only | Angelfish, striped fish, rounded fish, diamond fish, curly-fin fish, sunburst puffer, ribbon bannerfish, violet kite ray, blue lanternfish, rose squid, violet octopus, sea turtle, moon jellyfish, shore crab, reef lobster, peacock mantis shrimp, humpback whale |
 | Decorative vehicle | Yellow submarine; no food-web interaction |
 
 After a 2 to 4 minute cooldown, the simulation waits for two swimmer slots and no diver before bringing in a predator and prey from the same edge. Both begin outside the display and cruise into view together. Only one encounter can be active. The cooldown restarts when it ends, so visible encounters are farther apart than the cooldown alone.
@@ -1256,7 +1283,7 @@ The implementation caps swimmers at eight, divers at one, and bubbles at five. C
 
 ## Creature parade
 
-Tap the water and press **Creature parade · 2 min**. All 27 creature and vehicle designs, including the turtle, squid, and octopus, make a complete left-to-right crossing during a two-minute showcase. They are staggered across four swimming lanes, with crabs and lobsters rendered along the floor instead, with no more than eight parade swimmers at once. Every design starts fully beyond the left edge and leaves fully beyond the right edge. The diver is a visiting person and is not part of the sea-creature lineup.
+Tap the water and press **Creature parade · 2 min**. All 28 creature and vehicle designs, including the turtle, squid, and octopus, make a complete left-to-right crossing during a two-minute showcase. They are staggered across four swimming lanes, with crabs, lobsters, and mantis shrimp rendered along the floor instead, with no more than eight parade swimmers at once. Every design starts fully beyond the left edge and leaves fully beyond the right edge. The diver is a visiting person and is not part of the sea-creature lineup.
 
 The showcase uses separate swimmers and preserves the normal world's positions, ecosystem, terrain, and encounter timers. Ordinary swimmers blend out at the start; once the lineup has finished crossing, they blend back in during the final two seconds. The normal ocean resumes automatically at the end. There are no hunts during the parade, and quiet mode does not prevent it.
 
