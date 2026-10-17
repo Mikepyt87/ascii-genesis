@@ -1,0 +1,35 @@
+name: Check miniature ESP32
+on:
+  push:
+    paths: ['esp32/**', '.github/workflows/esp32-147-*.yml']
+  pull_request:
+    paths: ['esp32/**', '.github/workflows/esp32-147-*.yml']
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node esp32/1.47-inch/preview/check.mjs
+      - run: node esp32/1.47-inch/preview/network-check.mjs
+      - run: node esp32/1.47-inch/tools/generate-assets.mjs --check
+      - run: gcc -std=c11 -Wall -Wextra -Werror esp32/1.47-inch/tools/policy-check.c -o /tmp/policy-check && /tmp/policy-check
+      - uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: v5.5.2
+          target: esp32s3
+          path: esp32/1.47-inch/firmware
+          command: idf.py build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: esp32-147-test-build
+          path: |
+            esp32/1.47-inch/firmware/build/ascii_genesis_147.bin
+            esp32/1.47-inch/firmware/build/bootloader/bootloader.bin
+            esp32/1.47-inch/firmware/build/partition_table/partition-table.bin
+            esp32/1.47-inch/firmware/build/ota_data_initial.bin
+            esp32/1.47-inch/firmware/build/flasher_args.json

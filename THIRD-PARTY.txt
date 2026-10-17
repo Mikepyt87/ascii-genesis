@@ -44,3 +44,13 @@ included here. The supplied case and legs are Mikepyt87's designs.
 
 Thank you to the Raspberry Pi and Raspberry Pi OS communities, Waveshare,
 Node.js, and Chromium for the hardware and software foundation.
+
+MINIATURE ESP32 PREVIEW FONT
+
+esp32/1.47-inch/preview/font.js contains the classic Adafruit GFX 5x7 bitmap
+font, extracted from Waveshare's Arduino_GFX example bundle on 2026-10-17.
+Copyright (c) 2012 Adafruit Industries. BSD license, preserved in
+esp32/1.47-inch/preview/FONT-LICENSE.txt. Only numeric font data was extracted;
+the miniature simulation and renderer are project code under GPL-2.0-or-later.
+The creature drawings retain their existing source notices and attribution.
+Source bundle: https://files.waveshare.com/wiki/ESP32-S3-Touch-LCD-1.47/ESP32-S3-Touch-LCD-1.47-Demo.zip
