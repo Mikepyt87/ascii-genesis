@@ -23,8 +23,8 @@ for(const fish of originalFish){
   const right=rows.map(row=>row.padEnd(width,' '));
   const left=right.map(row=>[...row].reverse().map(ch=>mirror[ch]||ch).join(''));
   for(const drawing of [right,left])sprites.push({name:fish.name,original:true,rows:drawing,
-    masks:drawing.map(row=>[...row].map(ch=>ch===' '?' ':ch==='o'?'4':ch==='|'||ch===':'?'7':ch==='/'||ch==='\\'?'2':ch==='>'||ch==='<'?'5':'1').join('')),
-    palette:[fish.color,fish.fin,fish.fin,'#fff1c8',fish.color,fish.fin,'#e4dfc5']});
+    masks:drawing.map(row=>[...row].map(ch=>fish.mask?.[ch]||(ch===' '?' ':ch==='o'?'4':ch==='|'||ch===':'?'7':ch==='/'||ch==='\\'?'2':ch==='>'||ch==='<'?'5':'1')).join('')),
+    palette:fish.palette||[fish.color,fish.fin,fish.fin,'#fff1c8',fish.color,fish.fin,'#e4dfc5']});
 }
 if(sprites.some(s=>!s.rows||!s.masks||s.rows.length!==s.masks.length))throw Error('Invalid upstream sprite extraction');
 const notice='/* Classic fish and color masks from Asciiquarium 1.1.\n * Copyright (C) 2003 Kirk Baucom. Most ASCII art credited upstream to Joan Stark.\n * GPL-2.0-or-later. Source: https://github.com/cmatsuoka/asciiquarium\n * Adapted for this browser renderer on 2026-10-11; original spaces preserved.\n */\n';

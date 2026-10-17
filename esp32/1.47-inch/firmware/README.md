@@ -150,5 +150,5 @@ When reporting a problem, include the exact board model, firmware version, what 
 
 Check landscape rotation, all four touch corners, colors, frame timing, initial flash, phone provisioning, reconnect after a power cycle, wrong Wi-Fi credentials, interrupted downloads, first-boot watchdog rollback, and successful updates between two real versions. Browser tests model the workflow; they do not emulate radio, flash, bootloader, display or touch hardware.
 
-This miniature is a decorative ocean with up to three swimmers with the existing 27 designs. It does not implement the Pi edition's full ecology or narration. The firmware is GPL-3.0-or-later so its GPL-2.0-or-later artwork can be combined with the Apache-2.0 vendor display driver. The Pi edition keeps its existing license. See COPYING, the driver's LICENSE, the font's BSD notice and the root credits.
+This miniature is a decorative ocean with up to three swimmers with the existing 28 designs. It does not implement the Pi edition's full ecology or narration. The firmware is GPL-3.0-or-later so its GPL-2.0-or-later artwork can be combined with the Apache-2.0 vendor display driver. The Pi edition keeps its existing license. See COPYING, the driver's LICENSE, the font's BSD notice and the root credits.
 

@@ -77,9 +77,10 @@
     // Start with a light touch: a quiet reef has room between the animals.
     seedSpecies(ALGAE, 76); seedSpecies(PLANKTON, 34); seedSpecies(FRY, 5); seedSpecies(HUNTER, 1);
     const fish=[];
+    const mantisDesign=(options.art||root.AsciiquariumSprites||[]).findIndex(s=>s.name==='peacock mantis shrimp')/2;
     for(let i=0;i<cells.length;i++)if(cells[i]===FRY||cells[i]===HUNTER){
       const id=fish.length;
-      fish.push({id,kind:cells[i],x:i%W,y:Math.floor(i/W),design:id%designCount,right:id%2===0,speed:.18+rng()*.27});
+      fish.push({id,kind:cells[i],x:i%W,y:Math.floor(i/W),design:id===2&&mantisDesign>=0&&mantisDesign<designCount?mantisDesign:id%designCount,right:id%2===0,speed:.18+rng()*.27});
     }
     const w={ width: W, height: H, cells, floor, fish, designCount, travel:0,habitat:habitatAt(W/2),nextFishId:fish.length, tick: 0, rng, seed };
     life.setup(w,options.art||root.AsciiquariumSprites||[],options);
@@ -165,7 +166,7 @@
       if(w.ocean.light<.35&&id%4===0){const nocturnal=w.profiles.findIndex(p=>p.name===(id%8===0?'moon jellyfish':'blue lanternfish'));if(nocturnal>=0&&nocturnal/2<w.designCount)design=Math.floor(nocturnal/2);}
       const name=w.profiles[design*2]?.name;
       const kind=name==='yellow submarine'?EMPTY:life.predators.has(name)?HUNTER:FRY;
-      const speed=name==='moon jellyfish'?.12:name==='violet octopus'?.16:name==='shore crab'?.1:name==='reef lobster'?.12:name==='humpback whale'?.16:name==='yellow submarine'?.2:.18+rng()*.27;
+      const speed=name==='moon jellyfish'?.12:name==='violet octopus'?.16:name==='shore crab'?.1:name==='reef lobster'||name==='peacock mantis shrimp'?.12:name==='humpback whale'?.16:name==='yellow submarine'?.2:.18+rng()*.27;
       w.fish.push({id,kind,x:right?-10:W+10,y:6+rng()*25,design,right,speed});
     }
     for(const fish of w.fish)if(fish.kind!==EMPTY&&fish.x>=0&&fish.x<W){

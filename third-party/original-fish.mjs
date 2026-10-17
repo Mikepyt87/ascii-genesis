@@ -126,5 +126,13 @@ export const originalFish = [
        / / | | \ \
       / /  | |  \ \
         /  |  \
+`},
+  {name:'peacock mantis shrimp',color:'#54c992',fin:'#59aedd',
+   palette:['#54c992','#59aedd','#f4a365','#fff1c8','#ed8875','#59aedd','#b6d96f'],mask:{'[':'3',']':'3','=':'7','|':'7'},art:String.raw`
+                 o   o
+                  \_/
+ _/\_  _ _ _ __.-'==\
+<_  _>=|=|=|=|_    _)>
+  \/   /_/_/   \_(] (]
 `}
 ];

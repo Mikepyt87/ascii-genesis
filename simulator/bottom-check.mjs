@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url),core=require('./aquarium.js');require('./fish-art.js');
 const art=globalThis.AsciiquariumSprites,design=name=>art.findIndex(s=>s.name===name)/2;
-for(const name of ['shore crab','reef lobster'])for(const right of [false,true]){
+for(const name of ['shore crab','reef lobster','peacock mantis shrimp'])for(const right of [false,true]){
  const w=core.world(44,26,{quiet:true});w.fish=[];w.life.nextDiver=1e9;w.ocean.nextSchool=1e9;w.ocean.nextDiscovery=1e9;
  const f={id:100,design:design(name),kind:core.FRY,right,x:right?-10:58,y:8,speed:.12};w.fish=[f];
  const b=core.life.box(w,f);assert.ok(b.left+b.width<0||b.left>1280);

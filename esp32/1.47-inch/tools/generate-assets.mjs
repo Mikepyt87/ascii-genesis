@@ -16,6 +16,8 @@ static const unsigned char mini_font[]={${globalThis.MiniFont.join(',')}};
 static const mini_sprite_t mini_sprites[]={\n`;
 for(const s of globalThis.AsciiquariumSprites)out+=`{ {${s.rows.map(quote)}}, {${s.masks.map(quote)}}, {${s.palette.map(c=>'0x'+c.slice(1))}}, ${Math.max(...s.rows.map(r=>r.length))}, ${s.rows.length}},\n`;
 out+='};\n';
+out+=`#define MINI_SPRITE_COUNT ${globalThis.AsciiquariumSprites.length}\n`;
+out+=`#define MINI_MANTIS_INDEX ${globalThis.AsciiquariumSprites.findIndex(s=>s.name==='peacock mantis shrimp')}\n`;
 const target=fileURLToPath(new URL('../firmware/main/assets.h',import.meta.url));
 if(process.argv.includes('--check')){if(await fs.readFile(target,'utf8')!==out)throw Error('Generated assets are stale');}
 else await fs.writeFile(target,out);

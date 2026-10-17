@@ -3,7 +3,7 @@
   const W=48,H=48,FRY=3,HUNTER=4;
   // Eligibility belongs to artwork, never to a randomly assigned food-web role.
   const predators=new Set(['large ocean fish','silver spearfish','copper moray','reef shark']);
-  const bottomNames=new Set(['shore crab','reef lobster']);
+  const bottomNames=new Set(['shore crab','reef lobster','peacock mantis shrimp']);
   const preyNames=new Set(['tiny fish','little triangular fish','reef fish','box fish']);
   const interval=(rng,min,max)=>Math.round((min+rng()*(max-min))*1000/350);
   function setup(w,art=[],options={}){

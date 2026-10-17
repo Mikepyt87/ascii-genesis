@@ -9,7 +9,10 @@ int main(void){
     assert(!mini_bands_clear(20,40,40,40));
     assert(!mini_band_fits(17,140));
     assert(!mini_band_fits(10,24));
-    for(int i=0;i<54;i++){
+    assert(MINI_SPRITE_COUNT==56&&MINI_MANTIS_INDEX==54);
+    assert(MINI_SCROLL_SPEED==3.6f);
+    assert(mini_sprites[MINI_MANTIS_INDEX].height==5);
+    for(int i=0;i<MINI_SPRITE_COUNT;i++){
         int h=mini_sprites[i].height*8;bool can_enter=false;
         for(int y=MINI_SWIM_TOP;mini_band_fits(y,h);y++)can_enter=true;
         assert(can_enter);

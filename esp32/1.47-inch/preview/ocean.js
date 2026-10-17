@@ -6,6 +6,7 @@
   const W = 320, H = 172, WATER_TOP = 20, FLOOR = 152;
   const SAFE_X = 12, SAFE_Y = 8, SWIM_TOP = 23;
   const BOB = 2, GAP = 4, SWIM_BOTTOM = 145;
+  const SCROLL_SPEED = 3.6;
   const groundAt = worldX => FLOOR + Math.round(Math.sin(worldX / 42) * 3);
   const screenX = (worldX, scroll) => Math.round(worldX - scroll);
   const bandsClear = (y, h, otherY, otherH) => y + h + BOB + GAP <= otherY - BOB || otherY + otherH + BOB + GAP <= y - BOB;
@@ -19,7 +20,7 @@
       this.pendingSpawn = null;
       this.bubbles = []; this.nextBubble = 2;
       this.spawn(6, 28, 23, 1);
-      this.spawn(2, 156, 55, -1);
+      this.spawn(sprites.findIndex(s=>s.name==='peacock mantis shrimp'), 156, 55, -1);
       this.spawn(38, 180, 103, -1);
     }
     random() {
@@ -44,7 +45,7 @@
     step(dt) {
       if (this.paused) return;
       dt = Math.max(0, Math.min(dt, 0.25));
-      this.time += dt; this.scroll = this.time * 1.8;
+      this.time += dt; this.scroll = this.time * SCROLL_SPEED;
       this.habitat = Math.floor(this.time / 45) % HABITATS.length;
       for (const f of this.fish) f.x += f.direction * f.speed * dt;
       this.fish = this.fish.filter(f => f.x < W + 8 && f.x + f.width > -8);
@@ -138,5 +139,5 @@
     }
     ctx.restore();
   }
-  root.MiniAquarium = {MiniOcean, render, W, H, HABITATS, groundAt, screenX, bandsClear, SAFE_X, SAFE_Y, SWIM_TOP, SWIM_BOTTOM};
+  root.MiniAquarium = {MiniOcean, render, W, H, HABITATS, groundAt, screenX, bandsClear, SAFE_X, SAFE_Y, SWIM_TOP, SWIM_BOTTOM, SCROLL_SPEED};
 })(globalThis);
