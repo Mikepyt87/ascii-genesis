@@ -18,6 +18,7 @@ jobs:
       - run: node esp32/1.47-inch/preview/network-check.mjs
       - run: node esp32/1.47-inch/tools/generate-assets.mjs --check
       - run: gcc -std=c11 -Wall -Wextra -Werror esp32/1.47-inch/tools/policy-check.c -o /tmp/policy-check && /tmp/policy-check
+      - run: gcc -std=c11 -Wall -Wextra -Werror esp32/1.47-inch/tools/touch-check.c -o /tmp/touch-check && /tmp/touch-check
       - uses: espressif/esp-idf-ci-action@v1
         with:
           esp_idf_version: v5.5.2
