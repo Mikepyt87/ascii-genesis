@@ -5,6 +5,7 @@
   class MiniNetwork {
     constructor(){this.screen='ocean';this.online=false;this.version='0.1.0';this.previous='0.1.0';this.available=false;this.phase='idle';this.progress=0;this.timer=0;this.message='Offline aquarium ready';this.scenario='success';}
     get busy(){return ['checking','download','boot','rollback'].includes(this.phase);}
+    setScenario(value){if(this.busy||!['success','bad-download','bad-boot'].includes(value))return;this.scenario=value;this.version='0.1.0';this.previous='0.1.0';this.available=false;this.message='Test selected - check for updates';}
     open(){if(this.screen==='ocean')this.screen='settings';}
     setup(){if(this.busy)return;this.screen='setup';this.phase='setup';this.timer=0;this.message='Phone setup active';}
     connect(){if(this.phase!=='setup')return;this.online=true;this.screen='settings';this.phase='idle';this.timer=0;this.message='Connected to demo home Wi-Fi';}

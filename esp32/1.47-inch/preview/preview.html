@@ -40,6 +40,7 @@
         else globalThis.MiniNetwork.draw(ctx,network,globalThis.MiniFont);
         root.querySelector('[data-network-demo]').hidden=network.screen==='ocean';
         root.querySelector('[data-action="connect"]').hidden=network.screen!=='setup';
+        root.querySelector('[data-scenario]').disabled=network.busy;
         const nextStatus=network.screen==='ocean'?(ocean.paused?'Paused · browser simulation':'Browser simulation'):'Simulated · '+network.message;
         if(status.textContent!==nextStatus)status.textContent=nextStatus;
       }
@@ -55,7 +56,7 @@
       root.querySelector('[data-action="reset"]').addEventListener('click', reset);
       root.querySelector('[data-action="settings"]').addEventListener('click',()=>{network.open();sync();});
       root.querySelector('[data-action="connect"]').addEventListener('click',()=>{network.connect();sync();});
-      root.querySelector('[data-scenario]').addEventListener('change',e=>{network.scenario=e.target.value;});
+      root.querySelector('[data-scenario]').addEventListener('change',e=>{network.setScenario(e.target.value);sync();});
       root.querySelector('[data-native]').addEventListener('change', e => canvas.classList.toggle('mini-native', e.target.checked));
       canvas.addEventListener('pointerdown', e => {
         const rect = canvas.getBoundingClientRect();

@@ -77,7 +77,7 @@ void app_main(void){
         net_status_t n;network_status(&n);int x,y;bool pressed=board_touch(&x,&y);
         if(pressed&&!held&&now-last_press>350000){last_press=now;
             if(screen){if(y>=140){if(n.setup)network_command(NET_CLOSE_SETUP);screen=0;}else if(!n.busy&&screen==1){if(y>=58&&y<90){network_command(NET_SETUP);screen=2;}else if(y>=98&&y<130)network_command(n.available?NET_INSTALL:NET_CHECK);}}
-            else if(uptime<controls_until&&y>=140){if(x<107)paused=!paused;else if(x<214)new_world();else screen=1;}
+            else if((uptime<controls_until||paused)&&y>=140){if(x<107)paused=!paused;else if(x<214)new_world();else screen=1;}
             controls_until=uptime+8;
         }
         held=pressed;
