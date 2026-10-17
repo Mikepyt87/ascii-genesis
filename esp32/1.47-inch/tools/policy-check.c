@@ -13,5 +13,8 @@ int main(void) {
     assert(!valid_manifest(BOARD_ID,"0.2.0",url,sha,1000000,"1.0.0"));
     assert(!newer_version("0.2.0-beta","0.1.0"));
     assert(newer_version("0.10.0","0.9.9"));
+    assert(valid_manifest_identity(BOARD_ID,"0.2.0",url,sha,1000000));
+    assert(!valid_manifest_identity(BOARD_ID,"0.2.0","https://example.com/bad.bin",sha,1000000));
+    assert(!valid_manifest_identity(BOARD_ID,NULL,url,sha,1000000));
     puts("PASS: firmware update policy, board separation, versions, HTTPS URL, size and digest format");
 }

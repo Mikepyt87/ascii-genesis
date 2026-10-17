@@ -136,6 +136,7 @@ The workflow refuses to replace an existing version release. Use a new version n
 | Home Wi-Fi remains offline | Check 2.4 GHz availability, signal, network name and password; repeat setup. The aquarium will continue offline. |
 | Clock not ready | Wait for internet time synchronization, then tap Check for updates again. Time service and HTTPS access must be allowed by the network. |
 | No compatible release available | No stable release may exist yet, or the offered manifest is unsuitable. Check the repository's ESP32 release notes. |
+| v0.1.2/v0.1.3 stays on "No compatible release available" despite a newer public release | A USB repair with v0.1.4 or later is needed. GitHub's signed asset redirect exceeds the old HTTP transmit buffer; the serial log reports `HTTP_CLIENT: Out of buffer`. The corrected firmware explicitly allocates a 4096-byte transmit buffer and distinguishes connection/download errors from incompatible releases. Saved Wi-Fi settings survive a normal USB flash. |
 | Update failed, current version kept | Keep the current version running; check Wi-Fi/internet and retry. The inactive slot can be overwritten on a later attempt. |
 | New version resets during its first startup | Leave it powered for recovery. The bootloader should return to the previous accepted version on the next boot; Settings shows the version. If it does not recover, use USB. |
 
