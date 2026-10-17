@@ -1,4 +1,6 @@
-# ASCII Genesis — ESP32-S3 1.47-inch edition
+# ASCII Genesis - Mini
+
+The small display has rounded corners. Foreground content stays inside a safe area, with the header inset and the seabed raised. The browser preview models an estimated 24-pixel corner radius from the board photo; v0.1.3 includes the matching firmware layout. Confirm the fit on the physical panel before publishing an update.
 
 This is the miniature edition for **Waveshare ESP32-S3-Touch-LCD-1.47**, used sideways at **320 × 172**. The board has its own ESP32-S3, 8 MB PSRAM, 16 MB flash, and capacitive touch.
 
@@ -6,7 +8,9 @@ This is the miniature edition for **Waveshare ESP32-S3-Touch-LCD-1.47**, used si
 
 ## Preview first
 
-The preview uses the existing project's 27 colored ASCII creature designs with a 5 × 7 bitmap font in 6 × 8 cells. Three creatures fit at once. Plants sway, bubbles rise, and terrain moves slowly through six habitat labels. Tap the water to reveal Pause, New World and Settings; the controls fade after eight seconds. Pause freezes the ocean. New World starts a fresh scene. The ocean fills the bottom area when the controls are hidden, without an instruction banner.
+The preview uses the existing project's 27 colored ASCII creature designs with a 5 × 7 bitmap font in 6 × 8 cells. Up to three creatures appear at once. Each reserves vertical space for its full drawing and gentle bobbing; a new arrival waits off screen if there is not enough room. Large creatures can temporarily mean fewer swimmers. Plants remain rooted to the same scrolling ground, while their upper stems sway. Bubbles rise, and terrain moves slowly through six habitat labels. Tap the water to reveal Pause, New World and Settings; the controls fade after eight seconds. Pause freezes the ocean. New World starts a fresh scene. The ocean fills the bottom area when the controls are hidden, without an instruction banner.
+
+The phone-setup screen displays its temporary Wi-Fi name and password at twice the normal font size. The Mini name is used on the display, setup page and temporary network; the firmware project identifier and update-channel paths stay the same for compatibility.
 
 Open **Settings** to try the simulated phone connection and update screens. Tap Set up Wi-Fi, then use Connect demo home Wi-Fi outside the screen. Tap Check for updates, followed by Install. The Update test selector also lets you try a damaged download and failed restart. These are deliberately simulated and send no network requests, passwords or firmware. The real firmware implements provisioning and OTA separately.
 

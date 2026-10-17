@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "network.h"
 #include "update_policy.h"
+#include "portal_access.h"
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -71,13 +72,20 @@ static bool decode(const char *src,char *dst,size_t cap) {
     }
     dst[n]=0;return true;
 }
+static bool portal_on_setup_network(httpd_req_t *req) {
+    struct sockaddr_storage local = {0};socklen_t len=sizeof(local);
+    esp_netif_ip_info_t ap_ip;
+    esp_netif_t *ap=esp_netif_get_handle_from_ifkey("WIFI_AP_DEF");
+    if(!ap || esp_netif_get_ip_info(ap,&ap_ip)!=ESP_OK)return false;
+    if(getsockname(httpd_req_to_sockfd(req),(struct sockaddr*)&local,&len)!=0)return false;
+    return portal_address_matches(&local,len,ap_ip.ip.addr);
+}
 static esp_err_t portal_get(httpd_req_t *req) {
-    struct sockaddr_in local;socklen_t len=sizeof(local);
-    if(getsockname(httpd_req_to_sockfd(req),(struct sockaddr*)&local,&len)!=0 || local.sin_addr.s_addr!=htonl(0xc0a80401))return httpd_resp_send_err(req,HTTPD_403_FORBIDDEN,"Join the device setup network first");
+    if(!portal_on_setup_network(req))return httpd_resp_send_err(req,HTTPD_403_FORBIDDEN,"Join the device setup network first");
     char page[1800];
     snprintf(page,sizeof(page),
       "<!doctype html><meta name='viewport' content='width=device-width,initial-scale=1'>"
-      "<title>ASCII Genesis Wi-Fi</title><style>body{font:18px system-ui;max-width:28em;margin:2em auto;padding:1em}"
+      "<title>ASCII Genesis - Mini Wi-Fi</title><style>body{font:20px system-ui;max-width:28em;margin:2em auto;padding:1em}"
       "label,input,button{display:block;margin:1em 0;width:100%%;font:inherit;box-sizing:border-box;padding:.5em}</style>"
       "<h1>Connect your aquarium</h1><p>Choose your 2.4 GHz home network. The aquarium also works offline.</p>"
       "<form method='post' action='/wifi'><input type='hidden' name='token' value='%s'>"
@@ -89,8 +97,7 @@ static esp_err_t portal_get(httpd_req_t *req) {
     return httpd_resp_sendstr(req,page);
 }
 static esp_err_t portal_post(httpd_req_t *req) {
-    struct sockaddr_in local;socklen_t local_len=sizeof(local);
-    if(getsockname(httpd_req_to_sockfd(req),(struct sockaddr*)&local,&local_len)!=0 || local.sin_addr.s_addr!=htonl(0xc0a80401))return httpd_resp_send_err(req,HTTPD_403_FORBIDDEN,"Join the device setup network first");
+    if(!portal_on_setup_network(req))return httpd_resp_send_err(req,HTTPD_403_FORBIDDEN,"Join the device setup network first");
     if(req->content_len<=0||req->content_len>512)return httpd_resp_send_err(req,HTTPD_400_BAD_REQUEST,"Invalid form");
     char body[513],raw[256],name[33],pass[65],submitted_token[17];int used=0;
     while(used<req->content_len) {int n=httpd_req_recv(req,body+used,req->content_len-used);if(n<=0)return ESP_FAIL;used+=n;}
@@ -120,7 +127,7 @@ static void open_portal(void) {
     close_portal();
     wifi_config_t ap={0};uint32_t random=esp_random();
     char ap_name[33],ap_pass[17];
-    snprintf(ap_name,sizeof(ap_name),"ASCII-Genesis-%04lx",(unsigned long)(random&65535));
+    snprintf(ap_name,sizeof(ap_name),"ASCII-Genesis-Mini-%04lx",(unsigned long)(random&65535));
     snprintf(ap_pass,sizeof(ap_pass),"%08lx%08lx",(unsigned long)esp_random(),(unsigned long)esp_random());
     snprintf(token,sizeof(token),"%08lx%08lx",(unsigned long)esp_random(),(unsigned long)esp_random());
     strlcpy((char*)ap.ap.ssid,ap_name,sizeof(ap.ap.ssid));strlcpy((char*)ap.ap.password,ap_pass,sizeof(ap.ap.password));
