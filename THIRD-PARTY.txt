@@ -54,3 +54,14 @@ esp32/1.47-inch/preview/FONT-LICENSE.txt. Only numeric font data was extracted;
 the miniature simulation and renderer are project code under GPL-2.0-or-later.
 The creature drawings retain their existing source notices and attribution.
 Source bundle: https://files.waveshare.com/wiki/ESP32-S3-Touch-LCD-1.47/ESP32-S3-Touch-LCD-1.47-Demo.zip
+
+ESP32 1.47-INCH FIRMWARE DISPLAY DRIVER
+
+The esp_lcd_jd9853 component is from the ESP-IDF/03_lvgl_example directory
+of the same Waveshare bundle. Original source notices identify
+Copyright 2022-2023 Espressif Systems (Shanghai) CO LTD, Apache-2.0.
+The driver and header notices are preserved; its license is included in
+firmware/components/esp_lcd_jd9853/LICENSE. Board pin configuration and
+landscape touch mapping follow Waveshare's board example. The new project
+firmware is GPL-3.0-or-later to combine this Apache-2.0 dependency with
+GPL-2.0-or-later artwork. Existing Pi code retains its existing license.

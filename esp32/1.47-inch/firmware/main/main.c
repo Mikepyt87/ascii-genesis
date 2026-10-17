@@ -31,7 +31,8 @@ static float rnd(void){return (float)(esp_random()&65535)/65536.0f;}
 static void spawn(int slot,int index,int dir,float x,float y){fish[slot]=(swimmer_t){.art=(index&~1)+(dir<0),.dir=dir,.x=x,.y=y,.speed=3+rnd()*3,.phase=rnd()*6.28f};}
 static void new_world(void){time_s=0;spawn(0,6,1,28,24);spawn(1,2,-1,156,55);spawn(2,38,-1,180,78);for(int i=0;i<4;i++){bubble_x[i]=20+rnd()*280;bubble_y[i]=20+rnd()*135;}paused=false;}
 static void simulate(float dt){
-    if(paused)return;time_s+=dt;
+    if(paused)return;
+    time_s+=dt;
     for(int i=0;i<3;i++){
         swimmer_t *f=&fish[i];f->x+=f->dir*f->speed*dt;const mini_sprite_t *s=&mini_sprites[f->art];
         if(f->x>328||f->x+s->width*6<-8){int art=(esp_random()%27)*2,dir=rnd()<.5f?-1:1;const mini_sprite_t *a=&mini_sprites[art];spawn(i,art,dir,dir>0?-a->width*6-2:322,17+rnd()*fmaxf(1,136-a->height*8));}

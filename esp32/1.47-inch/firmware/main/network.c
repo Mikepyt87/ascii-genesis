@@ -3,6 +3,8 @@
 #include "update_policy.h"
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+#include "lwip/sockets.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
@@ -13,6 +15,7 @@
 #include "esp_http_client.h"
 #include "esp_http_server.h"
 #include "esp_netif.h"
+#include "esp_netif_sntp.h"
 #include "esp_ota_ops.h"
 #include "esp_random.h"
 #include "esp_system.h"
@@ -60,13 +63,17 @@ static bool decode(const char *src,char *dst,size_t cap) {
         else if(c=='%') {
             if(!src[1]||!src[2])return false;
             char hex[3]={src[1],src[2],0},*end; long value=strtol(hex,&end,16);
-            if(*end||value==0)return false; c=(unsigned char)value;src+=2;
+            if(*end||value==0)return false;
+            c=(unsigned char)value;src+=2;
         }
-        if(c<32||n+1>=cap)return false; dst[n++]=(char)c;
+        if(c<32||n+1>=cap)return false;
+        dst[n++]=(char)c;
     }
     dst[n]=0;return true;
 }
 static esp_err_t portal_get(httpd_req_t *req) {
+    struct sockaddr_in local;socklen_t len=sizeof(local);
+    if(getsockname(httpd_req_to_sockfd(req),(struct sockaddr*)&local,&len)!=0 || local.sin_addr.s_addr!=htonl(0xc0a80401))return httpd_resp_send_err(req,HTTPD_403_FORBIDDEN,"Join the device setup network first");
     char page[1800];
     snprintf(page,sizeof(page),
       "<!doctype html><meta name='viewport' content='width=device-width,initial-scale=1'>"
@@ -82,6 +89,8 @@ static esp_err_t portal_get(httpd_req_t *req) {
     return httpd_resp_sendstr(req,page);
 }
 static esp_err_t portal_post(httpd_req_t *req) {
+    struct sockaddr_in local;socklen_t local_len=sizeof(local);
+    if(getsockname(httpd_req_to_sockfd(req),(struct sockaddr*)&local,&local_len)!=0 || local.sin_addr.s_addr!=htonl(0xc0a80401))return httpd_resp_send_err(req,HTTPD_403_FORBIDDEN,"Join the device setup network first");
     if(req->content_len<=0||req->content_len>512)return httpd_resp_send_err(req,HTTPD_400_BAD_REQUEST,"Invalid form");
     char body[513],raw[256],name[33],pass[65],submitted_token[17];int used=0;
     while(used<req->content_len) {int n=httpd_req_recv(req,body+used,req->content_len-used);if(n<=0)return ESP_FAIL;used+=n;}
@@ -145,6 +154,7 @@ static esp_http_client_handle_t https_open(const char *url) {
 static void check_update(void) {
     net_status_t s;network_status(&s);
     if(!s.online){message("Offline - aquarium keeps running");return;}
+    if(time(NULL)<1704067200 && esp_netif_sntp_sync_wait(pdMS_TO_TICKS(10000))!=ESP_OK){message("Clock not ready - try updates again shortly");return;}
     xSemaphoreTake(lock,portMAX_DELAY);status.available=false;status.busy=true;xSemaphoreGive(lock);
     message("Checking ESP32 updates...");memset(&candidate,0,sizeof(candidate));
     esp_http_client_handle_t h=https_open(CHANNEL_URL);char body[2048];int used=0;bool complete=false;
@@ -175,7 +185,8 @@ static void install_update(void) {
     uint32_t received=0;unsigned char digest[32];char hex[65];uint8_t chunk[4096];
     if(!h||!part||candidate.size>part->size)goto done;
     if(esp_http_client_get_content_length(h)!=(int64_t)candidate.size)goto done;
-    if(esp_ota_begin(part,candidate.size,&ota)!=ESP_OK)goto done;begun=true;
+    if(esp_ota_begin(part,candidate.size,&ota)!=ESP_OK)goto done;
+    begun=true;
     if(mbedtls_sha256_starts(&hash,0)!=0)goto done;
     while(received<candidate.size) {
         int n=esp_http_client_read(h,(char*)chunk,sizeof(chunk));
@@ -191,10 +202,12 @@ static void install_update(void) {
     // Validate embedded version and project identity too, before changing the boot slot.
     esp_app_desc_t app;
     if(esp_ota_get_partition_description(part,&app)!=ESP_OK||strcmp(app.version,candidate.version)||strcmp(app.project_name,"ascii_genesis_147"))goto done;
-    if(esp_ota_set_boot_partition(part)!=ESP_OK)goto done;okay=true;
+    if(esp_ota_set_boot_partition(part)!=ESP_OK)goto done;
+    okay=true;
 done:
     if(begun)esp_ota_abort(ota);
-    if(h)esp_http_client_cleanup(h);mbedtls_sha256_free(&hash);
+    if(h)esp_http_client_cleanup(h);
+    mbedtls_sha256_free(&hash);
     if(okay){message("Verified - restarting aquarium");vTaskDelay(pdMS_TO_TICKS(1500));esp_restart();}
     message("Update failed - current version kept");xSemaphoreTake(lock,portMAX_DELAY);status.busy=false;status.progress=0;xSemaphoreGive(lock);
 }
@@ -230,5 +243,6 @@ void network_start(void) {
     wifi_init_config_t cfg=WIFI_INIT_CONFIG_DEFAULT();ESP_ERROR_CHECK(esp_wifi_init(&cfg));
     ESP_ERROR_CHECK(esp_event_handler_register(WIFI_EVENT,ESP_EVENT_ANY_ID,wifi_event,NULL));ESP_ERROR_CHECK(esp_event_handler_register(IP_EVENT,IP_EVENT_STA_GOT_IP,wifi_event,NULL));
     ESP_ERROR_CHECK(esp_wifi_set_storage(WIFI_STORAGE_RAM));ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));ESP_ERROR_CHECK(esp_wifi_start());
+    esp_sntp_config_t clock_config=ESP_NETIF_SNTP_DEFAULT_CONFIG("pool.ntp.org");ESP_ERROR_CHECK(esp_netif_sntp_init(&clock_config));
     if(xTaskCreate(network_task,"wifi_updates",16384,NULL,3,NULL)!=pdPASS)ESP_ERROR_CHECK(ESP_ERR_NO_MEM);
 }

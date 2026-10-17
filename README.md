@@ -5,7 +5,7 @@
 | Version | Hardware | Status |
 | --- | --- | --- |
 | **Raspberry Pi ocean** | Pi 4 + Waveshare 7.9-inch HDMI touch display, 1280 × 400 | Existing edition; installation and updates below. |
-| **[Miniature ESP32 aquarium](esp32/1.47-inch/README.md)** | Waveshare ESP32-S3-Touch-LCD-1.47, 320 × 172 landscape | Local visual simulation for review; firmware and hardware testing still ahead. |
+| **[Miniature ESP32 aquarium](esp32/1.47-inch/README.md)** | Waveshare ESP32-S3-Touch-LCD-1.47, 320 × 172 landscape | Browser preview and prototype firmware with Wi-Fi/updates; physical testing still ahead. |
 
 The two editions have separate code and setup instructions. The Pi installer, updater, and printable enclosure apply to the Raspberry Pi version only.
 
