@@ -1,5 +1,14 @@
 # ASCII Genesis
 
+## Choose your version
+
+| Version | Hardware | Status |
+| --- | --- | --- |
+| **Raspberry Pi ocean** | Pi 4 + Waveshare 7.9-inch HDMI touch display, 1280 × 400 | Existing edition; installation and updates below. |
+| **[Miniature ESP32 aquarium](esp32/1.47-inch/README.md)** | Waveshare ESP32-S3-Touch-LCD-1.47, 320 × 172 landscape | Browser preview and prototype firmware with Wi-Fi/updates; physical testing still ahead. |
+
+The two editions have separate code and setup instructions. The Pi installer, updater, and printable enclosure apply to the Raspberry Pi version only.
+
 A quiet traveling ASCII ocean for **Raspberry Pi 4 Model B and the Waveshare 7.9-inch HDMI touchscreen**, used horizontally at **1280 × 400**.
 
 Nineteen fish designs, a squid, an octopus, a sea turtle, a jellyfish, a crab, a lobster, a whale, and a yellow submarine travel through six habitats, including coral gardens, seagrass beds, and shipwreck depths. Terrain travels slowly, food and plant cover change by habitat, and fish enter and leave beyond the edges. The ocean runs offline. Optional narration is separate from the simulation.
@@ -69,7 +78,7 @@ Run the installer as your normal desktop user, without putting `sudo` before it.
 
 Tap the water to show controls. They fade after eight seconds. Pause stops travel and swimming; Step advances once; New world starts over. Tap **Close ocean** to return to the Raspberry Pi desktop without a keyboard. This works when opened using the desktop icon or its launch script; a standalone browser preview reports that desktop closing is unavailable. **Alt+F4** also works. Opening the icon twice will not start two oceans. There is no saved-world state; each launch starts a new scene. Quiet mode is saved separately in the browser profile.
 
-The layout is fixed to 1280 × 400. Browser zoom should stay at 100%. This project has no other hardware profiles or cube modes.
+The Pi edition's layout is fixed to 1280 × 400. Browser zoom should stay at 100%. Its renderer has no other hardware profiles or cube modes; the miniature ESP32 work is separate.
 
 ## Two minute creature parade
 

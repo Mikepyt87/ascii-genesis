@@ -4,3 +4,6 @@
 node_modules/
 __pycache__/
 *.pyc
+esp32/**/build/
+esp32/**/sdkconfig
+esp32/**/sdkconfig.old

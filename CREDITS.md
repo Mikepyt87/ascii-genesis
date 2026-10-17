@@ -35,6 +35,8 @@ The coral, rocks, anchors, wreck debris, ridge, wreck, peeking eel, and distant 
 
 ## Sharing and contributing
 
+The separate 1.47-inch ESP32 edition uses Waveshare's board documentation and its JD9853 display driver, with Espressif's Apache-2.0 source notices preserved. The miniature reuses this project's credited creature drawings and the classic Adafruit GFX bitmap font (BSD). Its new firmware is GPL-3.0-or-later to combine those dependencies; the Raspberry Pi edition keeps its existing license. See [the miniature guide](esp32/1.47-inch/README.md) and [third-party notices](THIRD-PARTY.txt).
+
 When sharing ASCII Genesis, please include a link to Asciiquarium and credit its creators. When discussing the origins of the physical display idea, include OpenGhost. A short credit you can use is:
 
 > ASCII Genesis builds on Asciiquarium by Kirk Baucom, with most ASCII artwork credited upstream to Joan Stark and expanded marine biodiversity by Claudio Matsuoka. OpenGhost by xanderchinxyz and its contributors inspired the initial display exploration.
