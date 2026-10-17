@@ -13,6 +13,7 @@
 #include "esp_app_desc.h"
 #include "esp_crt_bundle.h"
 #include "esp_event.h"
+#include "esp_log.h"
 #include "esp_http_client.h"
 #include "esp_http_server.h"
 #include "esp_netif.h"
@@ -143,7 +144,9 @@ static void open_portal(void) {
 }
 static const char *json_string(cJSON *root,const char *name) {cJSON *v=cJSON_GetObjectItemCaseSensitive(root,name);return cJSON_IsString(v)?v->valuestring:NULL;}
 static esp_http_client_handle_t https_open(const char *url) {
-    esp_http_client_config_t cfg={.url=url,.crt_bundle_attach=esp_crt_bundle_attach,.timeout_ms=12000,.buffer_size=4096,.max_redirection_count=5,.user_agent="ASCII-Genesis-147"};
+    // GitHub redirects assets to signed URLs longer than the default 512-byte
+    // transmit buffer. The receive buffer does not change this request limit.
+    esp_http_client_config_t cfg={.url=url,.crt_bundle_attach=esp_crt_bundle_attach,.timeout_ms=12000,.buffer_size=4096,.buffer_size_tx=4096,.max_redirection_count=5,.user_agent="ASCII-Genesis-147"};
     esp_http_client_handle_t h=esp_http_client_init(&cfg);if(!h)return NULL;
     // esp_http_client_perform follows HTTPS redirects; streaming reads below need explicit handling.
     for(int redirects=0;redirects<=5;redirects++) {
@@ -164,7 +167,7 @@ static void check_update(void) {
     if(time(NULL)<1704067200 && esp_netif_sntp_sync_wait(pdMS_TO_TICKS(10000))!=ESP_OK){message("Clock not ready - try updates again shortly");return;}
     xSemaphoreTake(lock,portMAX_DELAY);status.available=false;status.busy=true;xSemaphoreGive(lock);
     message("Checking ESP32 updates...");memset(&candidate,0,sizeof(candidate));
-    esp_http_client_handle_t h=https_open(CHANNEL_URL);char body[2048];int used=0;bool complete=false;
+    esp_http_client_handle_t h=https_open(CHANNEL_URL);char body[2048];int used=0;bool complete=false,connected=h!=NULL;
     if(h) {
         while(used<(int)sizeof(body)-1) {int n=esp_http_client_read(h,body+used,sizeof(body)-1-used);if(n<0)break;if(n==0){complete=esp_http_client_is_complete_data_received(h);break;}used+=n;}
         esp_http_client_cleanup(h);
@@ -172,12 +175,17 @@ static void check_update(void) {
     body[used]=0;cJSON *root=complete?cJSON_Parse(body):NULL;
     const char *version=json_string(root,"version"),*board=json_string(root,"board"),*url=json_string(root,"url"),*sha=json_string(root,"sha256");
     cJSON *size=cJSON_GetObjectItemCaseSensitive(root,"size");
-    if(root&&version&&board&&strcmp(board,BOARD_ID)==0&&strcmp(version,esp_app_get_description()->version)==0)message("You have the current version");
+    if(!connected)message("Update server connection failed - try again");
+    else if(!complete)message("Update download incomplete - try again");
+    else if(!root)message("Update server returned invalid data");
     else if(root && cJSON_IsNumber(size) && size->valuedouble>=256 && size->valuedouble<=MAX_FIRMWARE_SIZE
        && size->valuedouble==(uint32_t)size->valuedouble
-       && valid_manifest(board,version,url,sha,(uint32_t)size->valuedouble,esp_app_get_description()->version)) {
-        strlcpy(candidate.version,version,sizeof(candidate.version));strlcpy(candidate.url,url,sizeof(candidate.url));strlcpy(candidate.sha,sha,sizeof(candidate.sha));candidate.size=(uint32_t)size->valuedouble;
-        xSemaphoreTake(lock,portMAX_DELAY);status.available=true;strlcpy(status.version,version,sizeof(status.version));xSemaphoreGive(lock);message("Update ready - tap Install to restart");
+       && valid_manifest_identity(board,version,url,sha,(uint32_t)size->valuedouble)) {
+        ESP_LOGI("updates","Manifest received: v%s, %lu bytes",version,(unsigned long)size->valuedouble);
+        if(newer_version(version,esp_app_get_description()->version)){
+            strlcpy(candidate.version,version,sizeof(candidate.version));strlcpy(candidate.url,url,sizeof(candidate.url));strlcpy(candidate.sha,sha,sizeof(candidate.sha));candidate.size=(uint32_t)size->valuedouble;
+            xSemaphoreTake(lock,portMAX_DELAY);status.available=true;strlcpy(status.version,version,sizeof(status.version));xSemaphoreGive(lock);message("Update ready - tap Install to restart");
+        }else message("You have the current version");
     } else message("No compatible release available");
     cJSON_Delete(root);xSemaphoreTake(lock,portMAX_DELAY);status.busy=false;xSemaphoreGive(lock);
 }

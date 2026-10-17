@@ -20,12 +20,17 @@ static inline bool newer_version(const char *candidate, const char *current) {
     for (int i=0;i<3;++i) if(a[i]!=b[i]) return a[i]>b[i];
     return false;
 }
-static inline bool valid_manifest(const char *board, const char *version, const char *url,
-                                  const char *sha, uint32_t size, const char *current) {
-    if (!board||!url||!sha || strcmp(board,BOARD_ID) || !newer_version(version,current)
+static inline bool valid_manifest_identity(const char *board, const char *version, const char *url,
+                                          const char *sha, uint32_t size) {
+    unsigned parts[3];
+    if (!board||!url||!sha || strcmp(board,BOARD_ID) || !version_parts(version,parts)
         || size < 256 || size > MAX_FIRMWARE_SIZE || strlen(sha)!=64) return false;
     for(int i=0;i<64;++i) if(!((sha[i]>='0'&&sha[i]<='9')||(sha[i]>='a'&&sha[i]<='f'))) return false;
     char expected[256];
     snprintf(expected,sizeof(expected),RELEASE_PREFIX "%s/ascii-genesis-147.bin",version);
     return strcmp(url,expected)==0;
+}
+static inline bool valid_manifest(const char *board, const char *version, const char *url,
+                                  const char *sha, uint32_t size, const char *current) {
+    return valid_manifest_identity(board,version,url,sha,size)&&newer_version(version,current);
 }
