@@ -11,7 +11,7 @@ The two editions have separate code and setup instructions. The Pi installer, up
 
 A quiet traveling ASCII ocean for **Raspberry Pi 4 Model B and the Waveshare 7.9-inch HDMI touchscreen**, used horizontally at **1280 × 400**.
 
-Nineteen fish designs, a squid, an octopus, a sea turtle, a jellyfish, a crab, a lobster, a whale, and a yellow submarine travel through six habitats, including coral gardens, seagrass beds, and shipwreck depths. Terrain travels slowly, food and plant cover change by habitat, and fish enter and leave beyond the edges. The ocean runs offline. Optional narration is separate from the simulation.
+Nineteen fish designs, a squid, an octopus, a sea turtle, a jellyfish, a crab, a lobster, a mantis shrimp, a whale, and a yellow submarine travel through six habitats, including coral gardens, seagrass beds, and shipwreck depths. Terrain travels slowly, food and plant cover change by habitat, and fish enter and leave beyond the edges. The ocean runs offline. Optional narration is separate from the simulation.
 
 ## Built on work worth celebrating
 
