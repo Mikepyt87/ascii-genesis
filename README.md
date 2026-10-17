@@ -1,67 +1,32 @@
-# ASCII Genesis
+# ASCII Genesis — Raspberry Pi
 
-## Choose your version
+A traveling ASCII ocean for **Raspberry Pi 4 + Waveshare 7.9-inch HDMI touchscreen**, displayed horizontally at **1280 × 400**.
 
-| Version | Hardware | Status |
-| --- | --- | --- |
-| **Raspberry Pi ocean** | Pi 4 + Waveshare 7.9-inch HDMI touch display, 1280 × 400 | Existing edition; installation and updates below. |
-| **[ASCII Genesis - Mini](esp32/1.47-inch/README.md)** | Waveshare ESP32-S3-Touch-LCD-1.47, 320 × 172 landscape | Browser preview and prototype firmware with Wi-Fi/updates; physical testing still ahead. |
+**This repository is the Raspberry Pi project.** The ESP32 board has a separate project: **[ASCII Genesis - Mini](https://github.com/Mikepyt87/ascii-genesis-mini)**. The two projects have different hardware, installers, controls, and update systems.
 
-The two editions have separate code and setup instructions. The Pi installer, updater, and printable enclosure apply to the Raspberry Pi version only.
+## Start here
 
-A quiet traveling ASCII ocean for **Raspberry Pi 4 Model B and the Waveshare 7.9-inch HDMI touchscreen**, used horizontally at **1280 × 400**.
+| Your situation | What to do |
+| --- | --- |
+| Building the Pi aquarium for the first time | Follow [Raspberry Pi installation and operation](raspberry-pi/SETUP.md) from the hardware section onward |
+| Choosing/printing the case and legs | Follow [3D printing and assembly](3d-printing/README.md); these files are for the Pi display |
+| Already installed and want new creatures | Close the ocean, run the **Update ASCII Genesis** desktop icon, then reopen the ocean |
+| Want to see the artwork and behavior | Open the [Ocean Library](docs/OCEAN-LIBRARY.md) or [screenshot tour](docs/SCREENSHOTS.md) |
+| Have the little ESP32-S3 1.47-inch screen | Use [the Mini's first-install guide](https://github.com/Mikepyt87/ascii-genesis-mini/blob/main/docs/INSTALL.md); do not run the Pi installer |
 
-Nineteen fish designs, a squid, an octopus, a sea turtle, a jellyfish, a crab, a lobster, a mantis shrimp, a whale, and a yellow submarine travel through six habitats, including coral gardens, seagrass beds, and shipwreck depths. Terrain travels slowly, food and plant cover change by habitat, and fish enter and leave beyond the edges. The ocean runs offline. Optional narration is separate from the simulation.
+## Pi hardware
 
-## Built on work worth celebrating
+- Raspberry Pi 4 Model B, cooling, a microSD card, and a suitable 5 V / 3 A USB-C supply.
+- Waveshare 7.9-inch HDMI touch display, used sideways at **1280 wide × 400 high**.
+- Micro-HDMI-to-HDMI video cable and the display's USB touch cable.
+- Raspberry Pi OS **Desktop, 64-bit**; keyboard/mouse for first setup.
+- One printed case and two legs if using the included enclosure build.
 
-**This project exists because other people shared their ideas and artwork.** Huge thanks to **Kirk Baucom**, the creator of [Asciiquarium](https://github.com/cmatsuoka/asciiquarium); **Joan Stark**, credited upstream for most of its ASCII art; and **Claudio Matsuoka**, who expanded its marine biodiversity. Eleven of the fish designs here come from that work.
+The display connects to the Pi over HDMI and USB. This is a Linux desktop application, not ESP32 firmware. The Mini's display driver, flashing offsets, Wi-Fi setup address, and USB binaries do not apply to this project.
 
-Thanks also to **xanderchinxyz and the [OpenGhost](https://github.com/xanderchinxyz/OpenGhost) contributors**. Their Pepper's Ghost display inspired the initial physical-display exploration that led to this desk ocean. This build uses a Pi 4 and a direct-view screen; its included enclosure is Mikepyt87's design.
+## First software installation on the Pi
 
-Please explore those original projects as well as this one. Read [Credits and project origins](CREDITS.md) for the full story, preserved notices, and what each project contributed.
-
-## See the ocean
-
-![ASCII Genesis fish and seaweed across the full ocean display](docs/screenshots/ocean.jpg)
-
-**[Explore the screenshot tour](docs/SCREENSHOTS.md)** for the changing habitats, squid, octopus, turtle, creature parade, visiting diver, predator encounters, and touch controls. Captures use the browser renderer at the display's native 1280 × 400 resolution; they are not photographs of the Pi hardware.
-
-The ocean works offline, launches from a Raspberry Pi desktop icon, and includes a remembered quiet-mode setting. OpenAI narration is optional and requires its own API setup. Installation and updates are explained below.
-
-## Ocean library
-
-Browse the [Ocean Library](docs/OCEAN-LIBRARY.md) for all 28 creature and vehicle designs with both directional drawings, their colors and sizes, the diver in both poses and directions, bubbles, small life, kelp, terrain, sediment, water, controls, habitat settings, and current behavior. It also describes the occasional diver, short predator encounters, rare catches, and quiet-mode control.
-
-## Hardware and screen setup
-
-- Raspberry Pi 4 Model B, with cooling and a microSD card (32 GB or larger suggested).
-- Waveshare 7.9-inch 400 × 1280 HDMI touchscreen.
-- A good 5 V / 3 A USB-C supply for the Pi 4. The official 15 W Raspberry Pi supply is the intended choice.
-- Micro-HDMI to HDMI cable for video, plus the USB data cable for the display's TOUCH connection.
-- **3D printer access or a printing service, plus filament, to make one case and two legs for the included enclosure build.** See [print instructions](3d-printing/README.md).
-- Keyboard/mouse for first setup. After installation, use the Raspberry Pi desktop icon to launch.
-
-The display's USB connection provides touch and can supply display power from the Pi. Check the total load of your USB devices; if the display resets or low-voltage warnings appear, check cables/power and use the manufacturer's separate-power arrangement as needed. Physical power and touch operation still need testing on your unit.
-
-Install **Raspberry Pi OS Desktop, 64-bit** using [Raspberry Pi Imager](https://www.raspberrypi.com/software/). Use Desktop, not Lite. Rotate the display in the OS settings until the desktop is **1280 pixels wide by 400 high**. Check touch alignment after rotation. Make it the primary display and disable screen blanking if desired.
-
-References: [Pi 4 specifications](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/specifications/), [recommended power supply](https://www.raspberrypi.com/products/power-supply/), [Waveshare display instructions](https://www.waveshare.com/wiki/7.9inch_HDMI_LCD).
-
-## Printed enclosure and legs
-
-For the complete enclosure build, **print one case and two copies of the leg model** before final assembly. You need access to a 3D printer or a service that can print the files.
-
-1. Download [Case.stl](3d-printing/Case.stl) and [Legs(x2).stl](3d-printing/Legs%28x2%29.stl), or their original 3MF versions from the [model guide](3d-printing/README.md).
-2. Import the STL files in **millimeters at 100% scale**. The legs file is one model: duplicate it in your slicer or print it twice.
-3. Choose the bed orientation and print settings for your printer. The files preserve the CAD orientation, and verified layer height, infill, supports, and fastener specifications have not yet been supplied.
-4. Print the parts, check their fit with your screen and Pi, then assemble the enclosure and legs. Keep cable openings and Pi ventilation clear.
-
-You can install and test the software while the parts print. The model guide includes dimensions and conversion details.
-
-## Install from GitHub — one-time setup
-
-Open a terminal on the **Raspberry Pi** and run:
+Use the [complete guide](raspberry-pi/SETUP.md) to set the display rotation and touch alignment first. Then open a terminal **on the Raspberry Pi**:
 
 ```bash
 sudo apt update
@@ -70,114 +35,22 @@ git clone https://github.com/Mikepyt87/ascii-genesis.git "$HOME/ASCII-Genesis"
 bash "$HOME/ASCII-Genesis/raspberry-pi/install.sh"
 ```
 
-Run the installer as your normal desktop user, without putting `sudo` before it. It asks for sudo only to install packages. It installs Chromium, Node.js, and desktop helpers, runs checks, then puts **ASCII Genesis** and **Update ASCII Genesis** icons on your Raspberry Pi desktop and in the application menu. Node.js 20 or newer is required. If your OS supplies an older version, upgrade Node using its [official instructions](https://nodejs.org/en/download), then rerun the installer.
+Open **ASCII Genesis** from the desktop. The installer creates **Update ASCII Genesis** too. If the folder already exists, use the update instructions instead of cloning over it. [The full guide](raspberry-pi/SETUP.md) explains desktop trust prompts, first launch, closing, boot startup, printing, optional narration, and troubleshooting.
 
-## Everyday use
+## What the Pi ocean includes
 
-**Double-click ASCII Genesis on the Raspberry Pi desktop.** It opens the ocean full-screen. If Raspberry Pi OS asks whether to trust or execute the desktop launcher, choose Execute/Allow Launching. The installer attempts to mark the icon trusted, but desktop behavior varies by OS release.
+There are 28 creature and vehicle designs, including the peacock mantis shrimp, plus the Pi edition's ecosystem, schools, occasional encounters, diver, changing terrain, day/night lighting, quiet mode, and two-minute creature parade. It runs offline. Optional OpenAI narration has its own setup in the complete guide; no API key is needed for the aquarium itself.
 
-Tap the water to show controls. They fade after eight seconds. Pause stops travel and swimming; Step advances once; New world starts over. Tap **Close ocean** to return to the Raspberry Pi desktop without a keyboard. This works when opened using the desktop icon or its launch script; a standalone browser preview reports that desktop closing is unavailable. **Alt+F4** also works. Opening the icon twice will not start two oceans. There is no saved-world state; each launch starts a new scene. Quiet mode is saved separately in the browser profile.
+**Pi scrolling speed is unchanged.** The Mini's faster scrolling and sequential parade belong to the other project.
 
-The Pi edition's layout is fixed to 1280 × 400. Browser zoom should stay at 100%. Its renderer has no other hardware profiles or cube modes; the miniature ESP32 work is separate.
+![ASCII Genesis ocean](docs/screenshots/ocean.jpg)
 
-## Two minute creature parade
+## Updates and source
 
-Tap the water, then press **Creature parade · 2 min** to show all 28 creature and vehicle designs crossing the screen. The parade includes the sea turtle, squid, and octopus. It preserves the normal ecosystem, disables hunting during the showcase, and returns to your ocean automatically after two minutes. Pause and Step work during the parade; New world cancels it. If you start it while paused, press Resume. Quiet mode also allows the parade.
+The Pi updater follows this repository's **main** branch. Close the aquarium before running **Update ASCII Genesis**. It checks the candidate before updating and refuses to overwrite local edits. It does not download Mini firmware releases.
 
-## Occasional visitors and hunting
+The renderer and creature code are in `simulator/`; Pi installers/launchers are in `raspberry-pi/`. Tests run in GitHub Actions. The old `esp32/` links redirect to the standalone Mini repository; its implementation and ongoing development have moved there. Historical Mini firmware releases remain available so installed boards can move to the new update channel.
 
-A diver may arrive after 5–10 minutes, then wait another 5–10 minutes after departing before visiting again. Predator encounters have a 2–4 minute cooldown, followed by the wait for free swimmer slots and the pair to enter from off screen. Both fish burst ahead of ordinary swimmers during a pursuit, then ease back to cruising. Most chases end in escape; rare catches visibly shrink the prey into the predator's mouth. All of this works offline.
+## Credits
 
-Tap the water and turn **Quiet mode: on** to disable hunting. Divers and gentle swimming continue. The preference survives restarting the app. Pause and Step apply to every animation. See the [Ocean Library](docs/OCEAN-LIBRARY.md#visitors-and-encounters) for eligibility, timing, and limits.
-
-## A growing ocean
-
-Lionfish join the rotation with copper coloring, pale body stripes, and long fanned spines. Both directions are included in the [Ocean Library](docs/OCEAN-LIBRARY.md#lionfish) and creature parade.
-
-Unrelated creatures can cross and overlap. If two heading the same way stay substantially overlapped at nearly the same speed for about three seconds, one gently pulls ahead while the other eases back. They return to their usual pace once their drawings are clear. Schools, predator encounters, and the parade keep their coordinated movement; bottom creatures remain on the seabed.
-
-Small schools of three fish occasionally enter together, scatter vertically near hunters, and regroup once the threat passes. Rays glide gently up and down; turtles make a brief surface visit; octopuses settle near the seabed. Moon jellyfish drift slowly across the screen, rise, and gently pulse. Crabs, lobsters, and peacock mantis shrimp stay along the bottom, sharks join occasional hunts, and whales and a yellow submarine cross more slowly. All 28 designs join the parade, including the submarine. The submarine is decorative and does not eat plankton. The nine-row wreck is over four times the eel drawing's width, with the eel peeking from its hull opening.
-
-The journey now blends through kelp meadow, rocky reef, open sand, coral garden, seagrass bed, and shipwreck depths. Each has its own floor shape, with rocky ledges, dunes, low coral outcrops, and deeper basins. Patchy plants, three coral forms, boulders, crevices, anchors, and wreck debris add sparse landmarks. A faint distant ridge moves at 35 percent of foreground speed; foreground plants and ground remain attached. Coral and wreck drawings stay attached to the scrolling world. An eel occasionally peeks from a wreck. Rare discoveries include a distant whale crossing or a brief patch of glowing plankton. Whale and glow discoveries wait 5–10 minutes, then another wait starts after they finish; visitors and hunts can delay them. These are decorative visits, not additional food-web agents.
-
-Tap **Lighting: ocean cycle** to switch to **Lighting: local clock**. The default gently alternates day and night over a 20-minute cycle. Local-clock mode follows the Pi's local time, brightest at noon and darkest at midnight. The setting is remembered. Night stays readable and favors occasional jellyfish and lanternfish arrivals. Pause freezes the scene; the parade preserves the ambient cycle and visitor timers.
-
-The eight-swimmer population and algae/plankton caps remain in place. Quiet mode keeps the peaceful additions while disabling hunts.
-
-## Updates and new fish
-
-The launcher checks the public repository's **main** branch each time you open the ocean. When new commits are available, it tests the downloaded version before applying a fast-forward update. The network check times out after 20 seconds; offline operation continues with the installed version. It does not interrupt an ocean already running.
-
-To update manually, close the ocean and double-click **Update ASCII Genesis** on the Pi desktop. Updates preserve your private settings outside the project folder. If you edit tracked project files or switch branches, updates stop rather than overwrite your work.
-
-Future changes must first be committed and pushed to GitHub. The Pi then downloads them; it does not push files or need a GitHub account/token for this public repository. Updates may execute new application code from this repository, so keep write access to the repository limited to people you trust. New system dependencies still require rerunning the installer; updates never run sudo automatically.
-
-To disable automatic checks, run once:
-
-```bash
-touch "$HOME/.config/ascii-genesis/no-auto-update"
-```
-
-To enable them again, remove that one file. The update desktop icon works regardless of this setting.
-
-## Optional startup at boot
-
-To start the ocean on desktop login:
-
-```bash
-bash "$HOME/ASCII-Genesis/raspberry-pi/install-autostart.sh"
-```
-
-Enable desktop auto-login in Raspberry Pi OS if you want unattended startup. Normal desktop-icon launch works without enabling this. To disable boot startup, remove only the ASCII-Genesis launch line from `~/.config/labwc/autostart`, or remove `~/.config/autostart/ascii-genesis.desktop` if the fallback installer used that file. Keep the project in the same location after installation.
-
-## Optional narration
-
-The ocean requires no API key. The included OpenAI bridge is an optional prototype and was tested with mocked responses only. If you enable it, the Pi makes the request itself, only after tapping AI event; the result does not control the ecosystem.
-
-Put your private settings in `~/.config/ascii-genesis/openai.env`, outside this repository:
-
-```bash
-OPENAI_API_KEY='your-own-key'
-```
-
-Restrict that file with `chmod 600 ~/.config/ascii-genesis/openai.env`. Restart the ocean after editing. The bridge currently specifies `gpt-6-luna`; live availability and billing have not been verified for your API account. Check the model before enabling real calls. Do not commit your key or share the private settings file.
-
-## Performance and validation
-
-The Pi 4 renderer rasterizes the 56 directional creature images and four diver images once and reuses them. It retains the 350 ms simulation interval, fixed 1280 × 400 canvas, and eight-swimmer limit, plus at most one diver and five short-lived bubbles. Decorative whale or glow visits are bounded and their artwork is cached too. There are no npm dependencies, continuous API requests, or 60-fps rendering loop. This reduces repeated fish text drawing; actual CPU usage and frame timing must be measured on your Pi 4.
-
-Checks cover all 28 designs appearing in rotation, ecological limits, continuous terrain, off-screen departures, rare catches at visible mouth contact, escape survival, diver limits, quiet mode, cached sprite rendering, pause/reset behavior, and mock narration. Desktop installation is tested in a temporary folder. Linux CI checks script syntax as well. These checks do not replace physical display, touch, power, and OS startup testing.
-
-```bash
-node simulator/core-check.mjs
-node simulator/render-check.mjs
-node simulator/openai_bridge_check.mjs
-node simulator/close-check.mjs
-python3 raspberry-pi/desktop-check.py
-```
-
-## Troubleshooting
-
-- **No desktop icon:** rerun `python3 ~/ASCII-Genesis/raspberry-pi/install-desktop.py` as your normal desktop user. The installer uses your OS's configured Desktop folder, including translated folder names.
-- **Does not start:** read `~/.cache/ascii-genesis/launch.log`. Confirm Node 20+ and Chromium are installed, and no other preview server is using port 4173.
-- **Update unavailable:** check `~/.cache/ascii-genesis/update.log`, internet access, and local Git changes. The current ocean still runs offline.
-- **Borders or wrong orientation:** set the OS desktop to 1280 × 400, use the intended screen as primary, and reset Chromium zoom to 100%.
-- **Touch reversed or rotated:** adjust OS/vendor touch mapping; the app does not configure hardware rotation.
-- **Moved project folder:** rerun the desktop installer and reinstall any startup entry with the new path.
-- **ZIP download:** extract it and run `bash raspberry-pi/install.sh` inside its folder. Desktop launch works, but Git updates require installing with the clone instructions above.
-
-## Artwork and license
-
-The [Asciiquarium creators and OpenGhost community](CREDITS.md) deserve prominent credit for the work that brought us here. Eleven designs derive from Asciiquarium; fifteen are original ASCII Genesis creature drawings. See [THIRD-PARTY.txt](THIRD-PARTY.txt) and [LICENSE.txt](LICENSE.txt), GPL-2.0-or-later. Source drawings and their generator are in `third-party/`. Regenerate the fish collection from the project root with `node third-party/restore-sprites.mjs`.
-
-### Diagnose an API connection
-
-Close the ocean, use the Update ASCII Genesis icon, and reopen it. Tap AI event: the app now reports missing-key, authentication, billing, permission, model-access or connection errors separately. Luna narration uses no reasoning and a 128-token response allowance. A successful narration is still needed to confirm your account works.
-
-To check the saved file against the running server without showing the key or calling OpenAI, run on the Pi:
-
-```bash
-node ~/ASCII-Genesis/simulator/api-doctor.mjs
-```
-
-This prints only a configuration result. Share that result or the on-screen error code; never share openai.env or the secret key.
+Built on **Asciiquarium by Kirk Baucom**, with most upstream ASCII art credited to **Joan Stark** and expanded biodiversity by **Claudio Matsuoka**. **OpenGhost / xanderchinxyz** inspired the early display exploration. Project additions include the renderer, ecosystem, original creatures, and physical Pi enclosure. Read [CREDITS.md](CREDITS.md), [THIRD-PARTY.txt](THIRD-PARTY.txt), and [LICENSE.txt](LICENSE.txt).

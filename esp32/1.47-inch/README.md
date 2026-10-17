@@ -1,34 +1,14 @@
-# ASCII Genesis - Mini
+# ASCII Genesis - Mini has moved
 
-The small display has rounded corners. Foreground content stays inside a safe area, with the header inset and the seabed raised. The browser preview models an estimated 24-pixel corner radius from the board photo; v0.1.3 includes the matching firmware layout. Confirm the fit on the physical panel before publishing an update.
+The Mini is now a separate project: **[Mikepyt87/ascii-genesis-mini](https://github.com/Mikepyt87/ascii-genesis-mini)**.
 
-This is the miniature edition for **Waveshare ESP32-S3-Touch-LCD-1.47**, used sideways at **320 × 172**. The board has its own ESP32-S3, 8 MB PSRAM, 16 MB flash, and capacitive touch.
+- [New-board installation and USB recovery](https://github.com/Mikepyt87/ascii-genesis-mini/blob/main/docs/INSTALL.md)
+- [Home Wi-Fi and same-phone hotspot setup](https://github.com/Mikepyt87/ascii-genesis-mini/blob/main/docs/WIFI.md)
+- [Touch controls and Mini parade](https://github.com/Mikepyt87/ascii-genesis-mini/blob/main/docs/CONTROLS.md)
+- [Wireless updates](https://github.com/Mikepyt87/ascii-genesis-mini/blob/main/docs/UPDATES.md)
+- [Troubleshooting](https://github.com/Mikepyt87/ascii-genesis-mini/blob/main/docs/TROUBLESHOOTING.md)
+- [Firmware releases](https://github.com/Mikepyt87/ascii-genesis-mini/releases)
 
-**Current stage: browser simulation plus prototype ESP-IDF firmware with Wi-Fi and wireless updates. No firmware has been flashed or promoted to the update channel. Physical board testing is still required.** See the [firmware setup and update guide](firmware/README.md).
+This repository now contains the Raspberry Pi project. Do not use its Pi installer for the ESP32 board. Historical Mini source remains in Git history, and prior firmware releases are retained.
 
-## Preview first
-
-The preview uses the existing project's 28 colored ASCII creature designs with a 5 × 7 bitmap font in 6 × 8 cells. Up to three creatures appear at once. Each reserves vertical space for its full drawing and gentle bobbing; a new arrival waits off screen if there is not enough room. Large creatures can temporarily mean fewer swimmers. Plants remain rooted to the same scrolling ground, while their upper stems sway. Bubbles rise, and terrain scrolls at twice its previous speed through six habitat labels. Tap the water to reveal Pause, New World and Settings; the controls fade after eight seconds. Pause freezes the ocean. New World starts a fresh scene. The ocean fills the bottom area when the controls are hidden, without an instruction banner.
-
-The phone-setup screen displays its temporary Wi-Fi name and password at twice the normal font size. The Mini name is used on the display, setup page and temporary network; the firmware project identifier and update-channel paths stay the same for compatibility.
-
-Open **Settings** to try the simulated phone connection and update screens. Tap Set up Wi-Fi, then use Connect demo home Wi-Fi outside the screen. Tap Check for updates, followed by Install. The Update test selector also lets you try a damaged download and failed restart. These are deliberately simulated and send no network requests, passwords or firmware. The real firmware implements provisioning and OTA separately.
-
-The browser draws at exactly 320 × 172 pixels, enlarged for inspection. Native pixels disables enlargement; physical inches still depend on your monitor. This is a design simulation, not ESP32 emulation. The miniature currently has decorative swimmers rather than the Pi edition's food web, hunting, schools, diver, narration, and full habitat scenery. Those features are not represented as working firmware.
-
-From this folder, run `node preview/serve.mjs`, then open the printed local address. It needs Node.js 20+ and no packages or API keys.
-
-## Separate editions
-
-- [Raspberry Pi ocean](../../README.md): current 1280 × 400 ocean and existing installation instructions.
-- **This folder:** small ESP32-S3 1.47-inch edition under development. Do not use the Pi installer or Pi enclosure for it.
-
-The earlier local 4-inch Waveshare firmware remains in the original workspace's `firmware` folder; this preview does not replace or flash it.
-
-## Hardware implementation
-
-Use the vendor's initialization for the **JD9853 SPI display** and **AXS5106L I2C touch controller**. The similarly named non-touch LCD-1.47 is a different board. Display reset is GPIO40; touch reset is GPIO47. Verify landscape touch alignment and all four corners on the real unit. The vendor Arduino demo uses a custom display initialization even though its wrapper class is named ST7789.
-
-The firmware uses the vendor JD9853 driver and board pin map, a direct bitmap renderer, a phone setup page, certificate-validated HTTPS downloads, a dedicated ESP32 release manifest, and a rollback-enabled bootloader. The build check compiles with ESP-IDF 5.5.2. Display/touch, power, frame timing, memory use, radio operation, flash writes and boot recovery still require physical verification. Browser animation does not validate those.
-
-Sources: [Waveshare board documentation](https://docs.waveshare.com/ESP32-S3-Touch-LCD-1.47), [vendor examples](https://docs.waveshare.com/ESP32-S3-Touch-LCD-1.47/Resources-And-Documents). Artwork credits remain in [CREDITS.md](../../CREDITS.md) and [THIRD-PARTY.txt](../../THIRD-PARTY.txt). The bitmap font carries the BSD notice in `preview/FONT-LICENSE.txt`.
+Existing v0.1.4/v0.1.5 Mini boards can install the v0.1.6 transition from their existing update channel. That application then checks the new Mini repository. Older v0.1.2/v0.1.3 builds need USB recovery because of their existing download bug. See the [transition guide](https://github.com/Mikepyt87/ascii-genesis-mini/blob/main/docs/MIGRATION.md).
