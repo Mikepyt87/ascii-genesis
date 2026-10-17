@@ -1,0 +1,59 @@
+name: Publish Mini transition
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'One-time standalone Mini transition version'
+        required: true
+        default: '0.1.6'
+permissions:
+  contents: write
+concurrency:
+  group: mini-transition
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Download the published standalone transition
+        run: |
+          test "$GITHUB_REF" = refs/heads/main
+          test "$VERSION" = 0.1.6
+          mkdir release
+          for file in aquarium-usb.bin ascii-genesis-147.bin manifest.json; do
+            curl --fail --location --silent --show-error --proto '=https' --proto-redir '=https' "https://github.com/Mikepyt87/ascii-genesis-mini/releases/download/esp32-147-v${VERSION}/${file}" -o "release/${file}"
+          done
+      - name: Verify images and create the compatible legacy manifest
+        run: |
+          node <<'NODE'
+          const fs=require('fs'),crypto=require('crypto');
+          const m=JSON.parse(fs.readFileSync('release/manifest.json','utf8'));
+          const app=fs.readFileSync('release/ascii-genesis-147.bin'),usb=fs.readFileSync('release/aquarium-usb.bin');
+          const expected='https://github.com/Mikepyt87/ascii-genesis-mini/releases/download/esp32-147-v0.1.6/ascii-genesis-147.bin';
+          if(m.board!=='waveshare-esp32-s3-touch-lcd-1.47'||m.version!=='0.1.6'||m.url!==expected||m.size!==app.length||app.length>0x600000||app[0]!==0xe9||crypto.createHash('sha256').update(app).digest('hex')!==m.sha256)throw Error('Invalid standalone transition package');
+          if(app.readUInt32LE(32)!==0xabcd5432||app.subarray(48,80).toString().split('\0')[0]!=='0.1.6'||app.subarray(80,112).toString().split('\0')[0]!=='ascii_genesis_147')throw Error('Wrong embedded application identity');
+          if(usb.length<0x20000+app.length||!usb.subarray(0x20000,0x20000+app.length).equals(app))throw Error('USB/application package mismatch');
+          m.url='https://github.com/Mikepyt87/ascii-genesis/releases/download/esp32-147-v0.1.6/ascii-genesis-147.bin';
+          fs.writeFileSync('release/manifest.json',JSON.stringify(m,null,2)+'\n');
+          NODE
+      - name: Publish the bridge and promote the old channel
+        run: |
+          tag="esp32-147-v$VERSION"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo 'Transition version already exists; inspect it before any retry.'
+            exit 1
+          fi
+          gh release create "$tag" release/* --target "$GITHUB_SHA" --title 'ASCII Genesis - Mini v0.1.6 transition' --notes 'One-time bridge for existing Mini v0.1.4/v0.1.5 boards. This is the identical firmware published at https://github.com/Mikepyt87/ascii-genesis-mini/releases/tag/esp32-147-v0.1.6. Its source and future updates are in the new Mini repository. The manifest retains an old-repository download URL so installed boards accept it. Includes the Mini creature parade. Raspberry Pi installations use their desktop updater.' --latest=false
+          if ! gh release view esp32-147-stable >/dev/null 2>&1; then
+            echo 'Expected existing legacy stable channel is missing.'
+            exit 1
+          fi
+          gh release upload esp32-147-stable release/manifest.json --clobber
