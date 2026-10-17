@@ -34,16 +34,18 @@
   function draw(ctx,net,font){
     function text(s,x,y,color='#bde9e6',scale=1){ctx.fillStyle=color;for(let i=0;i<s.length;i++)for(let col=0;col<5;col++){const bits=font[s.charCodeAt(i)*5+col]||0;for(let row=0;row<8;row++)if(bits&(1<<row))ctx.fillRect(x+(i*6+col)*scale,y+row*scale,scale,scale);}}
     ctx.fillStyle='#020c14';ctx.fillRect(0,0,320,172);
+    ctx.save();ctx.beginPath();ctx.rect(12,8,296,156);ctx.clip();
     if(net.screen==='setup'){
-      text('CONNECT WITH YOUR PHONE',8,6);text('Join this Wi-Fi network:',8,24);text('ASCII-Genesis-Mini-DEMO',8,40,'#73c9ff',2);
-      text('Demo password:',8,64);text('preview-only',8,78,'#73c9ff',2);text('Open http://192.168.4.1',8,108);text('Setup closes after 10 minutes',8,124);
+      text('CONNECT WITH YOUR PHONE',20,8);text('Join this Wi-Fi network:',20,24);text('ASCII-Genesis-Mini-DEMO',20,40,'#73c9ff',2);
+      text('Demo password:',20,64);text('preview-only',20,78,'#73c9ff',2);text('Open http://192.168.4.1',20,108);text('Setup closes after 10 minutes',20,124);
     }else{
-      text('SETTINGS',8,6);text('v'+net.version+'  '+(net.online?'Wi-Fi online':'Offline'),8,22,'#73c9ff');text(net.message,8,38);
-      ctx.fillStyle='#102631';ctx.fillRect(0,58,320,32);text('SET UP WI-FI WITH PHONE',10,70);
+      text('SETTINGS',20,8);text('v'+net.version+'  '+(net.online?'Wi-Fi online':'Offline'),20,22,'#73c9ff');text(net.message,20,38);
+      ctx.fillStyle='#102631';ctx.fillRect(0,58,320,32);text('SET UP WI-FI WITH PHONE',20,70);
       ctx.fillStyle='#102631';ctx.fillRect(0,98,320,32);
-      text(net.busy?'PLEASE WAIT  '+net.progress+'%':net.available?'INSTALL v0.2.0 & RESTART':'CHECK FOR UPDATES',10,110);
+      text(net.busy?'PLEASE WAIT  '+net.progress+'%':net.available?'INSTALL v0.2.0 & RESTART':'CHECK FOR UPDATES',20,110);
     }
     ctx.fillStyle='#102631';ctx.fillRect(0,140,320,32);text('BACK TO OCEAN',118,153);
+    ctx.restore();
   }
   root.MiniNetwork={MiniNetwork,draw};
 })(globalThis);

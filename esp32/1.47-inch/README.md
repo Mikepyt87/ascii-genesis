@@ -1,5 +1,7 @@
 # ASCII Genesis - Mini
 
+The small display has rounded corners. Foreground content stays inside a safe area, with the header inset and the seabed raised. The browser preview models an estimated 24-pixel corner radius from the board photo; v0.1.3 includes the matching firmware layout. Confirm the fit on the physical panel before publishing an update.
+
 This is the miniature edition for **Waveshare ESP32-S3-Touch-LCD-1.47**, used sideways at **320 × 172**. The board has its own ESP32-S3, 8 MB PSRAM, 16 MB flash, and capacitive touch.
 
 **Current stage: browser simulation plus prototype ESP-IDF firmware with Wi-Fi and wireless updates. No firmware has been flashed or promoted to the update channel. Physical board testing is still required.** See the [firmware setup and update guide](firmware/README.md).

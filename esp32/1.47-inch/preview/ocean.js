@@ -3,8 +3,9 @@
  */
 (function (root) {
   'use strict';
-  const W = 320, H = 172, WATER_TOP = 12, FLOOR = 160;
-  const BOB = 2, GAP = 4, SWIM_BOTTOM = 153;
+  const W = 320, H = 172, WATER_TOP = 20, FLOOR = 152;
+  const SAFE_X = 12, SAFE_Y = 8, SWIM_TOP = 23;
+  const BOB = 2, GAP = 4, SWIM_BOTTOM = 145;
   const groundAt = worldX => FLOOR + Math.round(Math.sin(worldX / 42) * 3);
   const screenX = (worldX, scroll) => Math.round(worldX - scroll);
   const bandsClear = (y, h, otherY, otherH) => y + h + BOB + GAP <= otherY - BOB || otherY + otherH + BOB + GAP <= y - BOB;
@@ -17,9 +18,9 @@
       this.habitat = 0; this.scroll = 0; this.fish = [];
       this.pendingSpawn = null;
       this.bubbles = []; this.nextBubble = 2;
-      this.spawn(6, 28, 20, 1);
-      this.spawn(2, 156, 56, -1);
-      this.spawn(38, 180, 108, -1);
+      this.spawn(6, 28, 23, 1);
+      this.spawn(2, 156, 55, -1);
+      this.spawn(38, 180, 103, -1);
     }
     random() {
       let x = this.seed; x ^= x << 13; x ^= x >>> 17; x ^= x << 5;
@@ -35,7 +36,7 @@
     }
     freeY(height) {
       const candidates = [];
-      for (let y = 17; y + height + BOB <= SWIM_BOTTOM; y++) {
+      for (let y = SWIM_TOP; y + height + BOB <= SWIM_BOTTOM; y++) {
         if (this.fish.every(f => bandsClear(y, height, f.y, f.height))) candidates.push(y);
       }
       return candidates.length ? candidates[Math.floor(this.random() * candidates.length)] : null;
@@ -90,8 +91,9 @@
     }
     function text(s, x, y, color) { for (let i = 0; i < s.length; i++) glyph(s[i], x + i * 6, y, color); }
     ctx.fillStyle = colors.water; ctx.fillRect(0, 0, W, H);
-    text('ASCII GENESIS - MINI', 5, 2, colors.text);
-    text(HABITATS[ocean.habitat], W - HABITATS[ocean.habitat].length * 6 - 5, 2, colors.muted);
+    ctx.save(); ctx.beginPath(); ctx.rect(SAFE_X, SAFE_Y, W - SAFE_X * 2, H - SAFE_Y * 2); ctx.clip();
+    text('ASCII GENESIS - MINI', 20, 8, colors.text);
+    text(HABITATS[ocean.habitat], W - HABITATS[ocean.habitat].length * 6 - 20, 8, colors.muted);
     ctx.save(); ctx.beginPath(); ctx.rect(0, WATER_TOP, W, H - WATER_TOP); ctx.clip();
     for (let i = Math.floor(ocean.scroll / 6) - 1; i * 6 < ocean.scroll + W + 6; i++) {
       const worldX = i * 6, x = screenX(worldX, ocean.scroll), ground = groundAt(worldX);
@@ -134,6 +136,7 @@
       text('NEW WORLD', 130, 153, colors.text);
       text('SETTINGS', 244, 153, colors.text);
     }
+    ctx.restore();
   }
-  root.MiniAquarium = {MiniOcean, render, W, H, HABITATS, groundAt, screenX, bandsClear};
+  root.MiniAquarium = {MiniOcean, render, W, H, HABITATS, groundAt, screenX, bandsClear, SAFE_X, SAFE_Y, SWIM_TOP, SWIM_BOTTOM};
 })(globalThis);
