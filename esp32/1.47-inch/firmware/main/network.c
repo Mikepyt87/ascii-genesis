@@ -77,7 +77,7 @@ static esp_err_t portal_get(httpd_req_t *req) {
     char page[1800];
     snprintf(page,sizeof(page),
       "<!doctype html><meta name='viewport' content='width=device-width,initial-scale=1'>"
-      "<title>ASCII Genesis Wi-Fi</title><style>body{font:18px system-ui;max-width:28em;margin:2em auto;padding:1em}"
+      "<title>ASCII Genesis - Mini Wi-Fi</title><style>body{font:20px system-ui;max-width:28em;margin:2em auto;padding:1em}"
       "label,input,button{display:block;margin:1em 0;width:100%%;font:inherit;box-sizing:border-box;padding:.5em}</style>"
       "<h1>Connect your aquarium</h1><p>Choose your 2.4 GHz home network. The aquarium also works offline.</p>"
       "<form method='post' action='/wifi'><input type='hidden' name='token' value='%s'>"
@@ -120,7 +120,7 @@ static void open_portal(void) {
     close_portal();
     wifi_config_t ap={0};uint32_t random=esp_random();
     char ap_name[33],ap_pass[17];
-    snprintf(ap_name,sizeof(ap_name),"ASCII-Genesis-%04lx",(unsigned long)(random&65535));
+    snprintf(ap_name,sizeof(ap_name),"ASCII-Genesis-Mini-%04lx",(unsigned long)(random&65535));
     snprintf(ap_pass,sizeof(ap_pass),"%08lx%08lx",(unsigned long)esp_random(),(unsigned long)esp_random());
     snprintf(token,sizeof(token),"%08lx%08lx",(unsigned long)esp_random(),(unsigned long)esp_random());
     strlcpy((char*)ap.ap.ssid,ap_name,sizeof(ap.ap.ssid));strlcpy((char*)ap.ap.password,ap_pass,sizeof(ap.ap.password));

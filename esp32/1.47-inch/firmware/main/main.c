@@ -15,41 +15,67 @@
 #include "board.h"
 #include "network.h"
 #include "assets.h"
+#include "ocean_geometry.h"
 static uint16_t *fb;
 static float time_s,controls_until=8;
 static bool paused;
 static int screen; // 0 ocean, 1 settings, 2 phone setup
-typedef struct {int art,dir;float x,y,speed,phase;} swimmer_t;
+typedef struct {int art,dir;float x,y,speed,phase;bool active;} swimmer_t;
 static swimmer_t fish[3];
+static int pending_art=-1,pending_dir;
 static float bubble_x[4],bubble_y[4];
 static uint16_t rgb(unsigned c){return ((c>>8)&0xf800)|((c>>5)&0x07e0)|((c>>3)&31);}
 static void pixel(int x,int y,uint16_t c){if(x>=0&&x<320&&y>=0&&y<172)fb[y*320+x]=c;}
 static void rect(int x,int y,int w,int h,uint16_t c){for(int j=y;j<y+h;j++)for(int i=x;i<x+w;i++)pixel(i,j,c);}
 static void glyph(char ch,int x,int y,uint16_t c){unsigned n=(unsigned char)ch;if(n<32||n>126)return;for(int col=0;col<5;col++)for(int row=0;row<8;row++)if(mini_font[n*5+col]&(1<<row))pixel(x+col,y+row,c);}
 static void text(const char *s,int x,int y,uint16_t c){for(int i=0;s[i]&&x+i*6<320;i++)glyph(s[i],x+i*6,y,c);}
+static void text_large(const char *s,int x,int y,uint16_t c){
+    for(int i=0;s[i]&&x+i*12<320;i++){unsigned n=(unsigned char)s[i];if(n<32||n>126)continue;
+        for(int col=0;col<5;col++)for(int row=0;row<8;row++)if(mini_font[n*5+col]&(1<<row))rect(x+i*12+col*2,y+row*2,2,2,c);}
+}
 static float rnd(void){return (float)(esp_random()&65535)/65536.0f;}
-static void spawn(int slot,int index,int dir,float x,float y){fish[slot]=(swimmer_t){.art=(index&~1)+(dir<0),.dir=dir,.x=x,.y=y,.speed=3+rnd()*3,.phase=rnd()*6.28f};}
-static void new_world(void){time_s=0;spawn(0,6,1,28,24);spawn(1,2,-1,156,55);spawn(2,38,-1,180,78);for(int i=0;i<4;i++){bubble_x[i]=20+rnd()*280;bubble_y[i]=20+rnd()*135;}paused=false;}
+static void spawn(int slot,int index,int dir,float x,float y){fish[slot]=(swimmer_t){.art=(index&~1)+(dir<0),.dir=dir,.x=x,.y=y,.speed=3+rnd()*3,.phase=rnd()*6.28f,.active=true};}
+static void new_world(void){time_s=0;pending_art=-1;spawn(0,6,1,28,20);spawn(1,2,-1,156,56);spawn(2,38,-1,180,108);for(int i=0;i<4;i++){bubble_x[i]=20+rnd()*280;bubble_y[i]=20+rnd()*135;}paused=false;}
+static int free_y(int height){
+    int chosen=-1,count=0;
+    for(int y=17;mini_band_fits(y,height);y++){
+        bool clear=true;
+        for(int i=0;i<3;i++)if(fish[i].active&&!mini_bands_clear(y,height,fish[i].y,mini_sprites[fish[i].art].height*8)){clear=false;break;}
+        if(clear&&esp_random()%(++count)==0)chosen=y;
+    }
+    return chosen;
+}
 static void simulate(float dt){
     if(paused)return;
     time_s+=dt;
     for(int i=0;i<3;i++){
-        swimmer_t *f=&fish[i];f->x+=f->dir*f->speed*dt;const mini_sprite_t *s=&mini_sprites[f->art];
-        if(f->x>328||f->x+s->width*6<-8){int art=(esp_random()%27)*2,dir=rnd()<.5f?-1:1;const mini_sprite_t *a=&mini_sprites[art];spawn(i,art,dir,dir>0?-a->width*6-2:322,17+rnd()*fmaxf(1,136-a->height*8));}
+        swimmer_t *f=&fish[i];if(!f->active)continue;f->x+=f->dir*f->speed*dt;const mini_sprite_t *s=&mini_sprites[f->art];
+        if(f->x>328||f->x+s->width*6<-8)f->active=false;
+    }
+    for(int i=0;i<3;i++)if(!fish[i].active){
+        if(pending_art<0){pending_art=(esp_random()%27)*2;pending_dir=rnd()<.5f?-1:1;}
+        const mini_sprite_t *a=&mini_sprites[pending_art];int y=free_y(a->height*8);
+        if(y>=0){spawn(i,pending_art,pending_dir,pending_dir>0?-a->width*6-2:322,y);pending_art=-1;}
+        break;
     }
     for(int i=0;i<4;i++){bubble_y[i]-=dt*5;if(bubble_y[i]<16){bubble_y[i]=158;bubble_x[i]=15+rnd()*290;}}
 }
 static void draw_ocean(bool controls){
     const uint16_t pale=rgb(0xbde9e6),muted=rgb(0x54858d),sand=rgb(0x80715a);
     for(int i=0;i<320*172;i++)fb[i]=rgb(0x020c14);
-    text("ASCII GENESIS",5,2,pale);
+    text("ASCII GENESIS - MINI",5,2,pale);
     static const char *habitats[]={"KELP MEADOW","ROCKY REEF","OPEN SAND","CORAL GARDEN","SEAGRASS BED","WRECK DEPTHS"};
     const char *habitat=habitats[((int)(time_s/45))%6];text(habitat,315-strlen(habitat)*6,2,muted);
     float scroll=time_s*1.8f;
-    for(int i=0;i<53;i++){int x=i*6,ground=160+lroundf(sinf((x+scroll)/42)*3);glyph(i%4==0?':':'.',x,ground+5,sand);if(i%2==0)glyph('_',x,ground,sand);}
-    for(int p=-1;p<8;p++){int x=(int)fmodf(fmodf(p*57+22-scroll,456)+456,456)-57;for(int row=0;row<2+(p+8)%3;row++)glyph(row%2?')':'(',x+lroundf(sinf(time_s*.7f+row+p)*2),155-row*8,rgb(0x56ab91));}
+    for(int i=(int)floorf(scroll/6)-1;i*6<scroll+326;i++){float world_x=i*6;int x=mini_screen_x(world_x,scroll),ground=mini_ground_y(world_x);glyph(i%4==0?':':'.',x,ground+1,sand);glyph('_',x,ground-6,sand);}
+    for(int p=(int)floorf((scroll-22)/57)-1;p*57+22<scroll+332;p++){
+        float world_x=p*57+22;int x=mini_screen_x(world_x,scroll),ground=mini_ground_y(world_x),height=2+((p%3+3)%3);
+        for(int row=0;row<height;row++){int sway=row==0?0:lroundf(sinf(time_s*.7f+row+p)*2*row/(height-1));glyph(row==0?'|':row%2?')':'(',x+sway,ground-row*8-6,rgb(0x56ab91));
+            if(((int)(time_s/45))%6==3&&row==1)text("\\|/",x-6,ground-14,rgb(0xcd8d99));}
+    }
+    if(((int)(time_s/45))%6==1||((int)(time_s/45))%6==5)for(int rock=(int)floorf((scroll-82)/233)-1;rock*233+82<scroll+320;rock++){float world_x=rock*233+82;text("/__\\",mini_screen_x(world_x,scroll),mini_ground_y(world_x)-6,muted);}
     for(int i=0;i<4;i++)glyph('o',bubble_x[i],bubble_y[i],muted);
-    for(int i=0;i<3;i++){swimmer_t *f=&fish[i];const mini_sprite_t *s=&mini_sprites[f->art];int bob=lroundf(sinf(time_s*.55f+f->phase)*2);
+    for(int i=0;i<3;i++){swimmer_t *f=&fish[i];if(!f->active)continue;const mini_sprite_t *s=&mini_sprites[f->art];int bob=lroundf(sinf(time_s*.55f+f->phase)*2);
         for(int r=0;r<s->height;r++)for(int col=0;s->rows[r][col];col++){char ch=s->rows[r][col];if(ch==' ')continue;int m=col<(int)strlen(s->masks[r])?s->masks[r][col]-'1':0;if(m<0||m>6)m=0;
             int y=(int)lroundf(f->y)+r*8+bob;if(y>=12)glyph(ch,lroundf(f->x)+col*6,y,rgb(s->palette[m]));}}
     if(controls){rect(0,140,320,32,rgb(0x102631));text(paused?"RESUME":"PAUSE",35,153,pale);text("NEW WORLD",130,153,pale);text("SETTINGS",244,153,pale);}
@@ -57,7 +83,7 @@ static void draw_ocean(bool controls){
 static void draw_settings(net_status_t *n){
     const uint16_t c=rgb(0xbde9e6),m=rgb(0x73c9ff);char line[54];
     for(int i=0;i<320*172;i++)fb[i]=rgb(0x020c14);
-    if(screen==2){text("CONNECT WITH YOUR PHONE",8,6,c);if(n->setup){text("Join this Wi-Fi network:",8,26,c);text(n->ap_name,8,42,m);text("Password:",8,60,c);text(n->ap_password,8,76,m);text("Open http://192.168.4.1",8,98,c);text("Setup closes after 10 minutes",8,116,c);}else text(n->message,8,44,c);}
+    if(screen==2){text("CONNECT WITH YOUR PHONE",8,6,c);if(n->setup){text("Join this Wi-Fi network:",8,24,c);text_large(n->ap_name,8,40,m);text("Password:",8,64,c);text_large(n->ap_password,8,78,m);text("Open http://192.168.4.1",8,108,c);text("Setup closes after 10 minutes",8,124,c);}else text(n->message,8,44,c);}
     else {text("SETTINGS",8,6,c);snprintf(line,sizeof(line),"v%s  %s",esp_app_get_description()->version,n->online?"Wi-Fi online":"Offline");text(line,8,22,m);text(n->message,8,38,c);
       rect(0,58,320,32,rgb(0x102631));text("SET UP WI-FI WITH PHONE",10,70,c);
       rect(0,98,320,32,rgb(0x102631));

@@ -32,11 +32,11 @@
     }
   }
   function draw(ctx,net,font){
-    function text(s,x,y,color='#bde9e6'){ctx.fillStyle=color;for(let i=0;i<s.length;i++)for(let col=0;col<5;col++){const bits=font[s.charCodeAt(i)*5+col]||0;for(let row=0;row<8;row++)if(bits&(1<<row))ctx.fillRect(x+i*6+col,y+row,1,1);}}
+    function text(s,x,y,color='#bde9e6',scale=1){ctx.fillStyle=color;for(let i=0;i<s.length;i++)for(let col=0;col<5;col++){const bits=font[s.charCodeAt(i)*5+col]||0;for(let row=0;row<8;row++)if(bits&(1<<row))ctx.fillRect(x+(i*6+col)*scale,y+row*scale,scale,scale);}}
     ctx.fillStyle='#020c14';ctx.fillRect(0,0,320,172);
     if(net.screen==='setup'){
-      text('CONNECT WITH YOUR PHONE',8,6);text('Join this Wi-Fi network:',8,26);text('ASCII-Genesis-DEMO',8,42,'#73c9ff');
-      text('Demo password:',8,60);text('preview-only',8,76,'#73c9ff');text('Open http://192.168.4.1',8,98);text('Setup closes after 10 minutes',8,116);
+      text('CONNECT WITH YOUR PHONE',8,6);text('Join this Wi-Fi network:',8,24);text('ASCII-Genesis-Mini-DEMO',8,40,'#73c9ff',2);
+      text('Demo password:',8,64);text('preview-only',8,78,'#73c9ff',2);text('Open http://192.168.4.1',8,108);text('Setup closes after 10 minutes',8,124);
     }else{
       text('SETTINGS',8,6);text('v'+net.version+'  '+(net.online?'Wi-Fi online':'Offline'),8,22,'#73c9ff');text(net.message,8,38);
       ctx.fillStyle='#102631';ctx.fillRect(0,58,320,32);text('SET UP WI-FI WITH PHONE',10,70);

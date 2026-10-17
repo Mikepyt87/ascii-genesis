@@ -1,4 +1,4 @@
-# ESP32 1.47-inch firmware
+# ASCII Genesis - Mini firmware
 
 For **Waveshare ESP32-S3-Touch-LCD-1.47** only. This is separate from the Raspberry Pi installer and the older local 4-inch firmware. Use a USB data cable for the first installation.
 
@@ -76,7 +76,7 @@ Keep power connected, wait for completion, press RESET if needed, then do the sa
 ## Join home Wi-Fi
 
 1. Tap the ocean, then **Settings → Set up Wi-Fi with phone**.
-2. Join the temporary `ASCII-Genesis-xxxx` Wi-Fi network from your phone using the random password shown on the aquarium.
+2. Join the temporary `ASCII-Genesis-Mini-xxxx` Wi-Fi network from your phone using the random password shown on the aquarium. Firmware before v0.1.2 uses `ASCII-Genesis-xxxx`. The network name and password appear in a larger font in v0.1.2 and later.
 3. Stay connected if the phone reports that this network has no internet. Open **http://192.168.4.1** in the phone browser.
 4. Enter your **2.4 GHz** home Wi-Fi name and password, then save. Return your phone to its normal network.
 5. The device closes its setup network and connects to home Wi-Fi. If the details are wrong, reopen setup and retry. Setup closes after ten minutes or when you tap Back.
@@ -148,5 +148,5 @@ When reporting a problem, include the exact board model, firmware version, what 
 
 Check landscape rotation, all four touch corners, colors, frame timing, initial flash, phone provisioning, reconnect after a power cycle, wrong Wi-Fi credentials, interrupted downloads, first-boot watchdog rollback, and successful updates between two real versions. Browser tests model the workflow; they do not emulate radio, flash, bootloader, display or touch hardware.
 
-This miniature is a decorative three-swimmer ocean with the existing 27 designs. It does not implement the Pi edition's full ecology or narration. The firmware is GPL-3.0-or-later so its GPL-2.0-or-later artwork can be combined with the Apache-2.0 vendor display driver. The Pi edition keeps its existing license. See COPYING, the driver's LICENSE, the font's BSD notice and the root credits.
+This miniature is a decorative ocean with up to three swimmers with the existing 27 designs. It does not implement the Pi edition's full ecology or narration. The firmware is GPL-3.0-or-later so its GPL-2.0-or-later artwork can be combined with the Apache-2.0 vendor display driver. The Pi edition keeps its existing license. See COPYING, the driver's LICENSE, the font's BSD notice and the root credits.
 
