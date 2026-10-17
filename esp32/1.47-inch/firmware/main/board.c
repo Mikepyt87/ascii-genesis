@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "board.h"
+#include "touch_packet.h"
 #include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
@@ -8,6 +9,7 @@
 #include "driver/spi_master.h"
 #include "driver/i2c_master.h"
 #include "esp_heap_caps.h"
+#include "esp_log.h"
 #include "esp_lcd_panel_io.h"
 #include "esp_lcd_panel_ops.h"
 #include "esp_lcd_jd9853.h"
@@ -36,6 +38,8 @@ void board_init(void) {
     i2c_master_bus_handle_t ib;ESP_ERROR_CHECK(i2c_new_master_bus(&ic,&ib));
     i2c_device_config_t td={.dev_addr_length=I2C_ADDR_BIT_LEN_7,.device_address=0x63,.scl_speed_hz=400000};ESP_ERROR_CHECK(i2c_master_bus_add_device(ib,&td,&touch));
     ESP_ERROR_CHECK(i2c_master_probe(ib,0x63,100));
+    gpio_set_direction(48,GPIO_MODE_INPUT);
+    ESP_LOGI("touch", "AXS5106L ready: SDA42 SCL41, landscape 320x172");
 }
 void board_frame(const uint16_t *pixels) {
     for(int y=0;y<172;y+=8) {
@@ -46,9 +50,20 @@ void board_frame(const uint16_t *pixels) {
     }
 }
 bool board_touch(int *x,int *y) {
-    uint8_t reg=1,data[14];
-    if(i2c_master_transmit_receive(touch,&reg,1,data,sizeof(data),20)!=ESP_OK||data[1]==0)return false;
-    int raw_x=((data[2]&15)<<8)|data[3],raw_y=((data[4]&15)<<8)|data[5];
-    if(raw_x>=172||raw_y>=320)return false;
-    *x=raw_y;*y=raw_x;return true;
+    static bool was_pressed;
+    static uint32_t last_warning;
+    uint8_t reg=1,data[14]={0};
+    // Match Waveshare: STOP after selecting the register, then a separate read.
+    esp_err_t err=i2c_master_transmit(touch,&reg,1,100);
+    if(err==ESP_OK)err=i2c_master_receive(touch,data,sizeof(data),100);
+    if(err!=ESP_OK){
+        uint32_t now=esp_log_timestamp();
+        if(now-last_warning>=5000){ESP_LOGW("touch","Read failed: %s",esp_err_to_name(err));last_warning=now;}
+        was_pressed=false;
+        return false;
+    }
+    bool pressed=touch_packet_decode(data,sizeof(data),x,y);
+    if(pressed&&!was_pressed)ESP_LOGI("touch","Press x=%d y=%d",*x,*y);
+    was_pressed=pressed;
+    return pressed;
 }
