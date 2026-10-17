@@ -131,6 +131,7 @@ The workflow refuses to replace an existing version release. Use a new version n
 | Flash succeeds but the screen is blank or colors/touch are wrong | Confirm the exact Touch-LCD-1.47 model and this firmware folder. Capture the serial startup error. Display and touch alignment still require bench verification. |
 | Picture works but touch does not | Use v0.1.1 or later, which matches the vendor's separate I2C register-select and read operations. USB serial diagnostics report touch initialization, read errors and press coordinates. Reopen the monitor on the board's current USB port and tap once; report any `touch` messages. |
 | Setup Wi-Fi is missing | Reopen Settings and start phone setup. The temporary network closes after ten minutes, saving details, or tapping Back. |
+| Browser says "Join the device setup network first" while connected to the aquarium | Use v0.1.2 or later. Earlier versions misread IPv4 connections reported through the dual-stack HTTP server. Reopen setup and visit http://192.168.4.1 after installing the correction. |
 | Phone leaves setup Wi-Fi automatically | Stay connected despite the no-internet notice; temporarily disable automatic switching/mobile data if it keeps changing networks. Open http://192.168.4.1 directly. |
 | Home Wi-Fi remains offline | Check 2.4 GHz availability, signal, network name and password; repeat setup. The aquarium will continue offline. |
 | Clock not ready | Wait for internet time synchronization, then tap Check for updates again. Time service and HTTPS access must be allowed by the network. |
