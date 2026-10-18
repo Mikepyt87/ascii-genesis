@@ -190,6 +190,34 @@
       if(peek>.7){ctx.globalAlpha=Math.min(1,(peek-.7)/.15);ctx.drawImage(eelImage,x+advance*17,wreckTop+font*5);ctx.globalAlpha=1;}
     }
   }
+  const sceneArt=core.life.scenes.art;
+  const landmarkImages={castle:scenerySprite(sceneArt.castleSmall,'#6f8290'),ruins:scenerySprite(sceneArt.ruinsSmall,'#687c78')};
+  const visitorImages={boat:scenerySprite(sceneArt.boat,'#c8b68f'),whale:scenerySprite(sceneArt.whale,'#82a9bb'),monster:scenerySprite(sceneArt.monster,'#8fb68b'),monsterAlt:scenerySprite(sceneArt.monsterAlt,'#8fb68b')};
+  const spoutImages=sceneArt.spout.map(rows=>scenerySprite([...rows,...Array(3-rows.length).fill('')],'#a3d8e5'));
+  function drawScenes(){
+    if(sim.parade)return;
+    const unit=advance/6,scroll=sim.travel/core.W*screenW;
+    for(let slot=Math.floor((scroll/unit-300)/900)-1;slot*900<scroll/unit+screenW/unit;slot++){
+      const l=core.life.scenes.landmark(slot,sim.seed),image=landmarkImages[l.kind],wx=l.worldX*unit,x=wx-scroll;
+      if(x+image.width<0||x>screenW)continue;
+      const floor=Math.min(...Array.from({length:Math.ceil(image.width/advance)+1},(_,i)=>core.terrainAt((wx+i*advance)/screenW*core.W)/core.H*screenH));
+      const scale=Math.min(1,(floor-screenH*2/3-3)/image.height);
+      if(scale>=.5)ctx.drawImage(image,x,floor-image.height*scale-2,image.width*scale,image.height*scale);
+    }
+    const scene=core.life.scenes.scene(sim.ocean.elapsed/1000,sim.seed),water=core.life.surfaceY(sim);
+    if(water<20)return;
+    ctx.fillStyle='#081723';ctx.fillRect(0,0,screenW,water+fishFont*.5);
+    ctx.font=fishFont+'px "Courier New", monospace';ctx.textBaseline='top';ctx.fillStyle='#508d9f';
+    for(let x=0;x<screenW;x+=advance)ctx.fillText(Math.sin(sim.ocean.elapsed/1000*1.2+x/6*.06)>0?'~':'_',x,water);
+    if(!scene.kind)return;
+    const image=visitorImages[scene.kind==='monster'&&Math.floor(scene.progress*30/.6)%2?'monsterAlt':scene.kind],x=-image.width+scene.progress*(screenW+image.width);
+    const smooth=v=>{v=Math.max(0,Math.min(1,v));return v*v*(3-2*v);};
+    const lift=smooth(scene.progress*6)*smooth((1-scene.progress)*6);
+    const y=scene.kind==='boat'?water-fishFont*3:scene.kind==='whale'?water-fishFont+(1-lift)*fishFont*4:water-fishFont*4;
+    ctx.drawImage(image,x,y);
+    const p=scene.progress*30%11;
+    if(scene.kind==='whale'&&lift>.95&&p>=3&&p<6.2)ctx.drawImage(spoutImages[Math.min(3,Math.floor((p-3)/.8))],x+advance*2,y-fishFont*3);
+  }
   function draw(){
     const light=sim.ocean.light;
     ctx.fillStyle=light<.35?'#020610':'#02090c';ctx.fillRect(0,0,screenW,screenH);
@@ -199,6 +227,7 @@
       ctx.drawImage(image,discovery.x*screenW/core.W-image.width/2,discovery.y*screenH/core.H);ctx.globalAlpha=1;
     }
     drawSeabed();
+    drawScenes();
     const cellX=screenW/core.W, cellY=screenH/core.H;
     ctx.font='10px Consolas, "Courier New", monospace';ctx.textBaseline='top';
     const parade=sim.parade;
@@ -206,9 +235,10 @@
     const normalAlpha=parade?Math.max(0,1-parade.elapsed/4000,1-(parade.duration-parade.elapsed)/2000):1;
     const sprites=[...sim.fish.map(f=>({fish:f,alpha:normalAlpha})),...(parade?.fish||[]).map(f=>({fish:f,alpha:1}))];
     for(let y=0;y<core.H;y++)for(let x=0;x<core.W;x++){
+      if(!sim.parade&&y*cellY<core.life.waterTop(sim))continue;
       const s=sim.cells[y*core.W+x];
       if(s===core.EMPTY||s===core.FRY||s===core.HUNTER)continue;
-      ctx.fillStyle=core.COLORS[s];ctx.fillText(core.GLYPH[s],(x-sim.travel%1)*cellX,y*cellY);
+      ctx.fillStyle=core.COLORS[s];ctx.fillText(s===core.PLANKTON?'.':core.GLYPH[s],(x-sim.travel%1)*cellX,y*cellY);
     }
     // Draw classic Asciiquarium sprites over one-cell ecological agents.
     // The life model stays 48×48; only its presentation uses multi-character art.
@@ -228,13 +258,13 @@
     }
     ctx.font='10px "Courier New", monospace';ctx.fillStyle='#71969c';
     ctx.globalAlpha=normalAlpha;
-    for(const bubble of sim.life.bubbles)ctx.fillText(bubble.age<10?'o':'.',bubble.x*cellX,bubble.y*cellY);
+    for(const bubble of sim.life.bubbles)ctx.fillText(bubble.y*cellY>core.life.waterTop(sim)+20?'o':'.',bubble.x*cellX,bubble.y*cellY);
     ctx.globalAlpha=1;
     if(discovery?.type==='glow'){
       ctx.fillStyle='#81cbd9';
       const fade=Math.min(1,discovery.age/12,(86-discovery.age)/12);
       ctx.globalAlpha=fade*.65;
-      for(let i=0;i<18;i++)ctx.fillText(i%3?'·':'o',screenW*(.18+(i*17%60)/100)+Math.sin(sim.tick*.025+i)*4,screenH*(.15+(i*7%50)/100));
+      for(let i=0;i<18;i++)ctx.fillText('.',screenW*(.18+(i*17%60)/100)+Math.sin(sim.tick*.025+i)*4,screenH*(.15+(i*7%50)/100));
       ctx.globalAlpha=1;
     }
     ctx.fillStyle='#0c1330';ctx.globalAlpha=(1-light)*.18;ctx.fillRect(0,0,screenW,screenH);ctx.globalAlpha=1;

@@ -4,6 +4,8 @@ const require=createRequire(import.meta.url),core=require('./aquarium.js');requi
 const art=globalThis.AsciiquariumSprites;
 function fixture(design,right=true,count=2){
   const w=core.world(42,art.length/2,{quiet:true});w.floor.fill(42);
+  // Isolate underwater spacing from the surface camera's intentional depth clamp.
+  for(let second=0;second<600;second++)if(core.life.scenes.scene(second,w.seed).surface===0){w.ocean.elapsed=second*1000;break;}
   w.fish=Array.from({length:count},(_,i)=>({id:i+1,design,right,x:24,y:20,speed:.2}));
   return w;
 }

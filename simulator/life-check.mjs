@@ -67,8 +67,9 @@ const quiet=core.world(321,17,{quiet:true});quiet.life.nextEncounter=0;quiet.lif
 core.step(quiet);assert.equal(quiet.life.encounter,null);assert.ok(quiet.life.diver,'Quiet mode keeps peaceful diver visits');
 const diver=quiet.life.diver,initialX=diver.x;
 let maxBubbles=0;
-for(let t=0;t<400;t++){core.step(quiet);maxBubbles=Math.max(maxBubbles,quiet.life.bubbles.length);assert.ok(quiet.life.bubbles.length<=5);}
-assert.notEqual(diver.x,initialX);assert.equal(quiet.life.diver,null);assert.ok(maxBubbles>0);assert.equal(quiet.life.bubbles.length,0);
+for(let t=0;t<400;t++){core.step(quiet);maxBubbles=Math.max(maxBubbles,quiet.life.bubbles.length);assert.ok(quiet.life.bubbles.length<=3);}
+assert.notEqual(diver.x,initialX);assert.equal(quiet.life.diver,null);assert.ok(maxBubbles>0);
+assert.ok(quiet.life.bubbles.every(b=>b.age<180),'Fish bubbles continue after the diver leaves; old bubbles expire');
 assert.ok(quiet.life.nextDiver>quiet.tick,'Visitor schedules its next arrival after departure');
 const cancel=core.world(91,17);cancel.fish=[];cancel.life.nextEncounter=0;core.step(cancel);
 const ids=cancel.fish.map(f=>f.id);core.life.setQuiet(cancel,true);core.step(cancel);

@@ -49,6 +49,8 @@ Open **ASCII Genesis** from the desktop. The installer creates **Update ASCII Ge
 
 There are 28 creature and vehicle designs, including the peacock mantis shrimp, plus the Pi edition's ecosystem, schools, occasional encounters, diver, changing terrain, day/night lighting, quiet mode, and two-minute creature parade. It runs offline. Optional OpenAI narration has its own setup in the complete guide; no API key is needed for the ocean itself.
 
+Surface stretches bring sailing boats, whales that surface and spout, and a Nessie-like sea monster, one visitor at a time. Castles and submerged ruins pass along the seabed. Sparse bubbles rise from creatures, with at most three on screen at once. The parade keeps its own clear view.
+
 **Pi scrolling speed is unchanged.** The Mini's faster scrolling and sequential parade belong to the other project.
 
 ![ASCII Genesis ocean](docs/screenshots/ocean.jpg)

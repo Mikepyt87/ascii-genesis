@@ -4,10 +4,10 @@ import vm from 'node:vm';
 import {createRequire} from 'node:module';
 const require=createRequire(import.meta.url),core=require('./aquarium.js');
 require('./fish-art.js');
-let cachedGlyphs=0,images=0,interval,clock=1000000,painted=[];
+let cachedGlyphs=0,images=0,interval,clock=1000000,painted=[],drawn=[];
 const context=(cached=false)=>({font:'',fillStyle:'',textBaseline:'',fillRect(){},
   fillText(glyph,x,y){if(cached)cachedGlyphs++;else painted.push({glyph,x,y,color:this.fillStyle});},measureText(){return {width:9.6};},
-  drawImage(image,x,y){assert.ok(image.width>0&&image.height>0);assert.ok(Number.isFinite(x)&&Number.isFinite(y));images++;}});
+  drawImage(image,x,y,width=image.width,height=image.height){assert.ok(image.width>0&&image.height>0);assert.ok(Number.isFinite(x)&&Number.isFinite(y));drawn.push({image,x,y,width,height});images++;}});
 const main=context(),elements=new Map(),cachedCanvases=[];
 const tank={width:1280,height:400,dataset:{fishFont:'16'},getContext:()=>main};
 const document={getElementById(id){if(id==='tank')return tank;if(!elements.has(id))elements.set(id,{setAttribute(){}});return elements.get(id);},
@@ -67,6 +67,13 @@ elements.get('reset').onclick();assert.equal(world.ocean.clockMode,'local','Rese
 world.ocean.discovery={type:'whale',right:true,x:24,y:8,age:20};interval();
 world.ocean.discovery={type:'glow',right:true,x:24,y:8,age:20};interval();
 assert.equal(cachedGlyphs,initial,'Discoveries reuse cached artwork');
+const landmarks=new Set(cachedCanvases.filter(c=>['#6f8290','#687c78'].includes(c.paint.fillStyle)));
+for(let second=0;second<600;second+=3){
+  world.ocean.elapsed=second*1000;painted=[];drawn=[];elements.get('step').onclick();
+  assert.ok(world.life.bubbles.length<=3,'Pi shares one three-bubble budget');
+  for(const image of drawn.filter(d=>landmarks.has(d.image)))assert.ok(image.y>=400*2/3,'Castles and ruins stay in the bottom third');
+  assert.ok(painted.filter(p=>p.glyph==='o'&&p.color==='#71969c').length<=3,'Plankton must not masquerade as extra bubbles');
+}
 await elements.get('close').onclick();assert.equal(elements.get('close').disabled,false,'Rejected close allows retry');
 assert.equal(elements.get('status').textContent,'Close unavailable in preview.');
 closeAllowed=true;await elements.get('close').onclick();assert.equal(elements.get('close').disabled,true);

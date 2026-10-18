@@ -42,3 +42,5 @@ When sharing ASCII Genesis, please include a link to Asciiquarium and credit its
 > ASCII Genesis builds on Asciiquarium by Kirk Baucom, with most ASCII artwork credited upstream to Joan Stark and expanded marine biodiversity by Claudio Matsuoka. OpenGhost by xanderchinxyz and its contributors inspired the initial display exploration.
 
 Keep upstream copyright and license notices with redistributed source and artwork. Give new contributors credit for their own work, and distinguish adapted assets from new ones. See [contribution guidance](CONTRIBUTING.md). Links and acknowledgments do not imply endorsement by the original creators.
+
+The surface sea monster adapts Asciiquarium’s original long-necked, looping-body drawing. Its two poses are in `simulator/ocean-scenes.js`, under GPL-2.0-or-later. The compact boat, surfacing whale, spout, castles, and ruins are ASCII Genesis additions inspired by the original scene.

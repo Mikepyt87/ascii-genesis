@@ -1,6 +1,9 @@
 (function(root){
   'use strict';
   const W=48,H=48,FRY=3,HUNTER=4;
+  const scenes=root.OceanScenes||(typeof require==='function'?require('./ocean-scenes.js'):null);
+  function surfaceY(w){return -12+76*scenes.scene(w.ocean.elapsed/1000,w.seed).surface;}
+  function waterTop(w){return w.parade?8:Math.max(8,surfaceY(w)+12);}
   // Eligibility belongs to artwork, never to a randomly assigned food-web role.
   const predators=new Set(['large ocean fish','silver spearfish','copper moray','reef shark']);
   const bottomNames=new Set(['shore crab','reef lobster','peacock mantis shrimp']);
@@ -17,7 +20,7 @@
       return {name:s.name,width,height,footInset:options.footInsets?.[index]||0,mouth:points[0]||{x:width/2,y:height/2}};
     });
     w.life={quiet:!!options.quiet,nextEncounter:interval(w.rng,120,240),nextDiver:interval(w.rng,300,600),
-      encounter:null,diver:null,bubbles:[],lastOutcome:null,overlaps:new Map()};
+      encounter:null,diver:null,nextBubble:interval(w.rng,7,12),bubbles:[],lastOutcome:null,overlaps:new Map()};
     w.ocean={elapsed:0,clockMode:options.clockMode==='local'?'local':'cycle',localHour:12,light:1,
       nextSchool:interval(w.rng,60,120),nextDiscovery:interval(w.rng,300,600),discovery:null};
     for(const f of w.fish)f.kind=w.profiles[f.design*2]?.name==='yellow submarine'?0:predators.has(w.profiles[f.design*2]?.name)?HUNTER:FRY;
@@ -104,7 +107,7 @@
     const last=Math.max(first+1,Math.min(W,Math.ceil((left+width)/cx)+1));
     const floor=Math.min(...w.floor.slice(first,last))*cy;
     const bottom=bottomNames.has(p?.name);
-    return {left,top:Math.max(8,bottom?floor-height-2+(p.footInset||0):Math.min(floor-height-8,f.y*cy-height/2)),width,height};
+    return {left,top:Math.max(waterTop(w),bottom?floor-height-2+(p.footInset||0):Math.min(floor-height-8,f.y*cy-height/2)),width,height};
   }
   function mouth(w,f){const b=box(w,f),p=profile(w,f);return {x:b.left+(p?.mouth.x||b.width/2),y:b.top+(p?.mouth.y||b.height/2)};}
   function finish(w,result){
@@ -212,11 +215,16 @@
     }
     if(l.diver){
       const d=l.diver;d.x+=(d.right?1:-1)*.2;d.age++;
-      if(d.age%12===0&&d.x>0&&d.x<W&&l.bubbles.length<5)l.bubbles.push({x:d.x,y:d.y-1,age:0});
+      if(d.age%24===0&&d.x>0&&d.x<W&&w.tick>=l.nextBubble&&l.bubbles.length<3){l.bubbles.push({x:d.x,y:d.y-1,age:0});l.nextBubble=w.tick+interval(w.rng,7,12);}
       if(d.x<-10||d.x>W+10){l.diver=null;l.nextDiver=w.tick+interval(w.rng,300,600);}
     }
-    for(const b of l.bubbles){b.age++;b.y-=.23;b.x-=.025;}
-    l.bubbles=l.bubbles.filter(b=>b.age<20&&b.y>0);
+    if(w.tick>=l.nextBubble){
+      const visible=w.fish.filter(f=>f.x>2&&f.x<W-2&&f.kind!==0);
+      if(visible.length&&l.bubbles.length<3){const f=visible[Math.floor(w.rng()*visible.length)],m=mouth(w,f);l.bubbles.push({x:m.x/(w.view.width/W),y:m.y/(w.view.height/H),age:0});}
+      l.nextBubble=w.tick+interval(w.rng,7,12);
+    }
+    for(const b of l.bubbles){b.age++;b.y-=.45;b.x-=.025;}
+    l.bubbles=l.bubbles.filter(b=>b.age<180&&b.y>waterTop(w)/(w.view.height/H));
   }
   function displayBox(w,f){
     const e=w.life.encounter;
@@ -227,6 +235,6 @@
     return box(w,f);
   }
   root.OceanLife={setup,profile,box,mouth,displayBox,before,after,setQuiet,predators,startParade,advanceParade,
-    advanceOcean,moveCreature,addSchool,setClockMode};
+    advanceOcean,moveCreature,addSchool,setClockMode,scenes,surfaceY,waterTop};
   if(typeof module!=='undefined'&&module.exports)module.exports=root.OceanLife;
 })(typeof globalThis!=='undefined'?globalThis:this);
