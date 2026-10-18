@@ -42,7 +42,7 @@
       paint.fillText(ch,x*advance,y*fishFont);
     }));
     // Align the crawler's visible feet, rather than the font's transparent line padding.
-    if(['shore crab','reef lobster','peacock mantis shrimp'].includes(art.name)&&typeof paint.getImageData==='function'){
+    if(['shore crab','reef lobster','peacock mantis shrimp','violet octopus'].includes(art.name)&&typeof paint.getImageData==='function'){
       const pixels=paint.getImageData(0,0,image.width,image.height).data;
       let lastInk=image.height-1;
       outer:for(let y=image.height-1;y>=0;y--)for(let x=0;x<image.width;x++)if(pixels[(y*image.width+x)*4+3]){lastInk=y;break outer;}
@@ -89,7 +89,7 @@
   if(typeof groundPaint.getImageData==='function'){
     const pixels=groundPaint.getImageData(0,0,groundGlyph.width,groundGlyph.height).data;
     outer:for(let y=0;y<groundGlyph.height;y++)for(let x=0;x<groundGlyph.width;x++)if(pixels[(y*groundGlyph.width+x)*4+3]){groundInk=y;break outer;}
-    for(const p of sim.profiles)if(['shore crab','reef lobster','peacock mantis shrimp'].includes(p.name))p.footInset=(p.footInset||0)+groundInk;
+    for(const p of sim.profiles)if(['shore crab','reef lobster','peacock mantis shrimp','violet octopus'].includes(p.name))p.footInset=(p.footInset||0)+groundInk;
   }
   worldOptions.footInsets=sim.profiles.map(p=>p.footInset||0);
   const wreckImage=scenerySprite([

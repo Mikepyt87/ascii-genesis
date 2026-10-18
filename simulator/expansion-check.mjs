@@ -16,9 +16,9 @@ for(const name of ['moon jellyfish','violet kite ray','sea turtle','violet octop
  const design=art.findIndex(a=>a.name===name)/2;
  const f={id:100,design,right:true,x:24,y:20,speed:.25};
  const heights=[];for(let n=0;n<200;n++){core.life.moveCreature(w,f);heights.push(f.y);assert.ok(f.y>=5&&f.y<=43);}
- assert.ok(Math.max(...heights)-Math.min(...heights)>1,name+' has distinct movement');
+ if(name!=='violet octopus')assert.ok(Math.max(...heights)-Math.min(...heights)>1,name+' has distinct movement');
  if(name==='sea turtle')assert.ok(heights[179]<heights[99]&&heights[199]>heights[179],'Turtle surfaces and returns');
- if(name==='violet octopus')assert.ok(Math.abs(f.y-(w.floor[24]-9))<.01);
+ if(name==='violet octopus')assert.ok(core.life.box(w,f).top>200,'Octopus stays on the seabed');
 }
 core.life.setClockMode(w,'local');w.ocean.localHour=12;core.life.advanceOcean(w,350);assert.ok(w.ocean.light>.99);
 w.ocean.localHour=0;core.life.advanceOcean(w,350);assert.ok(w.ocean.light<.01);

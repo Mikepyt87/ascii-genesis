@@ -955,7 +955,7 @@ Stalked cream eyes, a segmented green body, a tail fan, blue legs, and orange fo
 - **Jellyfish:** new arrivals cruise at 0.12 cells per tick, rise 0.025 cells per tick toward row eight, and bob gently. Their cached drawing pulses by up to 3.5 percent in width.
 - **Rays:** glide up and down by 1.5 world rows without changing direction.
 - **Turtles:** start a gentle surface visit after 100 movement ticks, turn back after 180, and return toward their original depth. This is a stylized surface visit, not a breathing simulation.
-- **Octopuses:** new arrivals cruise at 0.16 cells per tick and approach a point nine rows above the local seabed. Artwork remains clamped above the ground.
+- **Octopuses:** new arrivals crawl at 0.16 cells per tick, with visible arms grounded along the scrolling seabed during normal movement and the parade.
 - **Crab, lobster, and mantis shrimp:** slow horizontal crawling, grounded along the highest seabed point under the body. They stay grounded in the parade too.
 - **Whale and submarine:** the regular whale glides gently up and down; the submarine maintains a steady depth. The submarine occupies one of the eight display slots but is excluded from the food web.
 - **Day/night:** the default cycle lasts 20 minutes of unpaused simulation time. Light is brightest at its start, darkest halfway through, and smoothly changes throughout. Local-clock mode follows the Pi's hour and minute, brightest at noon and darkest at midnight. The clock button's preference survives resets and reopening. Pausing holds the picture; resuming local-clock mode follows the current time. Night tint opacity never exceeds 18 percent.
@@ -1275,7 +1275,7 @@ The implementation caps swimmers at eight, divers at one, surface visitors at on
 
 ## Creature parade
 
-Tap the water and press **Creature parade · 2 min**. All 28 creature and vehicle designs, including the turtle, squid, and octopus, make a complete left-to-right crossing during a two-minute showcase. They are staggered across four swimming lanes, with crabs, lobsters, and mantis shrimp rendered along the floor instead, with no more than eight parade swimmers at once. Every design starts fully beyond the left edge and leaves fully beyond the right edge. The diver is a visiting person and is not part of the sea-creature lineup.
+Tap the water and press **Creature parade · 2 min**. All 28 creature and vehicle designs, including the turtle, squid, and octopus, make a complete left-to-right crossing during a two-minute showcase. They are staggered across four swimming lanes, with crabs, lobsters, mantis shrimp, and octopuses rendered along the floor instead, with no more than eight parade swimmers at once. Every design starts fully beyond the left edge and leaves fully beyond the right edge. The diver is a visiting person and is not part of the sea-creature lineup.
 
 The showcase uses separate swimmers and preserves the normal world's positions, ecosystem, terrain, and encounter timers. Ordinary swimmers blend out at the start; once the lineup has finished crossing, they blend back in during the final two seconds. The normal ocean resumes automatically at the end. There are no hunts during the parade, and quiet mode does not prevent it.
 

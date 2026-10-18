@@ -11,7 +11,7 @@
   function waterTop(w){return w.parade?8:Math.max(8,surfaceY(w)+12);}
   // Eligibility belongs to artwork, never to a randomly assigned food-web role.
   const predators=new Set(['large ocean fish','silver spearfish','copper moray','reef shark']);
-  const bottomNames=new Set(['shore crab','reef lobster','peacock mantis shrimp']);
+  const bottomNames=new Set(['shore crab','reef lobster','peacock mantis shrimp','violet octopus']);
   const preyNames=new Set(['tiny fish','little triangular fish','reef fish','box fish']);
   const interval=(rng,min,max)=>Math.round((min+rng()*(max-min))*1000/350);
   function setup(w,art=[],options={}){
@@ -62,9 +62,6 @@
     else if(name==='sea turtle'){
       const surfacing=f.age>=100&&f.age<180;
       const target=surfacing?8:f.baseY;f.y+=Math.max(-.15,Math.min(.15,target-f.y));
-    }else if(name==='violet octopus'){
-      const col=Math.max(0,Math.min(W-1,Math.floor(f.x)));
-      const target=w.floor[col]-9;f.y+=Math.max(-.2,Math.min(.2,target-f.y));
     }else if(bottomNames.has(name)){
       const b=box(w,f);f.y=(b.top+b.height/2)/(w.view.height/H);
     }else if(name==='humpback whale')f.y=f.baseY+Math.sin(f.age*.018)*.7;

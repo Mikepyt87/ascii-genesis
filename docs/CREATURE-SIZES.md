@@ -43,4 +43,4 @@ These are the actual character-grid bounds used in all three editions, including
 
 Mini and Mid use a 6 × 8 logical pixel cell. Mid enlarges the entire 320 × 320 scene to its 480 × 480 display. Pi uses its 16-pixel monospaced font. Every edition uses the same directional drawings and therefore preserves the same relative character-grid proportions.
 
-The 28 designs keep their original parade order. The Mini parade remains 105 seconds, Mid remains 87 seconds, and Pi remains two minutes. New dimensions are included in the swimmer spacing, full-entry/full-exit checks, and bottom-creature placement rather than only changing the visible drawing.
+The 28 designs keep their original parade order. The Mini parade now takes 114 seconds, Mid takes 99 seconds, and Pi remains two minutes. New dimensions are included in the swimmer spacing, full-entry/full-exit checks, and bottom-creature placement rather than only changing the visible drawing.
