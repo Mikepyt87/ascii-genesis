@@ -4,6 +4,8 @@ ASCII Genesis is a quiet, traveling ASCII ocean for a Raspberry Pi 4 and a Waves
 
 These are desktop previews at **1280 × 400**, rather than photographs of the Pi. The gallery illustrates individual features and includes earlier captures; it is not an exhaustive picture of every current addition. The [surface scenes guide](SURFACE-SCENES.md) documents the new boat, spouting whale, sea monster, castles, ruins, and bubble limits. Existing JPEGs are browser captures; the new PNG previews below use the same renderer through a Canvas harness. Scenes were advanced and held still, including rare visitors and encounters. Actual visits are spaced out during normal use, and every new world varies.
 
+The gallery includes earlier captures. Jellyfish, crabs, lobsters, mantis shrimp, sharks, and whales have since been redrawn for [balanced proportions](CREATURE-SIZES.md); the current dimensions and actual drawings are in the library.
+
 ## Lionfish
 
 ![Two copper lionfish with pale stripes and fanned spines](screenshots/lionfish.png)

@@ -6,6 +6,8 @@ A field guide to everything currently drawn or simulated in the Raspberry Pi 4 o
 
 Much of the character of this ocean comes from [Asciiquarium](https://github.com/cmatsuoka/asciiquarium): **Kirk Baucom** created the original project, **Joan Stark** is credited upstream for most of its ASCII art, and **Claudio Matsuoka** expanded its marine biodiversity. Eleven fish designs here adapt their shared work. **xanderchinxyz and the [OpenGhost](https://github.com/xanderchinxyz/OpenGhost) contributors** inspired the initial physical-display exploration. Please visit their projects and read [Credits and project origins](../CREDITS.md).
 
+The [creature proportion guide](CREATURE-SIZES.md) records the current size relationship across all three editions.
+
 ## How to read the collection
 
 Fish names describe the artwork. They are not verified biological species, and the ocean is a stylized simulation rather than a scientifically accurate marine food web. All creatures share the same population and edge rules, with distinct movement for rays, turtles, octopuses, and jellyfish.
@@ -659,28 +661,22 @@ Facing left (21 columns × 5 rows):
 
 **Original ASCII Genesis artwork; GPL-2.0-or-later.** Design 21; pale blue `#a8c9e8` with lavender fins/tentacles `#8e9fc9`. A rounded bell with dangling tentacles. Not a hunter or selected prey.
 
-**Right-facing: 15 columns × 7 rows**
+**Right-facing: 6 columns × 4 rows**
 
 ```text
-       .----.  
-     .'      '.
-    (  .  .   )
-     '--------'
-      | ) | (  
-      ( | ( |  
-      | ( | )  
+ .--. 
+( .. )
+ '--' 
+ )||( 
 ```
 
-**Left-facing: 15 columns × 7 rows**
+**Left-facing: 6 columns × 4 rows**
 
 ```text
-  .----.       
-.'      '.     
-(   .  .  )    
-'--------'     
-  ) | ( |      
-  | ) | )      
-  ( | ) |      
+ .--. 
+( .. )
+ '--' 
+ )||( 
 ```
 
 ### shore crab
@@ -689,24 +685,22 @@ Facing left (21 columns × 5 rows):
 
 **Behavior:** A slow seabed crawler. New arrivals move at 0.10 cells per tick. Its feet stay two screen pixels above the highest floor under its full width, including during the parade. It is not selected for hunts.
 
-**Right-facing: 17 columns × 5 rows**
+**Right-facing: 11 columns × 4 rows**
 
 ```text
-   __         __ 
-  /  \ (o o) /  \
-  \__/--___--\__/
-    / /|||\ \    
-   /_/ ||| \_\   
+() (o o) ()
+ \--_--/   
+ /|||||\   
+/_/|||\_\  
 ```
 
-**Left-facing: 17 columns × 5 rows**
+**Left-facing: 11 columns × 4 rows**
 
 ```text
- __         __   
-/  \ (o o) /  \  
-\__/--___--\__/  
-    / /|||\ \    
-   /_/ ||| \_\   
+() (o o) ()
+   \--_--/ 
+   /|||||\ 
+  /_/|||\_\
 ```
 ### reef lobster
 
@@ -714,26 +708,24 @@ Facing left (21 columns × 5 rows):
 
 **Behavior:** A red lobster with claws, segmented body, and walking legs. New arrivals move at 0.12 cells per tick. It uses the same grounded placement as the crab and stays at the bottom through terrain changes and the parade. It is not selected for hunts.
 
-**Right-facing: 24 columns × 6 rows**
+**Right-facing: 15 columns × 5 rows**
 
 ```text
-                     __ 
-                ____/  \
-  _/\_  _ _ _  / o  \__/
- <_  _>=|=|=|=(_____)-->
-   \/   / / /  \ \ \__  
-       /_/ /_   \_\___> 
+           __  
+ _/\_ _ _ /o \ 
+<_  _>=|=(__)=>
+  \/ / / \ \_> 
+    /_/   \_\  
 ```
 
-**Left-facing: 24 columns × 6 rows**
+**Left-facing: 15 columns × 5 rows**
 
 ```text
- __                     
-/  \____                
-\__/  o \  _ _ _  _/\_  
-<--(_____)=|=|=|=<_  _> 
-  __/ / /  \ \ \   \/   
- <___/_/   _\ \_\       
+  __           
+ / o\ _ _ _/\_ 
+<=(__)=|=<_  _>
+ <_/ / \ \ \/  
+  /_/   \_\    
 ```
 ### reef shark
 
@@ -741,26 +733,26 @@ Facing left (21 columns × 5 rows):
 
 **Behavior:** A slate-blue shark with a tall dorsal fin, gill marks, and a pointed snout. It cruises in the normal rotation and is also eligible as an occasional pursuit predator. Existing quiet mode, contact rules, and encounter cooldowns apply.
 
-**Right-facing: 27 columns × 6 rows**
+**Right-facing: 31 columns × 6 rows**
 
 ```text
-               /|          
-    /\   _____/ |______    
-   /  \_/   ---   o    \__ 
-  <   _    (((           _>
-   \_/ '----.____   ____/  
-             \__\_/        
+                 /|            
+    /\    ______/ |________    
+   /  \__/    ---    o      \__
+  <   _      (((             _>
+   \_/ '-----.______   _____/  
+               \___\_/         
 ```
 
-**Left-facing: 27 columns × 6 rows**
+**Left-facing: 31 columns × 6 rows**
 
 ```text
-          |\               
-    ______| \_____   /\    
- __/    o   ---   \_/  \   
-<_           )))    _   >  
-  \____   ____.----' \_/   
-        \_/__/             
+            |\                 
+    ________| \______    /\    
+__/      o    ---    \__/  \   
+<_             )))      _   >  
+  \_____   ______.-----' \_/   
+         \_/___/               
 ```
 ### humpback whale
 
@@ -768,26 +760,26 @@ Facing left (21 columns × 5 rows):
 
 **Behavior:** A larger blue whale with a rounded body, tail flukes, and a long flipper. It joins the regular rotation at 0.16 cells per tick with a gentle vertical glide. It is separate from the faint distant-whale discovery, and is not selected for hunts.
 
-**Right-facing: 37 columns × 6 rows**
+**Right-facing: 41 columns × 6 rows**
 
 ```text
-                 ____                
-       _________/    \____________   
-  __  /                        o  \_ 
- <  \/      __                    __)
-  \_/\_____/  \__________________/   
-             \____/                  
+                   ____                  
+       ___________/    \______________   
+  __  /                            o  \_ 
+ <  \/      __                        __)
+  \_/\_____/  \______________________/   
+             \____/                      
 ```
 
-**Left-facing: 37 columns × 6 rows**
+**Left-facing: 41 columns × 6 rows**
 
 ```text
-                ____                 
-   ____________/    \_________       
- _/  o                        \  __  
-(__                    __      \/  > 
-   \__________________/  \_____/\_/  
-                  \____/             
+                  ____                   
+   ______________/    \___________       
+ _/  o                            \  __  
+(__                        __      \/  > 
+   \______________________/  \_____/\_/  
+                      \____/             
 ```
 ### yellow submarine
 
@@ -857,26 +849,24 @@ A copper lionfish with pale diagonal body stripes, long dorsal spines, and a bro
 
 **Original ASCII Genesis artwork; GPL-2.0-or-later.** Design 28.
 
-Stalked cream eyes, a segmented green body, a tail fan, blue legs, and orange folded clubs. Both editions share these five-row directional drawings. In the Pi edition it stays on the seabed, follows changing terrain, and joins the two-minute parade. It is decorative and is not selected for hunting encounters. The Mini includes it in its three-creature rotation and opening scene.
+Stalked cream eyes, a segmented green body, a tail fan, blue legs, and orange folded clubs. Both editions share these four-row directional drawings. In the Pi edition it stays on the seabed, follows changing terrain, and joins the two-minute parade. It is decorative and is not selected for hunting encounters. The Mini includes it in its three-creature rotation and opening scene.
 
-**Right-facing: 22 columns × 5 rows**
+**Right-facing: 16 columns × 4 rows**
 
 ```text
-                 o   o
-                  \_/
- _/\_  _ _ _ __.-'==\
-<_  _>=|=|=|=|_    _)>
-  \/   /_/_/   \_(] (]
+            o o 
+ _/\_ _ _ .-'=\ 
+<_  _>=|=|_  _)>
+  \/ /_/_/\_(](]
 ```
 
-**Left-facing: 22 columns × 5 rows**
+**Left-facing: 16 columns × 4 rows**
 
 ```text
-o   o
- \_/
- /=='-.__ _ _ _  _/\_
-<(_    _|=|=|=|=<_  _>
-[) [)_/   \_\_\   \/
+ o o            
+ /='-. _ _ _/\_ 
+<(_  _|=|=<_  _>
+[)[)_/\_\_\ \/  
 ```
 
 ## Visiting wildlife drawings
