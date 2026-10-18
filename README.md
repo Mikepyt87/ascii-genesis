@@ -2,13 +2,21 @@
 
 A traveling ASCII ocean for **Raspberry Pi 4 + Waveshare 7.9-inch HDMI touchscreen**, displayed horizontally at **1280 × 400**.
 
+## With thanks to the projects that started it
+
+ASCII Genesis grew from **[Asciiquarium](https://github.com/cmatsuoka/asciiquarium)**, created by **Kirk Baucom**, with most original ASCII art credited to **Joan Stark** and expanded marine biodiversity by **Claudio Matsuoka**. Their shared work gave this ocean its foundation and much of its character.
+
+**[OpenGhost](https://github.com/xanderchinxyz/OpenGhost)** by **xanderchinxyz and its contributors** inspired the early exploration of a small physical display. Thank you to both projects and the people who made them possible. Read the [full credits and project origins](CREDITS.md).
+
+We call ASCII Genesis an **ocean**: its creatures travel through a scrolling world of changing terrain and habitats.
+
 **This repository is the Raspberry Pi project.** The ESP32 board has a separate project: **[ASCII Genesis - Mini](https://github.com/Mikepyt87/ascii-genesis-mini)**. The two projects have different hardware, installers, controls, and update systems.
 
 ## Start here
 
 | Your situation | What to do |
 | --- | --- |
-| Building the Pi aquarium for the first time | Follow [Raspberry Pi installation and operation](raspberry-pi/SETUP.md) from the hardware section onward |
+| Building the Pi ocean for the first time | Follow [Raspberry Pi installation and operation](raspberry-pi/SETUP.md) from the hardware section onward |
 | Choosing/printing the case and legs | Follow [3D printing and assembly](3d-printing/README.md); these files are for the Pi display |
 | Already installed and want new creatures | Close the ocean, run the **Update ASCII Genesis** desktop icon, then reopen the ocean |
 | Want to see the artwork and behavior | Open the [Ocean Library](docs/OCEAN-LIBRARY.md) or [screenshot tour](docs/SCREENSHOTS.md) |
@@ -39,7 +47,7 @@ Open **ASCII Genesis** from the desktop. The installer creates **Update ASCII Ge
 
 ## What the Pi ocean includes
 
-There are 28 creature and vehicle designs, including the peacock mantis shrimp, plus the Pi edition's ecosystem, schools, occasional encounters, diver, changing terrain, day/night lighting, quiet mode, and two-minute creature parade. It runs offline. Optional OpenAI narration has its own setup in the complete guide; no API key is needed for the aquarium itself.
+There are 28 creature and vehicle designs, including the peacock mantis shrimp, plus the Pi edition's ecosystem, schools, occasional encounters, diver, changing terrain, day/night lighting, quiet mode, and two-minute creature parade. It runs offline. Optional OpenAI narration has its own setup in the complete guide; no API key is needed for the ocean itself.
 
 **Pi scrolling speed is unchanged.** The Mini's faster scrolling and sequential parade belong to the other project.
 
@@ -47,7 +55,7 @@ There are 28 creature and vehicle designs, including the peacock mantis shrimp, 
 
 ## Updates and source
 
-The Pi updater follows this repository's **main** branch. Close the aquarium before running **Update ASCII Genesis**. It checks the candidate before updating and refuses to overwrite local edits. It does not download Mini firmware releases.
+The Pi updater follows this repository's **main** branch. Close the ocean before running **Update ASCII Genesis**. It checks the candidate before updating and refuses to overwrite local edits. It does not download Mini firmware releases.
 
 The renderer and creature code are in `simulator/`; Pi installers/launchers are in `raspberry-pi/`. Tests run in GitHub Actions. The old `esp32/` links redirect to the standalone Mini repository; its implementation and ongoing development have moved there. Historical Mini firmware releases remain available so installed boards can move to the new update channel.
 

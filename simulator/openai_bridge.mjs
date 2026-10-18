@@ -25,7 +25,7 @@ export async function narrate(snapshot,apiKey,fetcher=fetch){
     headers:{'Authorization':`Bearer ${apiKey}`,'Content-Type':'application/json'},
     body:JSON.stringify({
       model:DEFAULT_MODEL,
-      instructions:'Write one short atmospheric event for a fictional artificial-life ASCII aquarium. Use only the supplied habitat counts. Do not claim these are real organisms or live world events. One sentence, at most 12 words.',
+      instructions:'Write one short atmospheric event for a fictional artificial-life ASCII ocean. Use only the supplied habitat counts. Do not claim these are real organisms or live world events. One sentence, at most 12 words.',
       input:`Tide ${s.tick}; plankton ${s.plankton}; fry ${s.fry}; hunters ${s.hunters}; algae ${s.algae}.`,
       reasoning:{effort:'none'},
       max_output_tokens:128,

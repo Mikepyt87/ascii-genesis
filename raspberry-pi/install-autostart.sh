@@ -18,15 +18,15 @@ if command -v labwc >/dev/null; then
   if ! grep -Fqx "$TASK_ENTRY" "$TASK_AUTOSTART_DIR/autostart"; then
     printf '\n%s\n' "$TASK_ENTRY" >> "$TASK_AUTOSTART_DIR/autostart"
   fi
-  echo "Aquarium added to labwc desktop startup."
+  echo "Ocean added to labwc desktop startup."
   exit 0
 fi
 mkdir -p "$TASK_AUTOSTART_DIR"
 cat > "$TASK_AUTOSTART_DIR/ascii-genesis.desktop" <<EOF
 [Desktop Entry]
 Type=Application
-Name=ASCII Genesis Aquarium
+Name=ASCII Genesis Ocean
 Exec=/bin/bash "$APP_ROOT/raspberry-pi/launch.sh"
 Terminal=false
 EOF
-echo "Aquarium will launch on the next desktop login."
+echo "Ocean will launch on the next desktop login."

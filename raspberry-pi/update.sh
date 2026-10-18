@@ -10,7 +10,7 @@ exec 9>"$HOME/.cache/ascii-genesis/app.lock"
 flock -n 9 || fail 'Close the ocean before updating. It will use the new version when you reopen it.'
 cd "$APP_ROOT"
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 || fail 'This is a ZIP installation. Install from the GitHub clone instructions to enable updates.'
-[[ "$(git rev-parse --show-toplevel)" == "$APP_ROOT" ]] || fail 'The aquarium must be its own Git repository.'
+[[ "$(git rev-parse --show-toplevel)" == "$APP_ROOT" ]] || fail 'The ocean must be its own Git repository.'
 [[ "$(git branch --show-current)" == 'main' ]] || fail 'Updates require the main branch.'
 [[ -z "$(git status --porcelain)" ]] || fail 'Local edits were found. Save or commit your changes before updating; nothing was overwritten.'
 REMOTE="$(git remote get-url origin)"

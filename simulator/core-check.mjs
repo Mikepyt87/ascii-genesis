@@ -42,7 +42,7 @@ for(let t=0;t<600;t++){
 for(let i=0;i<10000;i++){core.step(ocean);assert.ok(core.counts(ocean).plankton<=45);assert.ok(core.counts(ocean).algae<=100);assert.ok(ocean.fish.length<=8);assert.equal(new Set(ocean.fish.map(f=>f.id)).size,ocean.fish.length);}
 assert.ok(ocean.nextFishId>20,'New visitors must rotate through the ocean');
 assert.ok(ocean.fish.every(f=>!initialIds.has(f.id)),'Initial swimmers must eventually leave');
-console.log('Aquarium simulation okay: 500 deterministic steps; bounds, five cell states, counters, and 48×48 ASCII output verified.');
+console.log('Ocean simulation okay: 500 deterministic steps; bounds, five cell states, counters, and 48×48 ASCII output verified.');
 
 await import('./life-check.mjs');
 await import('./parade-check.mjs');
