@@ -18,13 +18,13 @@ To regenerate fish-art.js, run from the package root:
 
 No artwork from the other researched community aquarium projects is included.
 
-Sixteen additional creature and vehicle designs were created for ASCII Genesis: sunburst puffer,
+Seventeen additional creature and vehicle designs were created for ASCII Genesis: sunburst puffer,
 ribbon bannerfish, silver spearfish, copper moray, violet kite ray, and
 blue lanternfish, rose squid, violet octopus, sea turtle, moon jellyfish, shore crab, reef lobster, reef shark, humpback whale,
-yellow submarine, and lionfish. These are original project drawings, not Asciiquarium
+yellow submarine, lionfish, and peacock mantis shrimp. These are original project drawings, not Asciiquarium
 upstream art. Their editable source is third-party/original-fish.mjs and
 they are provided under GPL-2.0-or-later with this project. The combined
-collection now contains 27 designs, each with both swimming directions.
+collection now contains 28 designs, each with both swimming directions.
 
 The two-pose diver and its mirrored views are original ASCII Genesis art,
 provided under GPL-2.0-or-later in simulator/simulator.js.
@@ -65,3 +65,12 @@ firmware/components/esp_lcd_jd9853/LICENSE. Board pin configuration and
 landscape touch mapping follow Waveshare's board example. The new project
 firmware is GPL-3.0-or-later to combine this Apache-2.0 dependency with
 GPL-2.0-or-later artwork. Existing Pi code retains its existing license.
+
+SURFACE SCENERY
+
+The two-pose long-necked sea monster in simulator/ocean-scenes.js adapts the
+original Asciiquarium drawing. Kirk Baucom and the upstream artwork credits
+above apply; it is provided under GPL-2.0-or-later. The compact boat, surface
+whale, water-spout frames, castle, and ruins are ASCII Genesis additions
+in the same file under GPL-2.0-or-later. These scenery/visitor drawings are
+separate from the regular collection of 28 creature and vehicle designs.

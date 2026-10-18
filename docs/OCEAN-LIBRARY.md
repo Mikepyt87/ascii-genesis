@@ -1,6 +1,6 @@
 # ASCII Genesis Ocean Library
 
-A field guide to everything currently drawn or simulated in the Raspberry Pi 4 ocean on the Waveshare 7.9-inch screen. The regular collection contains **27 sea-creature designs and a submarine, 56 directional drawings, two microscopic life types, a two-pose diver, bubbles, kelp, seabed contours, sediment texture, and water across six habitats**. An occasional diver visits, and brief predator encounters sometimes end in a catch. Quiet mode turns hunting off. A peeking eel and distant whale are additional visiting wildlife, documented alongside the diver.
+A field guide to everything currently drawn or simulated in the Raspberry Pi 4 ocean on the Waveshare 7.9-inch screen. The regular collection contains **27 sea-creature designs and a submarine, 56 directional drawings, two microscopic life types, a two-pose diver, bubbles, kelp, seabed contours, sediment texture, and water across six habitats**. An occasional diver visits, and brief predator encounters sometimes end in a catch. Quiet mode turns hunting off. A peeking eel and distant whale are additional visiting wildlife, documented alongside the diver. Surface stretches now add sailing boats, a spouting surface whale, and a two-pose sea monster, with castles and submerged ruins along the seabed. These additions are separate from the 28-design lineup; see [surface scenes and landmarks](SURFACE-SCENES.md).
 
 ## Thanks to the original creators
 
@@ -18,6 +18,7 @@ The artwork below is copied from the actual sprite collection, with its spaces p
 
 - [Creature index](#creature-index) and [all 28 creature drawings](#creature-drawings)
 - [Visiting wildlife](#visiting-wildlife-index): diver, peeking eel, and distant whale
+- [Surface scenes and landmarks](SURFACE-SCENES.md): boat, spouting whale, sea monster, castles, and ruins
 - [Movement, schools, and lighting](#movement-and-lighting)
 - [Other objects](#other-objects-index), [scenery](#expanded-ocean-objects), and [habitats](#habitats)
 - [Encounters](#visitors-and-encounters), [parade](#creature-parade), and [artwork credits](#artwork-and-maintenance)
@@ -61,7 +62,7 @@ The numbered collection contains 27 sea-creature designs and one submarine, maki
 
 | Visitor | Appearance and behavior | Source |
 | --- | --- | --- |
-| [Diver](#diver-artwork) | Two poses, both directions, short-lived bubbles | ASCII Genesis |
+| [Diver](#diver-artwork) | Two poses, both directions, sparse rising bubbles | ASCII Genesis |
 | [Peeking eel](#peeking-eel) | Sandy copper eel at a scrolling wreck opening | ASCII Genesis |
 | [Distant whale](#distant-whale) | Muted blue silhouette, both directions, rare crossing | ASCII Genesis |
 
@@ -977,7 +978,7 @@ Regular creatures and visiting wildlife appear in the indexes above. Every other
 
 | Object or feature | Category | Visual example and details |
 | --- | --- | --- |
-| Diver bubbles | Temporary particles | [Rising bubbles](#diver-bubbles) |
+| Fish and diver bubbles | Temporary particles | [Rising bubbles](#diver-bubbles) |
 | Algae | Simulated life | [Algae dots](#algae-dots) |
 | Plankton | Simulated life | [Plankton glyphs](#plankton-glyphs) |
 | Kelp stalks and fronds | Procedural scenery | [Kelp artwork](#kelp-artwork) |
@@ -990,6 +991,7 @@ Regular creatures and visiting wildlife appear in the indexes above. Every other
 | Rocks, crevices, anchors, debris, and coral variants | Scrolling scenery | [Terrain landmarks](#terrain-landmarks) |
 | Distant ridge and sand ripples | Background and ground texture | [Depth and dunes](#depth-and-dunes) |
 | Shipwreck | Scrolling scenery | [Wreck artwork](#shipwreck) |
+| Surface visitors, waterline, castles, and ruins | World-seeded scenery and visits | [Surface scenes and landmarks](SURFACE-SCENES.md) |
 | Glowing plankton patch | Decorative discovery | [Temporary glowing marks](#glowing-plankton-patch) |
 | Day/night lighting and schools | Local behavior | [Movement and lighting](#movement-and-lighting) |
 | Touch panel and readouts | Interface | [Controls and readouts](#controls-and-readouts) |
@@ -1007,9 +1009,9 @@ Actual glyphs, in life order:
 o  .
 ```
 
-**Color:** muted blue green `#71969c`; **font:** 10 pixels. A bubble uses o while younger than ten ticks, then a dot. The diver can emit one every 12 ticks while its center is in view and the bubble limit has room. Each bubble rises 0.23 world cells per tick and drifts left 0.025 cells per tick. It disappears before age 20 ticks or when it reaches the upper boundary.
+**Color:** muted blue green `#71969c`; **font:** 10 pixels. Fish and diver bubbles share one budget. A bubble uses `o` until it is within twenty screen pixels of the current waterline, then a dot. Fish emission attempts are spaced 7–12 seconds apart; diver emissions also respect the shared cooldown. Each rises 0.45 world cells per tick and drifts left 0.025 cells per tick. It disappears at the current waterline or before age 180 ticks. See the [complete bubble behavior](SURFACE-SCENES.md#sparse-bubbles).
 
-**Limit:** five bubbles. They have no reproduction, food-web role, or interaction with fish. They are distinct from pale mint plankton o glyphs. Source: [ocean-life.js](../simulator/ocean-life.js) and [simulator.js](../simulator/simulator.js).
+**Limit:** three bubbles shared by fish and the diver. They have no reproduction or food-web role. Pale mint plankton is drawn as dots rather than bubble-like `o` glyphs. Source: [ocean-life.js](../simulator/ocean-life.js) and [simulator.js](../simulator/simulator.js).
 
 ### Algae dots
 
@@ -1022,10 +1024,10 @@ o  .
 ### Plankton glyphs
 
 ```text
-o
+.
 ```
 
-**Type:** living cells in the food web; **color:** `#8fffe0`; **font:** 10 pixels. Starts at 34 cells and stays capped at 45. Plankton can consume neighboring algae, move to nearby empty water, rarely divide, and naturally disappear. Fry can consume it. Incoming additions vary with the traveling habitat. These glyphs remain bright mint, while diver bubbles use a dimmer color and change to dots. Source: [aquarium.js](../simulator/aquarium.js).
+**Type:** living cells in the food web; **color:** `#8fffe0`; **font:** 10 pixels. Starts at 34 cells and stays capped at 45. Plankton can consume neighboring algae, move to nearby empty water, rarely divide, and naturally disappear. Fry can consume it. Incoming additions vary with the traveling habitat. The canvas draws these as bright mint dots; the underlying ASCII grid still uses `o` for plankton. Rising bubbles use a dimmer color and a distinct moving `o` that changes to a dot near the waterline. Source: [aquarium.js](../simulator/aquarium.js).
 
 ### Kelp artwork
 
@@ -1057,7 +1059,7 @@ _
 
 ### Water background
 
-**Type:** a solid canvas background, with no ASCII glyph; **color:** near black `#02090c`. It fills the complete 1280 × 400 drawing area before terrain and creatures are drawn. The empty space keeps the character art readable. It has no animated surface, waves, or sky. Day/night lighting gradually adjusts the background and adds a restrained blue tint at night. Source: [simulator.js](../simulator/simulator.js).
+**Type:** a solid canvas background, with no ASCII glyph; **color:** near black `#02090c`. It fills the complete 1280 × 400 drawing area before terrain and creatures are drawn. The empty space keeps the character art readable. Occasional surface stretches add a dark sky area and an animated waterline; see [surface scenes](SURFACE-SCENES.md). Day/night lighting gradually adjusts the background and adds a restrained blue tint at night. Source: [simulator.js](../simulator/simulator.js).
 
 ### Controls and readouts
 
@@ -1221,7 +1223,7 @@ Underscore characters draw a rolling floor in muted blue green, `#36575a`. Spars
 
 The camera advances 0.08 world cells each tick, roughly 6.1 screen pixels per second. It takes about 3.5 minutes to travel one screen width at the normal update rate. The terrain and kelp stay attached to world positions; fish swim independently. The environmental grid shifts left as travel crosses whole columns.
 
-Coral, shipwrecks, and peeking eels now join the scrolling scenery. Boulders, crevices, anchors, and wreck debris are also present. There are no shell, castle, treasure, or surface-wave objects. The diver and its short-lived bubbles are described below. Rocky reefs now include ledge-shaped contours and individual rock drawings. Objects elsewhere in the bundled upstream Asciiquarium source are not automatically part of this ocean.
+Coral, shipwrecks, and peeking eels now join the scrolling scenery. Boulders, crevices, anchors, and wreck debris are also present. Castles, submerged ruins, surface waves, and three surface visitors now appear as described in the [surface scene guide](SURFACE-SCENES.md). Shells and treasure chests are not included. Sparse fish and diver bubbles are described below. Rocky reefs now include ledge-shaped contours and individual rock drawings. Objects elsewhere in the bundled upstream Asciiquarium source are not automatically part of this ocean.
 
 ## Habitats
 
@@ -1250,7 +1252,7 @@ An original ASCII diver has a tank, mask, body, and two alternating flipper pose
 
 The first visit is scheduled 5 to 10 minutes after starting. After departure, another 5 to 10 minute wait begins. Active encounters can delay an arrival. Each visit starts and ends fully beyond the screen edges; there is only one diver at a time. Quiet mode keeps this peaceful visitor enabled.
 
-Small bubbles rise near the diver, changing from an o to a dot before vanishing. A bubble lasts under seven seconds, with no more than five allowed at once. They do not feed the ecosystem or reproduce.
+Sparse bubbles rise from visible fish or the diver, changing from an `o` to a dot near the current waterline before vanishing. A shared cap of three and a 7–12-second emission cooldown keep the scene calm. They do not feed the ecosystem or reproduce; see [bubble details](SURFACE-SCENES.md#sparse-bubbles).
 
 ### Predators and prey
 
@@ -1279,7 +1281,7 @@ The setting is remembered in the launcher's browser profile and survives New wor
 
 ### Limits and validation
 
-The implementation caps swimmers at eight, divers at one, and bubbles at five. Checks exercise both swimming directions, wholly off-screen arrivals, visible mouth contact, shrinking prey, escape survival, quiet-mode cancellation, cached drawing, pause, reset, and 30,000 ticks of bounded populations. The browser layout is checked at 1280 × 400; perceived pace still needs your assessment on the physical Pi screen.
+The implementation caps swimmers at eight, divers at one, surface visitors at one, and ordinary bubbles at three. Checks exercise both swimming directions, wholly off-screen arrivals, visible mouth contact, shrinking prey, escape survival, quiet-mode cancellation, cached drawing, pause, reset, and 30,000 ticks of bounded populations. The browser layout is checked at 1280 × 400; perceived pace still needs your assessment on the physical Pi screen.
 
 ## Creature parade
 

@@ -2,7 +2,7 @@
 
 ASCII Genesis is a quiet, traveling ASCII ocean for a Raspberry Pi 4 and a Waveshare 7.9-inch HDMI touchscreen. Fish pass through the scene at different speeds while the seabed and seaweed scroll slowly past. This tour shows what to expect before building your own.
 
-These are desktop previews of the current renderer at **1280 × 400**, rather than photographs of the Pi. Existing JPEGs are browser captures; the new PNG previews below use the same renderer through a Canvas harness. Scenes were advanced and held still, including rare visitors and encounters. Actual visits are spaced out during normal use, and every new world varies.
+These are desktop previews at **1280 × 400**, rather than photographs of the Pi. The gallery illustrates individual features and includes earlier captures; it is not an exhaustive picture of every current addition. The [surface scenes guide](SURFACE-SCENES.md) documents the new boat, spouting whale, sea monster, castles, ruins, and bubble limits. Existing JPEGs are browser captures; the new PNG previews below use the same renderer through a Canvas harness. Scenes were advanced and held still, including rare visitors and encounters. Actual visits are spaced out during normal use, and every new world varies.
 
 ## Lionfish
 
@@ -32,7 +32,7 @@ Two original ASCII Genesis cephalopods join the rotation: a rose squid with a po
 
 ![A green sea turtle with a patterned shell swimming above kelp](screenshots/turtle.jpg)
 
-The collection now includes 27 creature and vehicle designs, including the sea turtle and lionfish. Its original project artwork includes a green shell, flippers, and a small head. Both swimming directions are included in the [Ocean Library](OCEAN-LIBRARY.md#sea-turtle).
+The collection now includes 28 creature and vehicle designs, including the sea turtle and lionfish. Its original project artwork includes a green shell, flippers, and a small head. Both swimming directions are included in the [Ocean Library](OCEAN-LIBRARY.md#sea-turtle).
 
 ![The creature parade with staggered swimmers, a disabled parade button, and 85 seconds remaining](screenshots/parade.jpg)
 
@@ -48,7 +48,7 @@ Travel gradually changes the setting. Open sand has a lower seabed and shorter, 
 
 ![An ASCII diver with a tank and fins crossing the upper water above seaweed](screenshots/diver.jpg)
 
-A diver occasionally swims across with gently alternating flippers and a small trail of bubbles. The first visit is scheduled after 5–10 minutes; another wait begins after departure. An active encounter can delay the visit. The diver stays separate from the eight-fish limit, and its bubbles fade away instead of accumulating.
+A diver occasionally swims across with gently alternating flippers and a small trail of bubbles. The first visit is scheduled after 5–10 minutes; another wait begins after departure. An active encounter can delay the visit. The diver stays separate from the eight-fish limit, and its bubbles share the three-bubble limit with ordinary fish.
 
 ## Bottom creatures and the larger wreck
 
@@ -100,10 +100,14 @@ Tap the water to reveal this panel. It fades after eight seconds so the ocean ca
 | Close ocean | Returns to the Pi desktop when opened through the desktop launcher. |
 | Lighting | Switches between the ocean cycle and local-clock lighting. |
 | AI event | Requests optional narration through your own configured OpenAI API connection. It does not control the ocean. |
-| Creature parade | Shows all 27 designs in a two-minute lineup, then returns to the normal ocean. |
+| Creature parade | Shows all 28 designs in a two-minute lineup, then returns to the normal ocean. |
 | Quiet mode | Turns hunting off or on. The preference is remembered in the browser profile. |
 
 The ocean, diver, and encounters all work **offline without an API key**. The AI button requires separate setup and working API access; the screenshot does not demonstrate a successful API call.
+
+## New surface scenes
+
+The ocean occasionally reaches a visible waterline, with one sailing boat, spouting whale, or long-necked monster at a time. Castles and ruins scroll through the bottom third. The [surface scenes guide](SURFACE-SCENES.md) shows the actual drawings and explains timing, sparse bubbles, and parade behavior. These additions are separate from the older gallery’s distant-whale and glow discoveries.
 
 ## Build and run it
 

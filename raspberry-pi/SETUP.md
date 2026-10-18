@@ -24,7 +24,7 @@ The ocean works offline, launches from a Raspberry Pi desktop icon, and includes
 
 ## Ocean library
 
-Browse the [Ocean Library](../docs/OCEAN-LIBRARY.md) for all 28 creature and vehicle designs with both directional drawings, their colors and sizes, the diver in both poses and directions, bubbles, small life, kelp, terrain, sediment, water, controls, habitat settings, and current behavior. It also describes the occasional diver, short predator encounters, rare catches, and quiet-mode control.
+Browse the [Ocean Library](../docs/OCEAN-LIBRARY.md) for all 28 creature and vehicle designs with both directional drawings, their colors and sizes, the diver in both poses and directions, bubbles, small life, kelp, terrain, sediment, water, controls, habitat settings, and current behavior. It also describes the occasional diver, short predator encounters, rare catches, and quiet-mode control. The [surface scene guide](../docs/SURFACE-SCENES.md) covers sailing boats, surfacing and spouting whales, the sea monster, castles, ruins, and sparse bubbles.
 
 ## Hardware and screen setup
 
@@ -137,7 +137,7 @@ Restrict that file with `chmod 600 ~/.config/ascii-genesis/openai.env`. Restart 
 
 ## Performance and validation
 
-The Pi 4 renderer rasterizes the 56 directional creature images and four diver images once and reuses them. It retains the 350 ms simulation interval, fixed 1280 × 400 canvas, and eight-swimmer limit, plus at most one diver and five short-lived bubbles. Decorative whale or glow visits are bounded and their artwork is cached too. There are no npm dependencies, continuous API requests, or 60-fps rendering loop. This reduces repeated fish text drawing; actual CPU usage and frame timing must be measured on your Pi 4.
+The Pi 4 renderer rasterizes the 56 directional creature images and four diver images once and reuses them. It retains the 350 ms simulation interval, fixed 1280 × 400 canvas, and eight-swimmer limit, plus at most one diver, one surface visitor, and three ordinary bubbles shared by fish and the diver. Surface artwork, castles, ruins, and whale-spout frames are cached. Decorative whale or glow visits are bounded and their artwork is cached too. There are no npm dependencies, continuous API requests, or 60-fps rendering loop. This reduces repeated fish text drawing; actual CPU usage and frame timing must be measured on your Pi 4.
 
 Checks cover all 28 designs appearing in rotation, ecological limits, continuous terrain, off-screen departures, rare catches at visible mouth contact, escape survival, diver limits, quiet mode, cached sprite rendering, pause/reset behavior, and mock narration. Desktop installation is tested in a temporary folder. Linux CI checks script syntax as well. These checks do not replace physical display, touch, power, and OS startup testing.
 
