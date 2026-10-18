@@ -52,3 +52,5 @@ await import('./terrain-check.mjs');
 await import('./spacing-check.mjs');
 
 await import('./size-check.mjs');
+
+await import('./waterline-check.mjs');

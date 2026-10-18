@@ -2,7 +2,12 @@
   'use strict';
   const W=48,H=48,FRY=3,HUNTER=4;
   const scenes=root.OceanScenes||(typeof require==='function'?require('./ocean-scenes.js'):null);
-  function surfaceY(w){return -12+76*scenes.scene(w.ocean.elapsed/1000,w.seed).surface;}
+  function surfaceY(w){
+    let water=-12+76*scenes.scene(w.ocean.elapsed/1000,w.seed).surface;
+    // Use the natural drawing bounds to avoid moving fish when the surface enters.
+    for(const f of w.fish)water=Math.min(water,naturalBox(w,f).top-24);
+    return water;
+  }
   function waterTop(w){return w.parade?8:Math.max(8,surfaceY(w)+12);}
   // Eligibility belongs to artwork, never to a randomly assigned food-web role.
   const predators=new Set(['large ocean fish','silver spearfish','copper moray','reef shark']);
@@ -100,15 +105,16 @@
         x:-p.margin+p.speed*age/350,y:7+(design%4)*8,speed:p.speed});
     }
   }
-  function box(w,f){
+  function naturalBox(w,f){
     const p=profile(w,f),cx=w.view.width/W,cy=w.view.height/H;
     const width=p?.width||80,height=p?.height||48,left=f.x*cx-width/2;
     const first=Math.min(W-1,Math.max(0,Math.floor(left/cx)));
     const last=Math.max(first+1,Math.min(W,Math.ceil((left+width)/cx)+1));
     const floor=Math.min(...w.floor.slice(first,last))*cy;
     const bottom=bottomNames.has(p?.name);
-    return {left,top:Math.max(waterTop(w),bottom?floor-height-2+(p.footInset||0):Math.min(floor-height-8,f.y*cy-height/2)),width,height};
+    return {left,top:Math.max(8,bottom?floor-height-2+(p.footInset||0):Math.min(floor-height-8,f.y*cy-height/2)),width,height};
   }
+  function box(w,f){const b=naturalBox(w,f);return {...b,top:Math.max(waterTop(w),b.top)};}
   function mouth(w,f){const b=box(w,f),p=profile(w,f);return {x:b.left+(p?.mouth.x||b.width/2),y:b.top+(p?.mouth.y||b.height/2)};}
   function finish(w,result){
     const e=w.life.encounter;

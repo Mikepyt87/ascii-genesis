@@ -10,7 +10,7 @@ The [creature proportion guide](CREATURE-SIZES.md) records the current size rela
 
 ## How to read the collection
 
-Fish names describe the artwork. They are not verified biological species, and the ocean is a stylized simulation rather than a scientifically accurate marine food web. All creatures share the same population and edge rules, with distinct movement for rays, turtles, octopuses, and jellyfish.
+Fish names describe the artwork. They are not verified biological species, and the ocean is a stylized simulation rather than a scientifically accurate marine food web. The waterline waits above existing swimmers; surface changes never remove them or move their drawings into another lane. All creatures share the same population and edge rules, with distinct movement for rays, turtles, octopuses, and jellyfish.
 
 **Appearance determines hunting eligibility.** Large ocean fish, silver spearfish, copper morays, and reef sharks have the hunter role. Tiny fish, little triangular fish, reef fish, and box fish can be selected as prey in encounters. Other designs cruise without being selected for hunts. These are artistic simulation roles, not claims about real diets. There are no fixed species territories.
 

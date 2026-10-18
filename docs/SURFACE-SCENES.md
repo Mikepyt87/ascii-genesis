@@ -6,7 +6,7 @@ The Pi ocean now includes occasional sailing boats, surfacing whales with animat
 
 A surface stretch occupies about two minutes of a world-seeded four-to-five-minute cycle, with twelve-second rises and descents. The rest of the cycle is deeper water. The boat, whale, and sea monster each have a thirty-second window; only one surface visitor is active at a time. Their order depends on the world seed. The regular parade order is unchanged.
 
-Castles and ruins are anchored to world coordinates and scroll with the seabed. These new landmarks remain within the bottom third of the screen; the renderer uses compact drawings and scales or skips a landmark when the local terrain leaves too little room. The surface transition does not raise the seabed. Existing tall kelp and the large wreck have their own drawings and placement rules.
+Castles and ruins are anchored to world coordinates and scroll with the seabed. These new landmarks remain within the bottom third of the screen; the renderer uses compact drawings and scales or skips a landmark when the local terrain leaves too little room. The waterline waits above existing swimmers, leaving room below the waves. Surface transitions never remove creatures or push their drawings into another lane. The surface transition does not raise the seabed. Existing tall kelp and the large wreck have their own drawings and placement rules.
 
 ## Boats, whales, and the monster
 

@@ -209,7 +209,7 @@
     ctx.fillStyle='#081723';ctx.fillRect(0,0,screenW,water+fishFont*.5);
     ctx.font=fishFont+'px "Courier New", monospace';ctx.textBaseline='top';ctx.fillStyle='#508d9f';
     for(let x=0;x<screenW;x+=advance)ctx.fillText(Math.sin(sim.ocean.elapsed/1000*1.2+x/6*.06)>0?'~':'_',x,water);
-    if(!scene.kind)return;
+    if(!scene.kind||water<fishFont*4)return;
     const image=visitorImages[scene.kind==='monster'&&Math.floor(scene.progress*30/.6)%2?'monsterAlt':scene.kind],x=-image.width+scene.progress*(screenW+image.width);
     const smooth=v=>{v=Math.max(0,Math.min(1,v));return v*v*(3-2*v);};
     const lift=smooth(scene.progress*6)*smooth((1-scene.progress)*6);
