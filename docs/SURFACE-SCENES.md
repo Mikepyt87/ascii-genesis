@@ -84,3 +84,5 @@ Close the ocean and run **Update ASCII Genesis**, then reopen it. The Pi follows
 ## Validation
 
 The source update passed [Check ocean](https://github.com/Mikepyt87/ascii-genesis/actions/runs/39127558694), including the simulation, renderer, desktop launcher, and updater checks. Additional renderer checks cover surface scenes, a shared three-bubble limit, bottom-third castle/ruin placement, and plankton drawn separately from bubbles. The scenes were visually inspected in the browser. The new scene changes have not yet been confirmed on the physical Pi display.
+
+The waterline preservation fix passed [Check ocean](https://github.com/Mikepyt87/ascii-genesis/actions/runs/39132004873) at source commit `e71eb2ea9a2dcd796ab9459db3f47ed8fde3b24b`. Its regression checks hold each of the 28 creature designs, in both directions, through ten minutes of surface changes and verify unchanged drawing positions and full wave clearance. Physical-display confirmation of this fix is still pending.
