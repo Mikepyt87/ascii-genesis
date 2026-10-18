@@ -88,3 +88,5 @@ The source update passed [Check ocean](https://github.com/Mikepyt87/ascii-genesi
 The waterline preservation fix passed [Check ocean](https://github.com/Mikepyt87/ascii-genesis/actions/runs/39132004873) at source commit `e71eb2ea9a2dcd796ab9459db3f47ed8fde3b24b`. Its regression checks hold each of the 28 creature designs, in both directions, through ten minutes of surface changes and verify unchanged drawing positions and full wave clearance. Physical-display confirmation of this fix is still pending.
 
 The shore crab, reef lobster, peacock mantis shrimp, and violet octopus use grounded placement in the normal ocean and parade. Their visible feet or arms follow the terrain instead of using a swimming lane.
+
+The bottom-dweller update passed [Check ocean](https://github.com/Mikepyt87/ascii-genesis/actions/runs/39133481675) at source commit `0867c5cfd4f8e0e6b5be8a895478ebe7f7d0dcde`, including normal and parade ground contact for all four designs in both directions. Physical Pi confirmation of this update is pending.
