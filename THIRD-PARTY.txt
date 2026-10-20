@@ -45,6 +45,14 @@ included here. The supplied case and legs are Mikepyt87's designs.
 Thank you to the Raspberry Pi and Raspberry Pi OS communities, Waveshare,
 Node.js, and Chromium for the hardware and software foundation.
 
+HISTORICAL MINIATURE ESP32 MATERIAL
+
+The Mini implementation has moved to https://github.com/Mikepyt87/ascii-genesis-mini.
+The old esp32 paths below describe historical copies retained in Git history.
+Current font notices are in that repository at preview/FONT-LICENSE.txt;
+current driver notices are at firmware/components/esp_lcd_jd9853/LICENSE.
+These notices are preserved for the historical source and releases.
+
 MINIATURE ESP32 PREVIEW FONT
 
 esp32/1.47-inch/preview/font.js contains the classic Adafruit GFX 5x7 bitmap

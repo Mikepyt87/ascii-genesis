@@ -12,4 +12,4 @@ This project builds on the work of the [Asciiquarium creators and OpenGhost comm
 
 ## Verify a change
 
-Run the checks listed in [README.md](README.md#performance-and-validation). Simulation changes should preserve the calm pace, off-screen arrivals and departures, visible contact for catches, and bounded populations. For enclosure changes, document dimensions, print quantity, scale, and any verified assembly instructions. Keep untested print settings clearly identified.
+Run the checks listed in [the setup guide](raspberry-pi/SETUP.md#performance-and-validation). Simulation changes should preserve the calm pace, off-screen arrivals and departures, visible contact for catches, and bounded populations. For enclosure changes, document dimensions, print quantity, scale, and any verified assembly instructions. Keep untested print settings clearly identified.

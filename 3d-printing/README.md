@@ -13,7 +13,7 @@ The legs file contains one connected model. The x2 in the filename indicates the
 
 For this enclosure build, you need a 3D printer or printing service and filament. **Print one Case and two copies of Legs(x2).** Download either format, import STL as millimeters at 100% scale, and duplicate the leg model in your slicer or print it twice. Choose bed orientation and settings for your printer, then check fit with the actual screen and Pi before final assembly. Keep cable access and Pi ventilation clear.
 
-The software can be tested while the prints are being made. See the [complete build instructions](../README.md#printed-enclosure-and-legs).
+The software can be tested while the prints are being made. See the [complete build instructions](../raspberry-pi/SETUP.md#printed-enclosure-and-legs).
 
 ## Format and scale
 

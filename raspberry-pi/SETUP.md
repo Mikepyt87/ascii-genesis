@@ -1,10 +1,10 @@
 # Raspberry Pi installation and operation
 
-This guide is for the Raspberry Pi 4 and 7.9-inch HDMI screen. For the ESP32-S3-Touch-LCD-1.47, use the separate [Mini repository](https://github.com/Mikepyt87/ascii-genesis-mini).
+This guide is for the Raspberry Pi 4 and 7.9-inch HDMI screen. For an ESP32 display, use the separate [1.47-inch Mini](https://github.com/Mikepyt87/ascii-genesis-mini) or [4-inch Mid](https://github.com/Mikepyt87/ascii-genesis-mid) guide.
 
 A quiet traveling ASCII ocean for **Raspberry Pi 4 Model B and the Waveshare 7.9-inch HDMI touchscreen**, used horizontally at **1280 × 400**.
 
-Nineteen fish designs, a squid, an octopus, a sea turtle, a jellyfish, a crab, a lobster, a mantis shrimp, a whale, and a yellow submarine travel through six habitats, including coral gardens, seagrass beds, and shipwreck depths. Terrain travels slowly, food and plant cover change by habitat, and fish enter and leave beyond the edges. The ocean runs offline. Optional narration is separate from the simulation.
+Twenty-eight creature and vehicle designs, including fish, squid, octopus, turtle, jellyfish, crustaceans, whale, and submarine, travel through six habitats, including coral gardens, seagrass beds, and shipwreck depths. Terrain travels slowly, food and plant cover change by habitat, and fish enter and leave beyond the edges. The ocean runs offline. Optional narration is separate from the simulation.
 
 ## Built on work worth celebrating
 
@@ -40,6 +40,8 @@ The display's USB connection provides touch and can supply display power from th
 Install **Raspberry Pi OS Desktop, 64-bit** using [Raspberry Pi Imager](https://www.raspberrypi.com/software/). Use Desktop, not Lite. Rotate the display in the OS settings until the desktop is **1280 pixels wide by 400 high**. Check touch alignment after rotation. Make it the primary display and disable screen blanking if desired.
 
 References: [Pi 4 specifications](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/specifications/), [recommended power supply](https://www.raspberrypi.com/products/power-supply/), [Waveshare display instructions](https://www.waveshare.com/wiki/7.9inch_HDMI_LCD).
+
+![Pi power, HDMI video, USB touch, display rotation, and assembly order](../docs/images/pi-connections.svg)
 
 ## Printed enclosure and legs
 
@@ -89,7 +91,7 @@ Lionfish join the rotation with copper coloring, pale body stripes, and long fan
 
 Unrelated creatures can cross and overlap. If two heading the same way stay substantially overlapped at nearly the same speed for about three seconds, one gently pulls ahead while the other eases back. They return to their usual pace once their drawings are clear. Schools, predator encounters, and the parade keep their coordinated movement; bottom creatures remain on the seabed.
 
-Small schools of three fish occasionally enter together, scatter vertically near hunters, and regroup once the threat passes. Rays glide gently up and down; turtles make a brief surface visit; octopuses settle near the seabed. Moon jellyfish drift slowly across the screen, rise, and gently pulse. Crabs, lobsters, and peacock mantis shrimp stay along the bottom, sharks join occasional hunts, and whales and a yellow submarine cross more slowly. All 28 designs join the parade, including the submarine. The submarine is decorative and does not eat plankton. The nine-row wreck is over four times the eel drawing's width, with the eel peeking from its hull opening.
+Small schools of three fish occasionally enter together, scatter vertically near hunters, and regroup once the threat passes. Rays glide gently up and down; turtles make a brief surface visit; octopuses keep their visible arms on the seabed. Moon jellyfish drift slowly across the screen, rise, and gently pulse. Crabs, lobsters, and peacock mantis shrimp stay along the bottom, sharks join occasional hunts, and whales and a yellow submarine cross more slowly. All 28 designs join the parade, including the submarine. The submarine is decorative and does not eat plankton. The nine-row wreck is over four times the eel drawing's width, with the eel peeking from its hull opening.
 
 The journey now blends through kelp meadow, rocky reef, open sand, coral garden, seagrass bed, and shipwreck depths. Each has its own floor shape, with rocky ledges, dunes, low coral outcrops, and deeper basins. Patchy plants, three coral forms, boulders, crevices, anchors, and wreck debris add sparse landmarks. A faint distant ridge moves at 35 percent of foreground speed; foreground plants and ground remain attached. Coral and wreck drawings stay attached to the scrolling world. An eel occasionally peeks from a wreck. Rare discoveries include a distant whale crossing or a brief patch of glowing plankton. Whale and glow discoveries wait 5–10 minutes, then another wait starts after they finish; visitors and hunts can delay them. These are decorative visits, not additional food-web agents.
 
@@ -108,6 +110,7 @@ Future changes must first be committed and pushed to GitHub. The Pi then downloa
 To disable automatic checks, run once:
 
 ```bash
+mkdir -p "$HOME/.config/ascii-genesis"
 touch "$HOME/.config/ascii-genesis/no-auto-update"
 ```
 
@@ -121,19 +124,33 @@ To start the ocean on desktop login:
 bash "$HOME/ASCII-Genesis/raspberry-pi/install-autostart.sh"
 ```
 
-Enable desktop auto-login in Raspberry Pi OS if you want unattended startup. Normal desktop-icon launch works without enabling this. To disable boot startup, remove only the ASCII-Genesis launch line from `~/.config/labwc/autostart`, or remove `~/.config/autostart/ascii-genesis.desktop` if the fallback installer used that file. Keep the project in the same location after installation.
+Enable desktop auto-login in Raspberry Pi OS if you want unattended startup. Normal desktop-icon launch works without enabling this. To disable boot startup, remove only the line ending in `raspberry-pi/launch.sh &` from `~/.config/labwc/autostart`, or remove `~/.config/autostart/ascii-genesis.desktop` if the fallback installer used that file. Keep the project in the same location after installation.
 
 ## Optional narration
 
 The ocean requires no API key. The included OpenAI bridge is an optional prototype and was tested with mocked responses only. If you enable it, the Pi makes the request itself, only after tapping AI event; the result does not control the ecosystem.
 
-Put your private settings in `~/.config/ascii-genesis/openai.env`, outside this repository:
+This optional feature is not a verified part of the installation. Leave it disabled unless you intend to test the prototype. Its model is fixed in `simulator/openai_bridge.mjs`; there is no model selector in Settings.
+
+In a Pi terminal, run `mkdir -p ~/.config/ascii-genesis`, then `nano ~/.config/ascii-genesis/openai.env`. Put the following line in that file, replacing the placeholder with your own key:
 
 ```bash
 OPENAI_API_KEY='your-own-key'
 ```
 
-Restrict that file with `chmod 600 ~/.config/ascii-genesis/openai.env`. Restart the ocean after editing. The bridge currently specifies `gpt-6-luna`; live availability and billing have not been verified for your API account. Check the model before enabling real calls. Do not commit your key or share the private settings file.
+Save in nano with Ctrl+O, Enter, then exit with Ctrl+X. Restrict that file with `chmod 600 ~/.config/ascii-genesis/openai.env`. Restart the ocean after editing. The bridge currently specifies `gpt-6-luna`; live availability and billing have not been verified for your API account. Check the model before enabling real calls. Do not commit your key or share the private settings file.
+
+### Diagnose an API connection
+
+Close the ocean, use the Update ASCII Genesis icon, and reopen it. Tap AI event: the app now reports missing-key, authentication, billing, permission, model-access or connection errors separately. Luna narration uses no reasoning and a 128-token response allowance. A successful narration is still needed to confirm your account works.
+
+To check the saved file against the running server without showing the key or calling OpenAI, run on the Pi:
+
+```bash
+node ~/ASCII-Genesis/simulator/api-doctor.mjs
+```
+
+This prints only a configuration result. Share that result or the on-screen error code; never share openai.env or the secret key.
 
 ## Performance and validation
 
@@ -142,6 +159,8 @@ The Pi 4 renderer rasterizes the 56 directional creature images and four diver i
 Checks cover all 28 designs appearing in rotation, ecological limits, continuous terrain, off-screen departures, rare catches at visible mouth contact, escape survival, diver limits, quiet mode, cached sprite rendering, pause/reset behavior, and mock narration. Desktop installation is tested in a temporary folder. Linux CI checks script syntax as well. These checks do not replace physical display, touch, power, and OS startup testing.
 
 ```bash
+cd "$HOME/ASCII-Genesis"
+node tools/check-docs.mjs
 node simulator/core-check.mjs
 node simulator/render-check.mjs
 node simulator/openai_bridge_check.mjs
@@ -161,16 +180,4 @@ python3 raspberry-pi/desktop-check.py
 
 ## Artwork and license
 
-The [Asciiquarium creators and OpenGhost community](../CREDITS.md) deserve prominent credit for the work that brought us here. Eleven designs derive from Asciiquarium; fifteen are original ASCII Genesis creature drawings. See [THIRD-PARTY.txt](../THIRD-PARTY.txt) and [LICENSE.txt](../LICENSE.txt), GPL-2.0-or-later. Source drawings and their generator are in `third-party/`. Regenerate the fish collection from the project root with `node third-party/restore-sprites.mjs`.
-
-### Diagnose an API connection
-
-Close the ocean, use the Update ASCII Genesis icon, and reopen it. Tap AI event: the app now reports missing-key, authentication, billing, permission, model-access or connection errors separately. Luna narration uses no reasoning and a 128-token response allowance. A successful narration is still needed to confirm your account works.
-
-To check the saved file against the running server without showing the key or calling OpenAI, run on the Pi:
-
-```bash
-node ~/ASCII-Genesis/simulator/api-doctor.mjs
-```
-
-This prints only a configuration result. Share that result or the on-screen error code; never share openai.env or the secret key.
+The [Asciiquarium creators and OpenGhost community](../CREDITS.md) deserve prominent credit for the work that brought us here. Eleven designs derive from Asciiquarium; seventeen are original ASCII Genesis creature drawings. See [THIRD-PARTY.txt](../THIRD-PARTY.txt) and [LICENSE.txt](../LICENSE.txt), GPL-2.0-or-later. Source drawings and their generator are in `third-party/`. Regenerate the fish collection from the project root with `node third-party/restore-sprites.mjs`.

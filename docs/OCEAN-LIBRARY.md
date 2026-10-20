@@ -605,7 +605,7 @@ Facing left (15 columns × 5 rows):
 
 A rounded dome and paired eyes above a cluster of curling arms. Violet and muted purple keep the outline distinct against the dark water.
 
-**Source:** original ASCII Genesis art in [original-fish.mjs](../third-party/original-fish.mjs), GPL-2.0-or-later. **Body color:** #ba9dce; **edges:** #997caf. **Behavior:** ordinary varying-speed cruising; no hunting.
+**Source:** original ASCII Genesis art in [original-fish.mjs](../third-party/original-fish.mjs), GPL-2.0-or-later. **Body color:** #ba9dce; **edges:** #997caf. **Behavior:** grounded crawling along the scrolling seabed; no hunting.
 
 Facing right (16 columns × 7 rows):
 
@@ -1285,7 +1285,7 @@ Parade swimmers move at about 67 screen pixels per second for the current collec
 
 ## Artwork and maintenance
 
-Eleven designs come from Asciiquarium 1.1. The upstream code credits Kirk Baucom and credits most ASCII artwork to Joan Stark; expanded marine biodiversity was backported by Claudio Matsuoka. Fifteen creature and vehicle drawings are original to ASCII Genesis, including the squid, octopus, turtle, and jellyfish. All are distributed with this project under GPL-2.0-or-later. See [credits](../THIRD-PARTY.txt), [license](../LICENSE.txt), and the preserved [upstream source](../third-party/asciiquarium-upstream.pl).
+Eleven designs come from Asciiquarium 1.1. The upstream code credits Kirk Baucom and credits most ASCII artwork to Joan Stark; expanded marine biodiversity was backported by Claudio Matsuoka. Seventeen creature and vehicle drawings are original to ASCII Genesis, including the squid, octopus, turtle, and jellyfish. All are distributed with this project under GPL-2.0-or-later. See [credits](../THIRD-PARTY.txt), [license](../LICENSE.txt), and the preserved [upstream source](../third-party/asciiquarium-upstream.pl).
 
 The installed artwork is in [fish-art.js](../simulator/fish-art.js). Its source drawings and extraction rules are in [original-fish.mjs](../third-party/original-fish.mjs) and [restore-sprites.mjs](../third-party/restore-sprites.mjs). The running rules are in [aquarium.js](../simulator/aquarium.js); colors, terrain drawing, and sprite placement are in [simulator.js](../simulator/simulator.js).
 

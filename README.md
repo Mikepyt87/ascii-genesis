@@ -10,7 +10,7 @@ ASCII Genesis grew from **[Asciiquarium](https://github.com/cmatsuoka/asciiquari
 
 We call ASCII Genesis an **ocean**: its creatures travel through a scrolling world of changing terrain and habitats.
 
-**This repository is the Raspberry Pi project.** The ESP32 board has a separate project: **[ASCII Genesis - Mini](https://github.com/Mikepyt87/ascii-genesis-mini)**. The two projects have different hardware, installers, controls, and update systems.
+**This repository is the Raspberry Pi project.** The ESP32 editions have separate projects: **[ASCII Genesis — Mini](https://github.com/Mikepyt87/ascii-genesis-mini)** and **[ASCII Genesis — Mid](https://github.com/Mikepyt87/ascii-genesis-mid)**. The three projects have different hardware, installers, controls, and update systems.
 
 ## Start here
 
@@ -20,6 +20,7 @@ We call ASCII Genesis an **ocean**: its creatures travel through a scrolling wor
 | Choosing/printing the case and legs | Follow [3D printing and assembly](3d-printing/README.md); these files are for the Pi display |
 | Already installed and want new creatures | Close the ocean, run the **Update ASCII Genesis** desktop icon, then reopen the ocean |
 | Want to see the artwork and behavior | Open the [Ocean Library](docs/OCEAN-LIBRARY.md) or [screenshot tour](docs/SCREENSHOTS.md) |
+| Have the 4-inch GUITION ESP32 screen | Use [the Mid installation guide](https://github.com/Mikepyt87/ascii-genesis-mid/blob/main/INSTALL.md) |
 | Have the little ESP32-S3 1.47-inch screen | Use [the Mini's first-install guide](https://github.com/Mikepyt87/ascii-genesis-mini/blob/main/docs/INSTALL.md); do not run the Pi installer |
 
 ## Pi hardware
@@ -30,7 +31,7 @@ We call ASCII Genesis an **ocean**: its creatures travel through a scrolling wor
 - Raspberry Pi OS **Desktop, 64-bit**; keyboard/mouse for first setup.
 - One printed case and two legs if using the included enclosure build.
 
-The display connects to the Pi over HDMI and USB. This is a Linux desktop application, not ESP32 firmware. The Mini's display driver, flashing offsets, Wi-Fi setup address, and USB binaries do not apply to this project.
+The display connects to the Pi over HDMI and USB. This is a Linux desktop application, not ESP32 firmware. The ESP32 editions’ display drivers, flashing offsets, Wi-Fi setup address, and USB binaries do not apply to this project.
 
 ## First software installation on the Pi
 
@@ -53,9 +54,11 @@ The collection uses [balanced creature proportions](docs/CREATURE-SIZES.md): a m
 
 Surface stretches bring sailing boats, whales that surface and spout, and a Nessie-like sea monster, one visitor at a time. Castles and submerged ruins pass along the seabed. Sparse bubbles rise from creatures, with at most three on screen at once. The parade keeps its own clear view. See the [surface scenes and landmarks guide](docs/SURFACE-SCENES.md) for artwork, timing, and bubble behavior.
 
-**Pi scrolling speed is unchanged.** The Mini's faster scrolling and sequential parade belong to the other project.
+The Pi has its own ecosystem and two-minute parade. Mini and Mid use separate firmware, with up to two parade creatures visible at a time.
 
 ![ASCII Genesis ocean](docs/screenshots/ocean.jpg)
+
+Historical browser capture, not a board photograph. Some creature proportions have since changed; see the [current artwork library](docs/OCEAN-LIBRARY.md).
 
 ## Updates and source
 
