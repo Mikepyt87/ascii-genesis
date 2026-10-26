@@ -1,35 +1,39 @@
-/* Original ASCII Genesis entrance effects. GPL-3.0-or-later. */
+/* Original ASCII Genesis whole-fish celebrations. GPL-3.0-or-later. */
 (function(root){
  const names=['balance angelfish','steadfast marlin','spark wrasse'];
  const colors=[['#75d8ca','#c9fff0'],['#dfb96c','#fff1b8'],['#b79ae0','#ffc18a']];
- function points(kind,age,x,y,scale=1){
-   if(age<0||age>=3)return [];
-   const out=[],fade=age<2.1?1:(3-age)/.9;
-   for(let i=0;i<20;i++){
-     const a=i*Math.PI*2/20,spread=8+age*12;
-     let dx,dy;
-     if(kind===0){dx=Math.cos(a+age*.6)*spread;dy=Math.sin(a+age*.6)*spread*.65;}
-     else if(kind===1){const fan=-Math.PI+.25+i*(Math.PI-.5)/19;dx=Math.cos(fan)*spread;dy=Math.sin(fan)*spread+age*age*3;}
-     else {const spiral=a+age*2;dx=Math.cos(spiral)*spread*(.45+.55*i/19);dy=Math.sin(spiral)*spread*(.45+.55*i/19);}
-     if(fade<.5&&i%2)continue;
-     out.push({x:Math.round(x+dx*scale),y:Math.round(y+dy*scale),color:colors[kind][i%2],size:age<2.1?2:1});
+ function points(kind,age,x,y,scale=1,w=120,h=40){
+   if(kind<0||kind>2||age<0||age>=3)return [];
+   const out=[];
+   for(let i=0;i<24;i++){
+     const gap=(14+age*2+3*Math.sin(i*2.4+age*(kind+1)*2))*scale;
+     const hw=w/2+gap,hh=h/2+gap,perimeter=4*(hw+hh);
+     let d=((i/24+age*[.025,-.02,.05][kind]+1)%1)*perimeter,dx,dy;
+     if(d<2*hw){dx=-hw+d;dy=-hh;}else if((d-=2*hw)<2*hh){dx=hw;dy=-hh+d;}
+     else if((d-=2*hh)<2*hw){dx=hw-d;dy=hh;}else{d-=2*hw;dx=-hw;dy=hh-d;}
+     const r=8*scale,px=Math.abs(dx)-(hw-r),py=Math.abs(dy)-(hh-r);
+     if(px>0&&py>0){const length=Math.hypot(px,py);dx=Math.sign(dx)*(hw-r+px*r/length);dy=Math.sign(dy)*(hh-r+py*r/length);}
+     if(age>2.55&&i%2)continue;
+     out.push({x:Math.round(x+dx),y:Math.round(y+dy),color:colors[kind][(i+Math.floor(age*4))%2],size:age<2.1?2:1});
    }return out;
  }
  class Tracker {
    constructor(){this.seen=new WeakSet();this.ids=new Set();this.effects=[];}
    step(items,dt,width,height){
-     this.effects=this.effects.map(e=>({...e,age:e.age+dt})).filter(e=>e.age<3);
+     this.effects=this.effects.flatMap(e=>{const f=items.find(f=>f.key===e.key);return f&&e.age+dt<3?[{...e,age:e.age+dt,x:f.x+f.w/2,y:f.y+f.h/2,w:f.w,h:f.h}]:[];});
      for(const item of items){
-       const kind=names.indexOf(item.name),{x,y,w,h,right,key}=item;
-       if(kind<0||x+w<=18||x>=width-18)continue;
+       const kind=names.indexOf(item.name),{x,y,w,h,key}=item;
+       // Wait for the full drawing, so this reads as a surrounding celebration.
+       if(kind<0||x<24||x+w>width-24)continue;
        const set=typeof key==='object'?this.seen:this.ids;if(set.has(key))continue;set.add(key);
-       this.effects.push({kind,age:0,x:Math.max(44,Math.min(width-44,right?x+w:x)),y:Math.max(52,Math.min(height-52,y+h/2))});
+       this.effects.push({kind,key,age:0,x:x+w/2,y:y+h/2,w,h});
      }this.effects=this.effects.slice(-3);
    }
-   pixels(width,height,blocked,scale=1){return this.effects.flatMap(e=>points(e.kind,e.age,e.x,e.y,scale)).filter(p=>p.x>=12&&p.x+3<width-12&&p.y>=22&&p.y+3<height-34&&!blocked.some(b=>p.x+3>=b.x-3&&p.x<=b.x+b.w+3&&p.y+3>=b.y-3&&p.y<=b.y+b.h+3));}
+   pixels(width,height,blocked,scale=1){return this.effects.flatMap(e=>points(e.kind,e.age,e.x,e.y,scale,e.w,e.h)).filter(p=>p.x>=13&&p.x+4<width-12&&p.y>=23&&p.y+4<height-34&&!blocked.some(b=>p.x+4>=b.x-4&&p.x-2<=b.x+b.w+4&&p.y+4>=b.y-4&&p.y-2<=b.y+b.h+4));}
  }
  root.GenesisCelebrations={names,points,Tracker};
 })(globalThis);
+
 (() => {
   'use strict';
   const core=window.AquariumCore, canvas=document.getElementById('tank'), ctx=canvas.getContext('2d');
