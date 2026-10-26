@@ -48,7 +48,7 @@ Open **ASCII Genesis** from the desktop. The installer creates **Update ASCII Ge
 
 ## What the Pi ocean includes
 
-There are 28 creature and vehicle designs, including the peacock mantis shrimp, plus the Pi edition's ecosystem, schools, occasional encounters, diver, changing terrain, day/night lighting, quiet mode, and two-minute creature parade. It runs offline. Optional OpenAI narration has its own setup in the complete guide; no API key is needed for the ocean itself.
+There are 31 creature and vehicle designs, including the peacock mantis shrimp, plus the Pi edition's ecosystem, schools, occasional encounters, diver, changing terrain, day/night lighting, quiet mode, and two-minute creature parade. It runs offline. Optional OpenAI narration has its own setup in the complete guide; no API key is needed for the ocean itself.
 
 The collection uses [balanced creature proportions](docs/CREATURE-SIZES.md): a much smaller jellyfish and smaller crustaceans, with a modestly larger shark and whale.
 
@@ -69,3 +69,5 @@ The renderer and creature code are in `simulator/`; Pi installers/launchers are 
 ## Credits
 
 Built on **Asciiquarium by Kirk Baucom**, with most upstream ASCII art credited to **Joan Stark** and expanded biodiversity by **Claudio Matsuoka**. **OpenGhost / xanderchinxyz** inspired the early display exploration. Project additions include the renderer, ecosystem, original creatures, and physical Pi enclosure. Read [CREDITS.md](CREDITS.md), [THIRD-PARTY.txt](THIRD-PARTY.txt), and [LICENSE.txt](LICENSE.txt).
+
+The [signature fish guide](docs/SIGNATURE-FISH.md) introduces three new original designs and their entrance celebrations. Raspberry Pi swimming speed is unchanged.
