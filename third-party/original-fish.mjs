@@ -128,5 +128,26 @@ export const originalFish = [
  _/\_ _ _ .-'=\
 <_  _>=|=|_  _)>
   \/ /_/_/\_(](]
+`},
+  {name:'balance angelfish',color:'#75d8ca',fin:'#72a8d4',art:String.raw`
+         /|
+    /\ .' |__
+   <  >| :  o)>
+    \/ '. |--'
+         \|
+`},
+  {name:'steadfast marlin',color:'#79b9e5',fin:'#dfb96c',art:String.raw`
+           /|
+   /\ ____/ |___
+  <  <  ===   o \====>
+   \/ '---.___./
+           \|
+`},
+  {name:'spark wrasse',color:'#eeab70',fin:'#b79ae0',art:String.raw`
+       .-^^^^-.
+   /\ / / /  o\
+  <  >|/ / /   >
+   \/ '.___..-'
+         \_/
 `}
 ];

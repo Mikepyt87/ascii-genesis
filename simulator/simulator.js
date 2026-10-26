@@ -1,3 +1,35 @@
+/* Original ASCII Genesis entrance effects. GPL-3.0-or-later. */
+(function(root){
+ const names=['balance angelfish','steadfast marlin','spark wrasse'];
+ const colors=[['#75d8ca','#c9fff0'],['#dfb96c','#fff1b8'],['#b79ae0','#ffc18a']];
+ function points(kind,age,x,y,scale=1){
+   if(age<0||age>=3)return [];
+   const out=[],fade=age<2.1?1:(3-age)/.9;
+   for(let i=0;i<20;i++){
+     const a=i*Math.PI*2/20,spread=8+age*12;
+     let dx,dy;
+     if(kind===0){dx=Math.cos(a+age*.6)*spread;dy=Math.sin(a+age*.6)*spread*.65;}
+     else if(kind===1){const fan=-Math.PI+.25+i*(Math.PI-.5)/19;dx=Math.cos(fan)*spread;dy=Math.sin(fan)*spread+age*age*3;}
+     else {const spiral=a+age*2;dx=Math.cos(spiral)*spread*(.45+.55*i/19);dy=Math.sin(spiral)*spread*(.45+.55*i/19);}
+     if(fade<.5&&i%2)continue;
+     out.push({x:Math.round(x+dx*scale),y:Math.round(y+dy*scale),color:colors[kind][i%2],size:age<2.1?2:1});
+   }return out;
+ }
+ class Tracker {
+   constructor(){this.seen=new WeakSet();this.ids=new Set();this.effects=[];}
+   step(items,dt,width,height){
+     this.effects=this.effects.map(e=>({...e,age:e.age+dt})).filter(e=>e.age<3);
+     for(const item of items){
+       const kind=names.indexOf(item.name),{x,y,w,h,right,key}=item;
+       if(kind<0||x+w<=18||x>=width-18)continue;
+       const set=typeof key==='object'?this.seen:this.ids;if(set.has(key))continue;set.add(key);
+       this.effects.push({kind,age:0,x:Math.max(44,Math.min(width-44,right?x+w:x)),y:Math.max(52,Math.min(height-52,y+h/2))});
+     }this.effects=this.effects.slice(-3);
+   }
+   pixels(width,height,blocked,scale=1){return this.effects.flatMap(e=>points(e.kind,e.age,e.x,e.y,scale)).filter(p=>p.x>=12&&p.x+3<width-12&&p.y>=22&&p.y+3<height-34&&!blocked.some(b=>p.x+3>=b.x-3&&p.x<=b.x+b.w+3&&p.y+3>=b.y-3&&p.y<=b.y+b.h+3));}
+ }
+ root.GenesisCelebrations={names,points,Tracker};
+})(globalThis);
 (() => {
   'use strict';
   const core=window.AquariumCore, canvas=document.getElementById('tank'), ctx=canvas.getContext('2d');
@@ -240,6 +272,7 @@
       if(s===core.EMPTY||s===core.FRY||s===core.HUNTER)continue;
       ctx.fillStyle=core.COLORS[s];ctx.fillText(s===core.PLANKTON?'.':core.GLYPH[s],(x-sim.travel%1)*cellX,y*cellY);
     }
+    if(typeof entranceEffects!=='undefined')for(const p of entranceEffects.pixels(screenW,screenH,entranceItems(),1.5)){ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,p.size*2,p.size*2);if(p.size===2){ctx.fillRect(p.x-2,p.y+2,8,2);ctx.fillRect(p.x+2,p.y-2,2,8);}}
     // Draw classic Asciiquarium sprites over one-cell ecological agents.
     // The life model stays 48×48; only its presentation uses multi-character art.
     for(const {fish,alpha} of sprites){
@@ -273,9 +306,13 @@
     paradeButton.disabled=!!parade;paradeButton.textContent=parade?'Parade running…':'Creature parade · 2 min';
     for(const [id,value] of [['plankton',c.plankton],['fry',c.fry],['hunters',c.hunters],['algae',c.algae]])document.getElementById(id).textContent=value;
   }
+  let entranceEffects=new GenesisCelebrations.Tracker(),entranceWorld=sim;
+  function entranceItems(){return [...sim.fish,...(sim.parade?.fish||[])].map(f=>{const b=core.life.displayBox(sim,f);return {key:f,name:fishArt[f.design*2]?.name,x:b.left,y:b.top,w:b.width,h:b.height,right:f.right};});}
   function step(elapsedMs=350){
     if(clockMode==='local'){const now=new Date();sim.ocean.localHour=now.getHours()+now.getMinutes()/60;}
-    core.step(sim,typeof elapsedMs==='number'?elapsedMs:350);draw();
+    core.step(sim,typeof elapsedMs==='number'?elapsedMs:350);
+    if(entranceWorld!==sim){entranceEffects=new GenesisCelebrations.Tracker();entranceWorld=sim;}
+    entranceEffects.step(entranceItems(),(typeof elapsedMs==='number'?elapsedMs:350)/1000,screenW,screenH);draw();
   }
   function animationClock(){return typeof performance!=='undefined'?performance.now():Date.now();}
   document.getElementById('parade').onclick=()=>{if(core.life.startParade(sim)){lastFrame=animationClock();draw();}};
@@ -300,7 +337,7 @@
       running=false;
     }catch(error){status.textContent=error.message||'Could not contact the desktop launcher.';closeButton.disabled=false;}
   };
-  document.getElementById('reset').onclick=()=>{sim=core.world(GenesisSeed(),fishArt.length/2,worldOptions);document.getElementById('event').textContent='A new habitat takes shape. Watch the small life find its balance.';draw();};
+  document.getElementById('reset').onclick=()=>{entranceEffects=new GenesisCelebrations.Tracker();sim=core.world(GenesisSeed(),fishArt.length/2,worldOptions);document.getElementById('event').textContent='A new habitat takes shape. Watch the small life find its balance.';draw();};
   document.getElementById('ai').onclick=async e=>{
     if(aiBusy)return;aiBusy=true;e.currentTarget.disabled=true;
     const status=document.getElementById('status'), counts=core.counts(sim);
